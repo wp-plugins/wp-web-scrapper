@@ -9,8 +9,8 @@ Author URI: http://webdlabs.com
 
 */
 
-add_shortcode('wpws', 'wpws_shortcode');
-add_filter('widget_text', 'do_shortcode');
+if(get_option('wpws_sc_posts') == 1) add_shortcode('wpws', 'wpws_shortcode');
+if(get_option('wpws_sc_sidebar') == 1) add_filter('widget_text', 'do_shortcode');
 add_action('admin_menu', 'wpws_settings_page');
 register_activation_hook( __FILE__, 'wpws_on_activation');
 
