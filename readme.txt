@@ -73,9 +73,9 @@ This page will specifically detail usage of selectors which is the heart of WP W
 
 Frankly, selectors are a standard way to query the DOM structure of the scraped html document. phpQuery uses jQuery-like selectors and hence those familier with jQuery selectors will find themselves at home. To get you started, you can use elements, #ids, .classes to identify content. Here are a few examples:
 
-* 'td .specialhead:eq(0)' will get you content within the first <td> on the page with a class 'specialhead'.
-* 'table:eq(3) td:eq(3)' will get you content within the fourth <td> of the fourth <table> within the page.
-* '#header div:eq(1)' will get you content within the second <div> inside the first element with id 'header'.
+* 'td .specialhead:eq(0)' will get you content within the first `<td>` on the page with a class 'specialhead'.
+* 'table:eq(3) td:eq(3)' will get you content within the fourth `<td>` of the fourth `<table>` within the page.
+* '#header div:eq(1)' will get you content within the second `<div>` inside the first element with id 'header'.
 
 == Change Log ==
 
