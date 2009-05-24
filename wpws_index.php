@@ -218,7 +218,7 @@ function clear_cache(){
 			<th scope="row"><label for="blogname"><?php _e('Cache management') ?></label></th>
 			<td>
 			<input type="button" name="wpws_cache_clear" id="wpws_cache_clear" value="<?php _e('Clear Cache') ?>" class="button-secondary" onclick="clear_cache(); return false;"/><br />
-			<span class="setting-description" id="wpws_cache_status"><?php _e('Your cache currently has '.$size_array['count'].' files occuping '.wpws_sizeFormat($size_array['size']).' of space.') ?></span>
+			<span class="setting-description" id="wpws_cache_status"><?php _e('Your cache currently has '.($size_array['count'] - 3).' files occuping '.wpws_sizeFormat($size_array['size'] - 296).' of space.') ?></span>
 			</td>
 		</tr>
 		</table>

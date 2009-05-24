@@ -3,7 +3,7 @@ Contributors: akshay_raje
 Tags: web scraping, curl, phpquery, realtime, post, sidebar, page
 Requires at least: 2.6
 Tested up to: 2.7.1
-Stable tag: 0.1
+Stable tag: 0.2
 
 An easy to implement web scraper for WordPress. Display realtime data from any websites directly into your posts, pages or sidebar.
 
@@ -76,3 +76,10 @@ Frankly, selectors are a standard way to query the DOM structure of the scraped 
 * 'td .specialhead:eq(0)' will get you content within the first <td> on the page with a class 'specialhead'.
 * 'table:eq(3) td:eq(3)' will get you content within the fourth <td> of the fourth <table> within the page.
 * '#header div:eq(1)' will get you content within the second <div> inside the first element with id 'header'.
+
+== Change Log ==
+
+= Version 0.2 =
+
+1. Bug fix: Display of WP Web Scraper options page.
+1. Bug fix: Calculation of files and size of cache.
