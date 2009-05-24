@@ -79,7 +79,6 @@ Frankly, selectors are a standard way to query the DOM structure of the scraped 
 
 == Change Log ==
 
-*Version 0.2*
-
+**Version 0.2**
 1. Bug fix: Display of WP Web Scraper options page.
 1. Bug fix: Calculation of files and size of cache.
