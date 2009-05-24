@@ -9,9 +9,9 @@ An easy to implement web Scraper for WordPress. Display realtime data from any w
 
 == Description ==
 
-An easy to implement professional web Scraper for WordPress. This can be used to display realtime data from any websites directly into your posts, pages or sidebar. Use this to include realtime stock quotes, cricket or soccer scores or any other generic content. The Scraper is built using timetested libraries cURL for scrapping and phpQuery for parsing HTML. Features include:
+An easy to implement professional web Scraper for WordPress. This can be used to display realtime data from any websites directly into your posts, pages or sidebar. Use this to include realtime stock quotes, cricket or soccer scores or any other generic content. The Scraper is built using timetested libraries cURL for scraping and phpQuery for parsing HTML. Features include:
 
-1. Configurable caching of scrapped data. Cache timeout in minutes can be defined in minutes for every scrap.
+1. Configurable caching of scraped data. Cache timeout in minutes can be defined in minutes for every scrap.
 1. Custom Useragent header for your Scraper can be set for every scrap.
 1. Scrap output can be displayed thru custom template tag, shortcode in page, post and sidebar (text widget).
 1. Other configurable settings like cURL timeout, disabling shortcode etc. 
@@ -28,13 +28,13 @@ Mode details on this on the FAQs page
 
 == Frequently Asked Questions ==
 
-= What is web scrapping? Why do I need it? =
+= What is web scraping? Why do I need it? =
 
 Web scraping (or Web harvesting, Web data extraction) is a computer software technique of extracting information from websites. Web scraping focuses more on the transformation of unstructured Web content, typically in HTML format, into structured data that can be formatted and displayed or stored and analyzed. Web scraping is also related to Web automation, which simulates human Web browsing using computer software. Exemplary uses of Web scraping include online price comparison, weather data monitoring, market data tracking, Web content mashup and Web data integration.
 
 = Sounds interesting, but how do I actually use it? =
 
-WP Web Scraper plugin allows usage of a custom template tag (for template integration) or shortcode (for posts, pages or sidebar) for scrapping and displaying web content. Here's the actual usage detail:
+WP Web Scraper plugin allows usage of a custom template tag (for template integration) or shortcode (for posts, pages or sidebar) for scraping and displaying web content. Here's the actual usage detail:
 
 For use within themes: `<?php echo wpws_get_content($url, $selector, $cache_timeout, $output_format, $curl_agent, $curl_timeout, $silent);?>`
 	
@@ -42,12 +42,12 @@ For use directly in posts, pages or sidebar (text widget): `[wpws url="" selecto
 
 Arguments (for theme tag / shortcode) are:
 
-* url / $url (Required): The complete URL which needs to be scrapped.
-* selector / $selector (Required): The jQuery style selector string to select the content to be scrapped. You can use elements, ids or classes for this. Further details about selector syntax in 'Selector Manual'
+* url / $url (Required): The complete URL which needs to be scraped.
+* selector / $selector (Required): The jQuery style selector string to select the content to be scraped. You can use elements, ids or classes for this. Further details about selector syntax in 'Selector Manual'
 * cache / $cache_timeout: Timeout interval of the cached data in minutes. If ignored, the default value specified in plugin settings will be used.
 * output / $output_format: Format of output rendered by the selector (text or html). Default being 'text'.
 * agent / $curl_agent: The USERAGENT header for cURL. This string acts as your footprint while scraping data. If ignored, the default value specified in plugin settings will be used.
-* timeout / $curl_timeout: Timeout interver for cURL function in seconds. Higer the better for scrapping slow servers, but this will also increase your page load time. Ideally should not exceed 2. If ignored, the default value specified in plugin settings will be used.
+* timeout / $curl_timeout: Timeout interver for cURL function in seconds. Higer the better for scraping slow servers, but this will also increase your page load time. Ideally should not exceed 2. If ignored, the default value specified in plugin settings will be used.
 * error / $silent: Prints an error if cURL fails and this param is set as 1. If it is set as 0, it silently fails. This can be used for debugging. If ignored, the default value specified in plugin settings will be used.
 
 = Wow! I can actually create a complete meshup using this! =
@@ -65,13 +65,13 @@ Here are some tips to help you optimise the usage:
 
 = What libraries are used? What are the minimum requirements apart from WordPress =
 
-For scrapping, the plugin primarily uses [cURL](http://php.net/curl). This is a very robust library (libcurl) which comes embeded with PHPs pre compiled versions. Verify your php.ini or phpinfo() to check if your host supports this. For parsing html, the plugin uses [phpQuery](http://code.google.com/p/phpquery/). This is a server-side, chainable, CSS3 selector driven Document Object Model (DOM) API based on jQuery JavaScript Library.
+For scraping, the plugin primarily uses [cURL](http://php.net/curl). This is a very robust library (libcurl) which comes embeded with PHPs pre compiled versions. Verify your php.ini or phpinfo() to check if your host supports this. For parsing html, the plugin uses [phpQuery](http://code.google.com/p/phpquery/). This is a server-side, chainable, CSS3 selector driven Document Object Model (DOM) API based on jQuery JavaScript Library.
 
 == Selector Manual ==
 
 This page will specifically detail usage of selectors which is the heart of WP Web Scraper. For parsing html, the plugin uses [phpQuery](http://code.google.com/p/phpquery/) and hence an elaborate documentation on selectors can be found at [phpQuery - Selector Documentation](http://code.google.com/p/phpquery/wiki/Selectors).
 
-Frankly, selectors are a standard way to query the DOM structure of the scrapped html document. phpQuery uses jQuery-like selectors and hence those familier with jQuery selectors will find themselves at home. To get you started, you can use elements, #ids, .classes to identify content. Here are a few examples:
+Frankly, selectors are a standard way to query the DOM structure of the scraped html document. phpQuery uses jQuery-like selectors and hence those familier with jQuery selectors will find themselves at home. To get you started, you can use elements, #ids, .classes to identify content. Here are a few examples:
 
 * 'td .specialhead:eq(0)' will get you content within the first <td> on the page with a class 'specialhead'.
 * 'table:eq(3) td:eq(3)' will get you content within the fourth <td> of the fourth <table> within the page.
