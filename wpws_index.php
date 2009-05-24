@@ -24,7 +24,7 @@ function wpws_getDirectorySize($path) {
 			if ($file != '.' && $file != '..' && !is_link ($nextpath)) {
 				if (is_dir ($nextpath)) {
 					$dircount++;
-					$result = espace_getDirectorySize($nextpath);
+					$result = wpws_getDirectorySize($nextpath);
 					$totalsize += $result['size'];
 					$totalcount += $result['count'];
 					$dircount += $result['dircount'];
