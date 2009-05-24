@@ -16,7 +16,7 @@ An easy to implement professional web Scraper for WordPress. This can be used to
 1. Scrap output can be displayed thru custom template tag, shortcode in page, post and sidebar (text widget).
 1. Other configurable settings like cURL timeout, disabling shortcode etc. 
 
-For demos and support, visit the [WP Web Scraper project page](http://webdlabs.com/projects/wp-web-Scraper/). Comments appriciated.
+For demos and support, visit the [WP Web Scraper project page](http://webdlabs.com/projects/wp-web-scraper/). Comments appriciated.
 
 == Installation ==
 
