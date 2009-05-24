@@ -20,7 +20,7 @@ For demos and support, visit the [WP Web Scrapper project page](http://webdlabs.
 
 == Installation ==
 
-1. Upload folder `wp-webscrapper` to the `/wp-content/plugins/` directory
+1. Upload folder `wp-web-scrapper` to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. Use the template tag `wpws_get_content($url, $selector)` in your template or the shortcode `[wpws url="" selector=""]` in your posts, pages and sidebar.
 
