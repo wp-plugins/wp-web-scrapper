@@ -5,14 +5,14 @@ Requires at least: 2.6
 Tested up to: 2.7.1
 Stable tag: 0.1
 
-An easy to implement web Scraper for WordPress. Display realtime data from any websites directly into your posts, pages or sidebar.
+An easy to implement web scraper for WordPress. Display realtime data from any websites directly into your posts, pages or sidebar.
 
 == Description ==
 
-An easy to implement professional web Scraper for WordPress. This can be used to display realtime data from any websites directly into your posts, pages or sidebar. Use this to include realtime stock quotes, cricket or soccer scores or any other generic content. The Scraper is built using timetested libraries cURL for scraping and phpQuery for parsing HTML. Features include:
+An easy to implement professional web scraper for WordPress. This can be used to display realtime data from any websites directly into your posts, pages or sidebar. Use this to include realtime stock quotes, cricket or soccer scores or any other generic content. The scraper is built using timetested libraries cURL for scraping and phpQuery for parsing HTML. Features include:
 
 1. Configurable caching of scraped data. Cache timeout in minutes can be defined in minutes for every scrap.
-1. Custom Useragent header for your Scraper can be set for every scrap.
+1. Custom Useragent header for your scraper can be set for every scrap.
 1. Scrap output can be displayed thru custom template tag, shortcode in page, post and sidebar (text widget).
 1. Other configurable settings like cURL timeout, disabling shortcode etc. 
 
@@ -43,9 +43,9 @@ For use directly in posts, pages or sidebar (text widget): `[wpws url="" selecto
 Arguments (for theme tag / shortcode) are:
 
 * url / $url (Required): The complete URL which needs to be scraped.
-* selector / $selector (Required): The jQuery style selector string to select the content to be scraped. You can use elements, ids or classes for this. Further details about selector syntax in 'Selector Manual'
+* selector / $selector (Required): The jQuery style selector string to select the content to be scraped. You can use elements, ids or classes for this. Further details about selector syntax in [Selector Manual](http://wordpress.org/extend/plugins/wp-web-scrapper/other_notes/)
 * cache / $cache_timeout: Timeout interval of the cached data in minutes. If ignored, the default value specified in plugin settings will be used.
-* output / $output_format: Format of output rendered by the selector (text or html). Default being 'text'.
+* output / $output_format: Format of output rendered by the selector (text or html). Text format strips all html tags and returns only text content. Html format retirns the scrap as in with the html tags. If ignored, the default value 'text' will be used.
 * agent / $curl_agent: The USERAGENT header for cURL. This string acts as your footprint while scraping data. If ignored, the default value specified in plugin settings will be used.
 * timeout / $curl_timeout: Timeout interver for cURL function in seconds. Higer the better for scraping slow servers, but this will also increase your page load time. Ideally should not exceed 2. If ignored, the default value specified in plugin settings will be used.
 * error / $silent: Prints an error if cURL fails and this param is set as 1. If it is set as 0, it silently fails. This can be used for debugging. If ignored, the default value specified in plugin settings will be used.
