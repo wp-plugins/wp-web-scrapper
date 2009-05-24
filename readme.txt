@@ -1,22 +1,22 @@
-=== WP Web Scrapper ===
+=== WP Web Scraper ===
 Contributors: akshay_raje
 Tags: web scraping, curl, phpquery, realtime, post, sidebar, page
 Requires at least: 2.6
 Tested up to: 2.7.1
 Stable tag: 0.1
 
-An easy to implement web scrapper for WordPress. Display realtime data from any websites directly into your posts, pages or sidebar.
+An easy to implement web Scraper for WordPress. Display realtime data from any websites directly into your posts, pages or sidebar.
 
 == Description ==
 
-An easy to implement professional web scrapper for WordPress. This can be used to display realtime data from any websites directly into your posts, pages or sidebar. Use this to include realtime stock quotes, cricket or soccer scores or any other generic content. The scrapper is built using timetested libraries cURL for scrapping and phpQuery for parsing HTML. Features include:
+An easy to implement professional web Scraper for WordPress. This can be used to display realtime data from any websites directly into your posts, pages or sidebar. Use this to include realtime stock quotes, cricket or soccer scores or any other generic content. The Scraper is built using timetested libraries cURL for scrapping and phpQuery for parsing HTML. Features include:
 
 1. Configurable caching of scrapped data. Cache timeout in minutes can be defined in minutes for every scrap.
-1. Custom Useragent header for your scrapper can be set for every scrap.
+1. Custom Useragent header for your Scraper can be set for every scrap.
 1. Scrap output can be displayed thru custom template tag, shortcode in page, post and sidebar (text widget).
 1. Other configurable settings like cURL timeout, disabling shortcode etc. 
 
-For demos and support, visit the [WP Web Scrapper project page](http://webdlabs.com/projects/wp-web-scrapper/). Comments appriciated.
+For demos and support, visit the [WP Web Scraper project page](http://webdlabs.com/projects/wp-web-Scraper/). Comments appriciated.
 
 == Installation ==
 
@@ -34,7 +34,7 @@ Web scraping (or Web harvesting, Web data extraction) is a computer software tec
 
 = Sounds interesting, but how do I actually use it? =
 
-WP Web Scrapper plugin allows usage of a custom template tag (for template integration) or shortcode (for posts, pages or sidebar) for scrapping and displaying web content. Here's the actual usage detail:
+WP Web Scraper plugin allows usage of a custom template tag (for template integration) or shortcode (for posts, pages or sidebar) for scrapping and displaying web content. Here's the actual usage detail:
 
 For use within themes: `<?php echo wpws_get_content($url, $selector, $cache_timeout, $output_format, $curl_agent, $curl_timeout, $silent);?>`
 	
@@ -59,9 +59,9 @@ Yes you can. However, you should consider the copyrights of the owner. Its best 
 Here are some tips to help you optimise the usage:
 
 1. Keep the timeout as low as possible (lease is 1 second). Higher timeout might impact your page processing time if you are dealing with content on slow servers.
-1. If you plan use multiple scrappers in a single page, make sure you set the cache timeout to a larger period. Possibly as long as a day (i.e. 1440 minutes) or even more. This will cache content on your server and reduce cURLing.
+1. If you plan use multiple scrapers in a single page, make sure you set the cache timeout to a larger period. Possibly as long as a day (i.e. 1440 minutes) or even more. This will cache content on your server and reduce cURLing.
 1. Try to find content sources which fast loading pages. Also prefer pages low in size to optimize performance.
-1. Keep a close watch on your scrapper. If the website changes its page layout, your selector may fail to fetch the right content.
+1. Keep a close watch on your scraper. If the website changes its page layout, your selector may fail to fetch the right content.
 
 = What libraries are used? What are the minimum requirements apart from WordPress =
 
@@ -69,7 +69,7 @@ For scrapping, the plugin primarily uses [cURL](http://php.net/curl). This is a 
 
 == Selector Manual ==
 
-This page will specifically detail usage of selectors which is the heart of WP Web Scrapper. For parsing html, the plugin uses [phpQuery](http://code.google.com/p/phpquery/) and hence an elaborate documentation on selectors can be found at [phpQuery - Selector Documentation](http://code.google.com/p/phpquery/wiki/Selectors).
+This page will specifically detail usage of selectors which is the heart of WP Web Scraper. For parsing html, the plugin uses [phpQuery](http://code.google.com/p/phpquery/) and hence an elaborate documentation on selectors can be found at [phpQuery - Selector Documentation](http://code.google.com/p/phpquery/wiki/Selectors).
 
 Frankly, selectors are a standard way to query the DOM structure of the scrapped html document. phpQuery uses jQuery-like selectors and hence those familier with jQuery selectors will find themselves at home. To get you started, you can use elements, #ids, .classes to identify content. Here are a few examples:
 
