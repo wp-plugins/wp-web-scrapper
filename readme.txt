@@ -18,13 +18,15 @@ An easy to implement professional web scraper for WordPress. This can be used to
 
 For demos and support, visit the [WP Web Scraper project page](http://webdlabs.com/projects/wp-web-scraper/). Comments appriciated.
 
+**Get your scraper listed as an official example:** Using WP Web Scraper can be a bit tacky for first time users. Especially if you have not worked with jQuery style selectors before. To help such users, I intend to build a list of some working examples. If you have successfully implemented the scraper and dont mind sharing the magic, please drop the URL and selector string as a comment on the [WP Web Scraper project page](http://webdlabs.com/projects/wp-web-scraper/). I will list all such links in an 'examples' section.
+
 == Installation ==
 
 1. Upload folder `wp-web-scrapper` to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. Use the template tag `wpws_get_content($url, $selector)` in your template or the shortcode `[wpws url="" selector=""]` in your posts, pages and sidebar.
 
-Mode details on this on the FAQs page
+Mode details on this on the [FAQs](http://wordpress.org/extend/plugins/wp-web-scrapper/faq/) page
 
 == Frequently Asked Questions ==
 
@@ -52,16 +54,17 @@ Arguments (for theme tag / shortcode) are:
 
 = Wow! I can actually create a complete meshup using this! =
 
-Yes you can. However, you should consider the copyrights of the owner. Its best to at least attribute the content owner by a linkback or may be take a written permission. Apart from rights, cURLing in general is a very resource intensive task. It will exhaust a your bandwidth as well as that of the content owner. Best is not to overdo it. Ideally find single pages with lots of content so that you get your meshup with a single scrap.
+Yes you can. However, you should consider the copyright of the content owner. Its best to at least attribute the content owner by a linkback or better take a written permission. Apart from rights, cURLing in general is a very resource intensive task. It will exhaust the bandwidth of your host as well as the host of of the content owner. Best is not to overdo it. Ideally find single pages with enough content to create your your meshup.
 
 = Okie. Then whats the best way to optimise its usage? =
 
 Here are some tips to help you optimise the usage:
 
-1. Keep the timeout as low as possible (lease is 1 second). Higher timeout might impact your page processing time if you are dealing with content on slow servers.
+1. Keep the timeout as low as possible (least is 1 second). Higher timeout might impact your page processing time if you are dealing with content on slow servers.
 1. If you plan use multiple scrapers in a single page, make sure you set the cache timeout to a larger period. Possibly as long as a day (i.e. 1440 minutes) or even more. This will cache content on your server and reduce cURLing.
-1. Try to find content sources which fast loading pages. Also prefer pages low in size to optimize performance.
+1. Use fast loading pages as your content source. Also prefer pages low in size to optimize performance.
 1. Keep a close watch on your scraper. If the website changes its page layout, your selector may fail to fetch the right content.
+1. If you are scraping a lot, keep a watch on your cache size too. Clear cache occasionaly.
 
 = What libraries are used? What are the minimum requirements apart from WordPress =
 
