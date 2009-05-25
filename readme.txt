@@ -3,6 +3,7 @@ Contributors: akshay_raje
 Tags: web scraping, curl, phpquery, realtime, post, sidebar, page
 Requires at least: 2.6
 Tested up to: 2.7.1
+Stable tag: 0.2
 
 An easy to implement web scraper for WordPress. Display realtime data from any websites directly into your posts, pages or sidebar.
 
