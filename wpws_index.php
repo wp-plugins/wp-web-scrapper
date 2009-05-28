@@ -97,15 +97,18 @@ function wpws_curl($url, $agent, $timeout, $return = true) {
 	return $curl;	
 }
 
-function wpws_get_content($url = '', $selector = '', $output_format = '', $cache_timeout = '', $curl_agent = '', $curl_timeout = '', $error = '') {
+function wpws_get_content($url = '', $selector = '', $clear = '', $output_format = '', $cache_timeout = '', $curl_agent = '', $curl_timeout = '', $curl_error = '') {
+	
 	if($cache_timeout == '') $cache_timeout = get_option('wpws_cache_timeout');
 	if($output_format == '') $output_format = 'text';
 	if($curl_agent == '') $curl_agent = get_option('wpws_curl_agent');
 	if($curl_timeout == '') $curl_timeout = get_option('wpws_curl_timeout');
-	if($error == '') $error = get_option('wpws_curl_error');
+	if($curl_error == '') $ecurl_rror = get_option('wpws_curl_error');
+	
 	if($url == '' || $selector == '') {
-		if($error == 0) {return false;} 
-		elseif($error == 1) {return 'Required params missing';}		
+		if($curl_error == '1') {return 'Required params missing';}
+		elseif($curl_error == '0') {return false;} 
+		else {return $curl_error;}		
 	} else {
 		$cache_file = 'wp-content/plugins/wp-web-scrapper/cache/'.urlencode($url).urlencode($selector);
 		$cache_file_status = file_exists($cache_file);
@@ -125,19 +128,21 @@ function wpws_get_content($url = '', $selector = '', $output_format = '', $cache
 				phpQuery::selectDocument($doc);	
 				if($output_format == 'text') {$output = pq($selector)->text();}
 				elseif($output_format == 'html') {$output = pq($selector)->html();}
+				if($clear != '') {$output = preg_replace($clear, '', $output);}
 				file_put_contents($cache_file, $output.$timestamp_id.time());
 				return $output;
 			} else {
-				if($error == 0) {return false;} 
-				elseif($error == 1) {return $scrap[1];}
+				if($curl_error == '1') {return $scrap[1];}
+				elseif($curl_error == '0') {return false;} 
+				else {return $curl_error;}
 			}
 		}
 	}
 }
 
 function wpws_shortcode($atts) {
-	extract(shortcode_atts(array('url' => '', 'selector' => '', 'output' => 'text', 'cache' => get_option('wpws_cache_timeout'), 'agent' => get_option('wpws_curl_agent'), 'timeout' => get_option('wpws_curl_timeout'), 'error' => get_option('wpws_curl_error')), $atts));
-	return wpws_get_content($url, $selector, $output, $cache, $agent, $timeout, $error);
+	extract(shortcode_atts(array('url' => '', 'selector' => '', 'clear' => '', 'output' => 'text', 'cache' => get_option('wpws_cache_timeout'), 'agent' => get_option('wpws_curl_agent'), 'timeout' => get_option('wpws_curl_timeout'), 'error' => get_option('wpws_curl_error')), $atts));
+	return wpws_get_content($url, $selector, $clear, $output, $cache, $agent, $timeout, $error);
 }
 
 function wpws_settings_page(){
@@ -160,7 +165,7 @@ $size_array = wpws_getDirectorySize($cache_root);
 <script language="JavaScript">
 var popUpWin=0;
 function clear_cache(){
-	jQuery('#wpws_cache_status').load('../wp-content/plugins/wp-web-scrapper/wpws_functions.php', {count: <?php echo $size_array['count'];?>}, function(){
+	jQuery('#wpws_cache_status').load('../wp-content/plugins/wp-web-scrapper/wpws_cache_clear.php', {count: <?php echo $size_array['count'];?>}, function(){
    		jQuery('#wpws_cache_status').addClass('fade');
 	});
 }

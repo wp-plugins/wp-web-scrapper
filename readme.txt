@@ -3,7 +3,7 @@ Contributors: akshay_raje
 Tags: web scraping, curl, phpquery, realtime, post, sidebar, page
 Requires at least: 2.6
 Tested up to: 2.7.1
-Stable tag: 0.2
+Stable tag: 0.3
 
 An easy to implement web scraper for WordPress. Display realtime data from any websites directly into your posts, pages or sidebar.
 
@@ -38,19 +38,20 @@ Web scraping (or Web harvesting, Web data extraction) is a computer software tec
 
 WP Web Scraper plugin allows usage of a custom template tag (for template integration) or shortcode (for posts, pages or sidebar) for scraping and displaying web content. Here's the actual usage detail:
 
-For use within themes: `<?php echo wpws_get_content($url, $selector, $cache_timeout, $output_format, $curl_agent, $curl_timeout, $silent);?>`
+For use within themes: `<?php echo wpws_get_content($url, $selector, $clear, $cache_timeout, $output_format, $curl_agent, $curl_timeout, $error);?>`
 	
-For use directly in posts, pages or sidebar (text widget): `[wpws url="" selector="" cache="" output="" agent="" timeout="" error=""]`
+For use directly in posts, pages or sidebar (text widget): `[wpws url="" selector="" clear ="" cache="" output="" agent="" timeout="" error=""]`
 
 Arguments (for theme tag / shortcode) are:
 
 * url / $url (Required): The complete URL which needs to be scraped.
 * selector / $selector (Required): The jQuery style selector string to select the content to be scraped. You can use elements, ids or classes for this. Further details about selector syntax in [Selector Manual](http://wordpress.org/extend/plugins/wp-web-scrapper/other_notes/)
+* clear / $clear: Regex pattern to be cleared before the scraper flushes its output. For example `/[aeiou]/` will clear all single lowercase vowel from the output. This [Regex reference](http://gnosis.cx/publish/programming/regular_expressions.html) will be helpful.
 * cache / $cache_timeout: Timeout interval of the cached data in minutes. If ignored, the default value specified in plugin settings will be used.
 * output / $output_format: Format of output rendered by the selector (text or html). Text format strips all html tags and returns only text content. Html format retirns the scrap as in with the html tags. If ignored, the default value 'text' will be used.
 * agent / $curl_agent: The USERAGENT header for cURL. This string acts as your footprint while scraping data. If ignored, the default value specified in plugin settings will be used.
 * timeout / $curl_timeout: Timeout interver for cURL function in seconds. Higer the better for scraping slow servers, but this will also increase your page load time. Ideally should not exceed 2. If ignored, the default value specified in plugin settings will be used.
-* error / $silent: Prints an error if cURL fails and this param is set as 1. If it is set as 0, it silently fails. This can be used for debugging. If ignored, the default value specified in plugin settings will be used.
+* error / $error: Prints an error if cURL fails and if this param is set as 1. If it is set as 0, it silently fails. Setting it to any other string will output the string itself. For instance `error="screwed!"` will output 'screwed!' if something goes wrong in the scrap. This can be used for debugging. If ignored, the default value specified in plugin settings will be used.
 
 = Wow! I can actually create a complete meshup using this! =
 
@@ -86,3 +87,8 @@ Frankly, selectors are a standard way to query the DOM structure of the scraped 
 
 1. Bug fix: Display of WP Web Scraper options page.
 1. Bug fix: Calculation of files and size of cache.
+
+**Version 0.3**
+
+1. Enhancement: Added clear parameter to the wpws shortcode and tag. Its a regex pattern to be cleared before the scraper flushes its output.
+1. Enhancement: Better error handling. Errors can now display actual error, fail silently or display your custom error.
