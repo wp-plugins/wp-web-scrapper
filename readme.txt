@@ -14,7 +14,9 @@ An easy to implement professional web scraper for WordPress. This can be used to
 1. Configurable caching of scraped data. Cache timeout in minutes can be defined in minutes for every scrap.
 1. Custom Useragent header for your scraper can be set for every scrap.
 1. Scrap output can be displayed thru custom template tag, shortcode in page, post and sidebar (text widget).
-1. Other configurable settings like cURL timeout, disabling shortcode etc. 
+1. Other configurable settings like cURL timeout, disabling shortcode etc.
+1. Error handling - Silent fail, Error display or Custom error messages.
+1. Option to clear a certain regex pattern from the scrap before output.
 
 For demos and support, visit the [WP Web Scraper project page](http://webdlabs.com/projects/wp-web-scraper/). Comments appriciated.
 
