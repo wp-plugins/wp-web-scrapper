@@ -3,7 +3,7 @@ Contributors: akshay_raje
 Tags: web scraping, curl, phpquery, realtime, post, sidebar, page
 Requires at least: 2.6
 Tested up to: 2.7.1
-Stable tag: 0.3
+Stable tag: 0.4
 
 An easy to implement web scraper for WordPress. Display realtime data from any websites directly into your posts, pages or sidebar.
 
@@ -15,7 +15,7 @@ An easy to implement professional web scraper for WordPress. This can be used to
 1. Custom Useragent header for your scraper can be set for every scrap.
 1. Scrap output can be displayed thru custom template tag, shortcode in page, post and sidebar (text widget).
 1. Other configurable settings like cURL timeout, disabling shortcode etc.
-1. Error handling - Silent fail, Error display or Custom error messages.
+1. Error handling - Silent fail, standard error, custom error message or display expired cache.
 1. Option to clear a certain regex pattern from the scrap before output.
 
 For demos and support, visit the [WP Web Scraper project page](http://webdlabs.com/projects/wp-web-scraper/). Comments appriciated.
@@ -53,7 +53,7 @@ Arguments (for theme tag / shortcode) are:
 * output / $output_format: Format of output rendered by the selector (text or html). Text format strips all html tags and returns only text content. Html format retirns the scrap as in with the html tags. If ignored, the default value 'text' will be used.
 * agent / $curl_agent: The USERAGENT header for cURL. This string acts as your footprint while scraping data. If ignored, the default value specified in plugin settings will be used.
 * timeout / $curl_timeout: Timeout interver for cURL function in seconds. Higer the better for scraping slow servers, but this will also increase your page load time. Ideally should not exceed 2. If ignored, the default value specified in plugin settings will be used.
-* error / $error: Prints an error if cURL fails and if this param is set as 1. If it is set as 0, it silently fails. Setting it to any other string will output the string itself. For instance `error="screwed!"` will output 'screwed!' if something goes wrong in the scrap. This can be used for debugging. If ignored, the default value specified in plugin settings will be used.
+* error / $error: Prints an error if cURL fails and if this param is set as 1. If it is set as 0, it silently fails. If set to 'cache' it will display data from expired cache (if any). Setting it to any other string will output the string itself. For instance `error="screwed!"` will output 'screwed!' if something goes wrong in the scrap. If ignored, the default value specified in plugin settings will be used.
 
 = Wow! I can actually create a complete meshup using this! =
 
@@ -77,7 +77,7 @@ For scraping, the plugin primarily uses [cURL](http://php.net/curl). This is a v
 
 This page will specifically detail usage of selectors which is the heart of WP Web Scraper. For parsing html, the plugin uses [phpQuery](http://code.google.com/p/phpquery/) and hence an elaborate documentation on selectors can be found at [phpQuery - Selector Documentation](http://code.google.com/p/phpquery/wiki/Selectors).
 
-Frankly, selectors are a standard way to query the DOM structure of the scraped html document. phpQuery uses jQuery-like selectors and hence those familier with jQuery selectors will find themselves at home. To get you started, you can use elements, #ids, .classes to identify content. Here are a few examples:
+Frankly, selectors are a standard way to query the DOM structure of the scraped html document. phpQuery uses CSS selectors (like jQuery) and hence those familier with jQuery selectors will find themselves at home. To get you started, you can use elements, #ids, .classes to identify content. Here are a few examples:
 
 * 'td .specialhead:eq(0)' will get you content within the first `<td>` on the page with a class 'specialhead'.
 * 'table:eq(3) td:eq(3)' will get you content within the fourth `<td>` of the fourth `<table>` within the page.
@@ -94,3 +94,8 @@ Frankly, selectors are a standard way to query the DOM structure of the scraped 
 
 1. Enhancement: Added clear parameter to the wpws shortcode and tag. Its a regex pattern to be cleared before the scraper flushes its output.
 1. Enhancement: Better error handling. Errors can now display actual error, fail silently or display your custom error.
+
+**Version 0.4**
+
+1. Bug fix: Multiple scraps from a single page now are cached as a single file. No multiple scraping for this.
+1. Enhancement: Added an option to display expired cache if scrap fails. Will display stale data instead of no data.

@@ -4,7 +4,7 @@ Plugin Name: WP Web Scrapper
 Plugin URI: http://webdlabs.com/projects/wp-web-scraper/
 Description: An easy to implement web scraper for WordPress. Display realtime data from any websites directly into your posts, pages or sidebar.
 Author: Akshay Raje
-Version: 0.3
+Version: 0.4
 Author URI: http://webdlabs.com
 
 */
@@ -119,25 +119,33 @@ function wpws_get_content($url = '', $selector = '', $clear = '', $output_format
 			$cache_status = (time() - $cache_file_ctime) < ($cache_timeout * 60);
 		} else {$cache_status = false;}
 		if($cache_status) {
-			return $wpws_timestamp[0];
+			return wpws_parse_byselector($wpws_timestamp[0], $selector, $clear, $output_format);		
 		} else {
 			$scrap = wpws_curl(html_entity_decode($url), $curl_agent, $curl_timeout);
 			if($scrap[0]) {
-				require_once('phpQuery.php');
-				$doc = phpQuery::newDocumentHTML($scrap[1]);
-				phpQuery::selectDocument($doc);	
-				if($output_format == 'text') {$output = pq($selector)->text();}
-				elseif($output_format == 'html') {$output = pq($selector)->html();}
-				if($clear != '') {$output = preg_replace($clear, '', $output);}
-				file_put_contents($cache_file, $output.$timestamp_id.time());
-				return $output;
+				file_put_contents($cache_file, $scrap[1].$timestamp_id.time());
+				return wpws_parse_byselector($scrap[1], $selector, $clear, $output_format);
 			} else {
 				if($curl_error == '1') {return $scrap[1];}
 				elseif($curl_error == '0') {return false;} 
+				elseif($curl_error == 'cache' && $cache_file_status) {
+					$wpws_timestamp = explode($timestamp_id, file_get_contents($cache_file));
+					return wpws_parse_byselector($wpws_timestamp[0], $selector, $clear, $output_format);	
+				} 
 				else {return $curl_error;}
 			}
 		}
 	}
+}
+
+function wpws_parse_byselector($scrap, $selector, $clear, $output_format) {
+	require_once('phpQuery.php');
+	$doc = phpQuery::newDocumentHTML($scrap);
+	phpQuery::selectDocument($doc);	
+	if($output_format == 'text') {$output = pq($selector)->text();}
+	elseif($output_format == 'html') {$output = pq($selector)->html();}
+	if($clear != '') {$output = preg_replace($clear, '', $output);}
+	return $output;	
 }
 
 function wpws_shortcode($atts) {
@@ -179,7 +187,7 @@ function clear_cache(){
 	<?php wp_nonce_field('update-options'); ?>
 		<table class="form-table">
 		<tr valign="top">
-			<th scope="row"><label for="blogname"><?php _e('WP Web Scrapper Shortcodes') ?></label></th>
+			<th scope="row"><label><?php _e('WP Web Scrapper Shortcodes') ?></label></th>
 			<td><fieldset>
 			<label for="wpws_sc_posts">
 			<input name="wpws_sc_posts" type="checkbox" id="wpws_sc_posts" value="1" <?php checked('1', get_option('wpws_sc_posts')); ?> />
@@ -191,36 +199,40 @@ function clear_cache(){
 			</fieldset></td>
 		</tr>
 		<tr valign="top">
-			<th scope="row"><label for="blogname"><?php _e('Display error if cURL fails') ?></label></th>
+			<th scope="row"><label><?php _e('cURL error handlng options') ?></label></th>
 			<td>
-			<label for="wpws_curl_error">
-			<input name="wpws_curl_error" type="checkbox" id="wpws_curl_error" value="1" <?php checked('1', get_option('wpws_curl_error')); ?> />
-			<?php _e('Default way to handle cURL failure. Can be used while debugging.') ?></label>
+			<select name="wpws_curl_error" id="wpws_curl_error" style="width:325px" class="regular-text code" >
+				<option value="0"<?php selected('0', get_option('wpws_curl_error')); ?>>Fail silently (diplays blank string on failure)</option>
+				<option value="1"<?php selected('1', get_option('wpws_curl_error')); ?>>Display error (can be used while debuging)</option>
+				<option value="cache"<?php selected('cache', get_option('wpws_curl_error')); ?>>Force display cache (even if expired)</option>
+			</select>
+			<!--<input name="wpws_curl_error" type="checkbox" id="wpws_curl_error" value="1" <?php checked('1', get_option('wpws_curl_error')); ?> />-->
+			<span class="setting-description"><?php _e('Default cURL error handling. Fail silently, display error or display expired cache.') ?></span>
 			</td>
 		</tr>		
 		<tr valign="top">
-			<th scope="row"><label for="blogname"><?php _e('cURL useragent string') ?></label></th>
+			<th scope="row"><label><?php _e('cURL useragent string') ?></label></th>
 			<td>
 			<input name="wpws_curl_agent" type="text" id="wpws_curl_agent" value="<?php form_option('wpws_curl_agent'); ?>" class="regular-text code" />
 			<span class="setting-description"><?php _e('Default useragent header to identify yourself when crawling sites. Read more.') ?></span>
 			</td>
 		</tr>
 		<tr valign="top">
-			<th scope="row"><label for="blogname"><?php _e('cURL timeout (in seconds)') ?></label></th>
+			<th scope="row"><label><?php _e('cURL timeout (in seconds)') ?></label></th>
 			<td>
 			<input name="wpws_curl_timeout" type="text" id="wpws_curl_timeout" value="<?php form_option('wpws_curl_timeout'); ?>" class="small-text code" />
 			<span class="setting-description"><?php _e('Default timeout interval in seconds for cURL. Larger interval might slow down your page.') ?></span>
 			</td>
 		</tr>
 		<tr valign="top">
-			<th scope="row"><label for="blogname"><?php _e('Cache timeout (in minutes)') ?></label></th>
+			<th scope="row"><label><?php _e('Cache timeout (in minutes)') ?></label></th>
 			<td>
 			<input name="wpws_cache_timeout" type="text" id="wpws_cache_timeout" value="<?php form_option('wpws_cache_timeout'); ?>" class="small-text code"/>
 			<span class="setting-description"><?php _e('Default timeout in minutes for cached webpages.') ?></span>
 			</td>
 		</tr>
 		<tr valign="top">
-			<th scope="row"><label for="blogname"><?php _e('Cache management') ?></label></th>
+			<th scope="row"><label><?php _e('Cache management') ?></label></th>
 			<td>
 			<input type="button" name="wpws_cache_clear" id="wpws_cache_clear" value="<?php _e('Clear Cache') ?>" class="button-secondary" onclick="clear_cache(); return false;"/><br />
 			<span class="setting-description" id="wpws_cache_status"><?php _e('Your cache currently has '.($size_array['count'] - 3).' files occuping '.wpws_sizeFormat($size_array['size'] - 296).' of space.') ?></span>
