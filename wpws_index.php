@@ -66,10 +66,10 @@ function wpws_curl($url, $agent, $timeout, $return = true) {
 			ini_set('default_socket_timeout', $timeout * 60);
 			$html = file_get_contents($url);
 			if ($html === false) {
-				$curl[0] = 'Error';
+				$curl[0] = false;
 				$curl[1] = 'Could not initialize cURL and file_get_contents()';			
 			} else {
-				$curl[0] = 'Success';
+				$curl[0] = true;
 				$curl[1] = $html;			
 			}
 		}
@@ -103,7 +103,7 @@ function wpws_get_content($url = '', $selector = '', $clear = '', $output_format
 	if($output_format == '') $output_format = 'text';
 	if($curl_agent == '') $curl_agent = get_option('wpws_curl_agent');
 	if($curl_timeout == '') $curl_timeout = get_option('wpws_curl_timeout');
-	if($curl_error == '') $ecurl_rror = get_option('wpws_curl_error');
+	if($curl_error == '') $curl_error = get_option('wpws_curl_error');
 	
 	if($url == '' || $selector == '') {
 		if($curl_error == '1') {return 'Required params missing';}
