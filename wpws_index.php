@@ -180,7 +180,7 @@ function clear_cache(){
 </script>
 <div class="wrap">
 
-	<?php screen_icon(); ?>
+	<?php if(function_exists(screen_icon)) {screen_icon();} ?>
 	<h2><?php _e('WP Web Scrapper Settings'); ?></h2>
 	
 	<form method="post" action="options.php" id="wpws_options">
