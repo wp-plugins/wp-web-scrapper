@@ -110,7 +110,7 @@ function wpws_get_content($url = '', $selector = '', $clear = '', $output_format
 		elseif($curl_error == '0') {return false;} 
 		else {return $curl_error;}		
 	} else {
-		$cache_file = 'wp-content/plugins/wp-web-scrapper/cache/'.urlencode($url).urlencode($selector);
+		$cache_file = 'wp-content/plugins/wp-web-scrapper/cache/'.urlencode($url);
 		$cache_file_status = file_exists($cache_file);
 		$timestamp_id = '<!--wpws_timestamp-->';
 		if($cache_file_status) {
