@@ -66,7 +66,7 @@ Arguments accepted are:
 
 * market (Required): Stock market name. Currently supports only NSE and NASDAQ. (More coming soon)
 * symbol (Required): Symbol for which the data is to be scraped. Make sure you specify the right sumbol code related to the market.
-* datatype: What specific datatype you intend to scrap. Options available are: 'name', '52_week_high', '52_week_low', 'open', 'high', 'low', 'last', 'previous_close', 'change_amount', 'change_percent', 'average', 'traded_quantity' and 'turnover'. If ignored, 'last' outputted.
+* datatype: What specific datatype you intend to scrap. Options available are: `name`, `52_week_high`, `52_week_low`, `open`, `high`, `low`, `last`, `previous_close`, `change_amount`, `change_percent`, `average`, `traded_quantity` and `turnover`. If ignored, `last` outputted.
 * You may also use all other arguments taken by the shortcode `[wpws]` like clear, cache, output, agent, timeout and error to finetune / optimize your scrap.
 
 For example,
