@@ -4,19 +4,19 @@ if(get_option('wpws_sc_posts') == 1) add_shortcode('wpws_market_data', 'wpws_mar
 
 function wpws_market_data_shortcode($atts) {
 	extract(shortcode_atts(array('market' => '', 'symbol' => '', 'datatype' => '', 'cache' => 1, 'agent' => get_option('wpws_curl_agent'), 'timeout' => 2, 'error' => 'cache'), $atts));
-	/*if($market == '' || $symbol == '') {
+	if($market == '' || $symbol == '') {
 		if($curl_error == '1') {return 'Required params missing';}
 		elseif($curl_error == '0') {return false;} 
 		else {return $curl_error;}	
 	} else {
-		return 'wpws_market_data_shortcode';*/
+		return 'wpws_market_data_shortcode';
 		if($datatype == '') {$datatype = 'last';} 
 		$url = wpws_market_data_source($market, $symbol, $datatype, 'url');
 		$selector = wpws_market_data_source($market, $symbol, $datatype, 'selector');
 		$clear = '/\$| \(Nasdaq\)/';
 		$output = 'text';
 		return wpws_get_content($url, $selector, $clear, $output, $cache, $agent, $timeout, $error);
-	/*}*/
+	}
 }
 
 function wpws_market_data_source($market, $symbol, $datatype, $return) {
