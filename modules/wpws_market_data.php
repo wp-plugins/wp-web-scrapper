@@ -9,7 +9,6 @@ function wpws_market_data_shortcode($atts) {
 		elseif($curl_error == '0') {return false;} 
 		else {return $curl_error;}	
 	} else {
-		return 'wpws_market_data_shortcode';
 		if($datatype == '') {$datatype = 'last';} 
 		$url = wpws_market_data_source($market, $symbol, $datatype, 'url');
 		$selector = wpws_market_data_source($market, $symbol, $datatype, 'selector');

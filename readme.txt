@@ -3,7 +3,7 @@ Contributors: akshay_raje
 Tags: web scraping, curl, phpquery, realtime, post, sidebar, page, stock market
 Requires at least: 2.6
 Tested up to: 2.7.1
-Stable tag: 0.5
+Stable tag: 0.6
 
 An easy to implement web scraper for WordPress. Display realtime data from any websites directly into your posts, pages or sidebar.
 
@@ -123,3 +123,7 @@ Frankly, selectors are a standard way to query the DOM structure of the scraped 
 
 1. Enhancement: Introduced a module architecture to develop custom 'mods' or plugin extensions for common scraping tasks.
 1. Enhancement: Added the first mod 'wpws_market_data' with support for NSE and NASDAQ exchanges.
+
+**Version 0.6**
+
+1. Bug fix: wpws_market_data market returned a debug text. Now fixed.
