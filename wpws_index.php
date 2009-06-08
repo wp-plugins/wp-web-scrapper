@@ -4,7 +4,7 @@ Plugin Name: WP Web Scrapper
 Plugin URI: http://webdlabs.com/projects/wp-web-scraper/
 Description: An easy to implement web scraper for WordPress. Display realtime data from any websites directly into your posts, pages or sidebar.
 Author: Akshay Raje
-Version: 0.4
+Version: 0.5
 Author URI: http://webdlabs.com
 
 */
@@ -13,6 +13,10 @@ if(get_option('wpws_sc_posts') == 1) add_shortcode('wpws', 'wpws_shortcode');
 if(get_option('wpws_sc_sidebar') == 1) add_filter('widget_text', 'do_shortcode');
 add_action('admin_menu', 'wpws_settings_page');
 register_activation_hook( __FILE__, 'wpws_on_activation');
+
+foreach (glob(dirname(__FILE__)."/modules/*.php") as $mod) {
+    require_once($mod);
+}
 
 function wpws_getDirectorySize($path) {
 	$totalsize = 0;
@@ -103,14 +107,14 @@ function wpws_get_content($url = '', $selector = '', $clear = '', $output_format
 	if($output_format == '') $output_format = 'text';
 	if($curl_agent == '') $curl_agent = get_option('wpws_curl_agent');
 	if($curl_timeout == '') $curl_timeout = get_option('wpws_curl_timeout');
-	if($curl_error == '') $curl_error = get_option('wpws_curl_error');
+	if($curl_error == '') $curl_error = get_option('wpws_curl_error');	
 	
 	if($url == '' || $selector == '') {
 		if($curl_error == '1') {return 'Required params missing';}
 		elseif($curl_error == '0') {return false;} 
 		else {return $curl_error;}		
 	} else {
-		$cache_file = 'wp-content/plugins/wp-web-scrapper/cache/'.urlencode($url);
+		$cache_file = dirname(__FILE__).'/cache/'.urlencode($url);
 		$cache_file_status = file_exists($cache_file);
 		$timestamp_id = '<!--wpws_timestamp-->';
 		if($cache_file_status) {

@@ -1,9 +1,9 @@
 === WP Web Scraper ===
 Contributors: akshay_raje
-Tags: web scraping, curl, phpquery, realtime, post, sidebar, page
+Tags: web scraping, curl, phpquery, realtime, post, sidebar, page, stock market
 Requires at least: 2.6
 Tested up to: 2.7.1
-Stable tag: 0.4
+Stable tag: 0.5
 
 An easy to implement web scraper for WordPress. Display realtime data from any websites directly into your posts, pages or sidebar.
 
@@ -17,6 +17,7 @@ An easy to implement professional web scraper for WordPress. This can be used to
 1. Other configurable settings like cURL timeout, disabling shortcode etc.
 1. Error handling - Silent fail, standard error, custom error message or display expired cache.
 1. Option to clear a certain regex pattern from the scrap before output.
+1. Built-in module for stock market data (NSE and NASDAQ supported currently), other markets to follow. For example - `[wpws_market_data market="NSE" symbol="ACC" datatype="last"]` will output the latest price of ACC on NSE. Refer [FAQs](http://wordpress.org/extend/plugins/wp-web-scrapper/faq/) for more details of this shortcode API.
 
 For demos and support, visit the [WP Web Scraper project page](http://webdlabs.com/projects/wp-web-scraper/). Comments appriciated.
 
@@ -42,7 +43,7 @@ WP Web Scraper plugin allows usage of a custom template tag (for template integr
 
 For use within themes: `<?php echo wpws_get_content($url, $selector, $clear, $cache_timeout, $output_format, $curl_agent, $curl_timeout, $error);?>`
 	
-For use directly in posts, pages or sidebar (text widget): `[wpws url="" selector="" clear ="" cache="" output="" agent="" timeout="" error=""]`
+For use directly in posts, pages or sidebar (text widget): `[wpws url="" selector="" clear="" cache="" output="" agent="" timeout="" error=""]`
 
 Arguments (for theme tag / shortcode) are:
 
@@ -54,6 +55,24 @@ Arguments (for theme tag / shortcode) are:
 * agent / $curl_agent: The USERAGENT header for cURL. This string acts as your footprint while scraping data. If ignored, the default value specified in plugin settings will be used.
 * timeout / $curl_timeout: Timeout interver for cURL function in seconds. Higer the better for scraping slow servers, but this will also increase your page load time. Ideally should not exceed 2. If ignored, the default value specified in plugin settings will be used.
 * error / $error: Prints an error if cURL fails and if this param is set as 1. If it is set as 0, it silently fails. If set to 'cache' it will display data from expired cache (if any). Setting it to any other string will output the string itself. For instance `error="screwed!"` will output 'screwed!' if something goes wrong in the scrap. If ignored, the default value specified in plugin settings will be used.
+
+= That sounds complex. Any simple shortcodes? =
+
+Yes, WP Web Scraper now also supports simple short codes for standard scraping tasks. Currently it only supports stock market data shortcode, however I am planning to also bring in stuff like weather, sports etc too.
+
+Here is a usage example of the stock market data shortcode: `[wpws_market_data market="" symbol="" datatype=""]`
+
+Arguments accepted are:
+
+* market (Required): Stock market name. Currently supports only NSE and NASDAQ. (More coming soon)
+* symbol (Required): Symbol for which the data is to be scraped. Make sure you specify the right sumbol code related to the market.
+* datatype: What specific datatype you intend to scrap. Options available are: name, 52_week_high, 52_week_low, open, high, low, last, previous_close, change_amount, change_percent, average, traded_quantity and turnover. If ignored, 'last' outputted.
+* You may also use all other arguments taken by the shortcode `[wpws]` like clear, cache, output, agent, timeout and error to finetune / optimize your scrap.
+
+For example,
+
+* `[wpws_market_data market="NSE" symbol="ACC" datatype="last"]` will output the latest price of ACC on NSE.
+* `[wpws_market_data market="NASDAQ" symbol="CSCO" datatype="high"]` will output the intraday high of Cisco on NASDAQ.
 
 = Wow! I can actually create a complete meshup using this! =
 
@@ -99,3 +118,8 @@ Frankly, selectors are a standard way to query the DOM structure of the scraped 
 
 1. Bug fix: Multiple scraps from a single page now are cached as a single file. No multiple scraping for this.
 1. Enhancement: Added an option to display expired cache if scrap fails. Will display stale data instead of no data.
+
+**Version 0.5**
+
+1. Enhancement: Introduced a module architecture to develop custom 'mods' or plugin extensions for common scraping tasks.
+1. Enhancement: Added the first mod (wpws_market_data) with support for NSE and NASDAQ exchanges.
