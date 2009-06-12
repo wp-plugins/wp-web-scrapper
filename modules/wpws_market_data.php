@@ -12,7 +12,7 @@ function wpws_market_data_shortcode($atts) {
 		if($datatype == '') {$datatype = 'last';} 
 		$url = wpws_market_data_source($market, $symbol, $datatype, 'url');
 		$selector = wpws_market_data_source($market, $symbol, $datatype, 'selector');
-		$clear = '/\$| \(Nasdaq\)/';
+		$clear = '/\$| \(Nasdaq\)|Rs/';
 		$output = 'text';
 		return wpws_get_content($url, $selector, $clear, $output, $cache, $agent, $timeout, $error);
 	}
@@ -54,6 +54,23 @@ function wpws_market_data_source($market, $symbol, $datatype, $return) {
 	$wpws_md_array['nasdaq']['average'] = '';
 	$wpws_md_array['nasdaq']['traded_quantity'] = '';
 	$wpws_md_array['nasdaq']['turnover'] = '';
+	
+	/* BSE market data definition array */
+	$wpws_md_array['bse']['url'] = 'http://www.reuters.com/finance/stocks/overview?symbol='.strtoupper($symbol).'.BO';
+	$wpws_md_array['bse']['name'] = '.quoteHeader';
+	$wpws_md_array['bse']['timestamp'] = '';
+	$wpws_md_array['bse']['52_week_high'] = '#quoteDetail .sectionHalf div:eq(4) span';
+	$wpws_md_array['bse']['52_week_low'] = '#quoteDetail .sectionHalf div:eq(5) span';
+	$wpws_md_array['bse']['open'] = '#quoteDetail .sectionHalf div:eq(1) span';
+	$wpws_md_array['bse']['high'] = '#quoteDetail .sectionHalf div:eq(2) span';
+	$wpws_md_array['bse']['low'] = '#quoteDetail .sectionHalf div:eq(3) span';
+	$wpws_md_array['bse']['last'] = '#priceQuote .value .valueContent';
+	$wpws_md_array['bse']['previous_close'] = '#quoteDetail .sectionHalf div:eq(0) span';
+	$wpws_md_array['bse']['change_amount'] = '#priceChange .value .valueContent';
+	$wpws_md_array['bse']['change_percent'] = '#percentChange .value .valueContent';
+	$wpws_md_array['bse']['average'] = '';
+	$wpws_md_array['bse']['traded_quantity'] = '';
+	$wpws_md_array['bse']['turnover'] = '';	
 	
 	/* More definition arrays to be defined here */
 	

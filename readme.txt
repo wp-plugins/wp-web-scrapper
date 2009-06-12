@@ -2,8 +2,8 @@
 Contributors: akshay_raje
 Tags: web scraping, curl, phpquery, realtime, post, sidebar, page, stock market
 Requires at least: 2.6
-Tested up to: 2.7.1
-Stable tag: 0.6
+Tested up to: 2.8
+Stable tag: 0.7
 
 An easy to implement web scraper for WordPress. Display realtime data from any websites directly into your posts, pages or sidebar.
 
@@ -17,7 +17,7 @@ An easy to implement professional web scraper for WordPress. This can be used to
 1. Other configurable settings like cURL timeout, disabling shortcode etc.
 1. Error handling - Silent fail, standard error, custom error message or display expired cache.
 1. Option to clear a certain regex pattern from the scrap before output.
-1. Built-in module for stock market data (NSE and NASDAQ supported currently), other markets to follow. For example - `[wpws_market_data market="NSE" symbol="ACC" datatype="last"]` will output the latest price of ACC on NSE. Refer [FAQs](http://wordpress.org/extend/plugins/wp-web-scrapper/faq/) for more details of this shortcode API.
+1. Built-in module for stock market data (NSE, BSE and NASDAQ supported currently), other markets to follow. For example - `[wpws_market_data market="NSE" symbol="ACC" datatype="last"]` will output the latest price of ACC on NSE. Refer [FAQs](http://wordpress.org/extend/plugins/wp-web-scrapper/faq/) for more details of this shortcode API.
 
 For demos and support, visit the [WP Web Scraper project page](http://webdlabs.com/projects/wp-web-scraper/). Comments appriciated.
 
@@ -64,7 +64,7 @@ Here is a usage example of the stock market data shortcode: `[wpws_market_data m
 
 Arguments accepted are:
 
-* market (Required): Stock market name. Currently supports only NSE and NASDAQ. (More coming soon)
+* market (Required): Stock market name. Currently supports only NSE, BSE and NASDAQ. (More coming soon)
 * symbol (Required): Symbol for which the data is to be scraped. Make sure you specify the right sumbol code related to the market.
 * datatype: What specific datatype you intend to scrap. Options available are: `name`, `52_week_high`, `52_week_low`, `open`, `high`, `low`, `last`, `previous_close`, `change_amount`, `change_percent`, `average`, `traded_quantity` and `turnover`. If ignored, `last` outputted.
 * You may also use all other arguments taken by the shortcode `[wpws]` like clear, cache, output, agent, timeout and error to finetune / optimize your scrap.
@@ -126,4 +126,9 @@ Frankly, selectors are a standard way to query the DOM structure of the scraped 
 
 **Version 0.6**
 
-1. Bug fix: wpws_market_data market returned a debug text. Now fixed.
+1. Bug fix: `wpws_market_data market` returned a debug text. Now fixed.
+
+**Version 0.7**
+
+1. Enhancement: BSE is also supported by `wpws_market_data market`.
+1. Enhancement: Checked version campatibility with WP 2.8
