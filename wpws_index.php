@@ -99,7 +99,6 @@ function wpws_curl($url, $agent, $timeout, $return = true) {
 			curl_close($ch);
 		}
 	}
-	error_reporting(8);
 	return $curl;	
 }
 
