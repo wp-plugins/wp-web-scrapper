@@ -1,5 +1,6 @@
 === WP Web Scraper ===
 Contributors: akshay_raje
+Donate link: http://webdlabs.com/projects/donate/
 Tags: web scraping, curl, phpquery, realtime, post, sidebar, page, stock market
 Requires at least: 2.6
 Tested up to: 2.8
