@@ -4,7 +4,7 @@ Donate link: http://webdlabs.com/projects/donate/
 Tags: web scraping, curl, phpquery, realtime, post, sidebar, page, stock market
 Requires at least: 2.6
 Tested up to: 2.8
-Stable tag: 0.8
+Stable tag: 0.9
 
 An easy to implement web scraper for WordPress. Display realtime data from any websites directly into your posts, pages or sidebar.
 
@@ -17,12 +17,12 @@ An easy to implement professional web scraper for WordPress. This can be used to
 1. Scrap output can be displayed thru custom template tag, shortcode in page, post and sidebar (text widget).
 1. Other configurable settings like cURL timeout, disabling shortcode etc.
 1. Error handling - Silent fail, standard error, custom error message or display expired cache.
-1. Option to clear a certain regex pattern from the scrap before output.
+1. Option to clear or replace a certain regex pattern from the scrap before output.
 1. Built-in module for stock market data (NSE, BSE and NASDAQ supported currently), other markets to follow. For example - `[wpws_market_data market="NSE" symbol="ACC" datatype="last"]` will output the latest price of ACC on NSE. Refer [FAQs](http://wordpress.org/extend/plugins/wp-web-scrapper/faq/) for more details of this shortcode API.
 
 For demos and support, visit the [WP Web Scraper project page](http://webdlabs.com/projects/wp-web-scraper/). Comments appriciated.
 
-**Get your scraper listed as an official example:** Using WP Web Scraper can be a bit tacky for first time users. Especially if you have not worked with jQuery style selectors before. To help such users, I intend to build a list of some working examples. If you have successfully implemented the scraper and dont mind sharing the magic, please drop the URL and selector string as a comment on the [WP Web Scraper project page](http://webdlabs.com/projects/wp-web-scraper/). I will list all such links in an 'examples' section.
+**Looking for an easy to use API for free Stock Market feeds (RSS, JSON etc)?** Try out a prototype API which I am working on, visit [http://smdapi.co.cc](http://smdapi.co.cc) for further details.
 
 == Installation ==
 
@@ -51,6 +51,8 @@ Arguments (for theme tag / shortcode) are:
 * url / $url (Required): The complete URL which needs to be scraped.
 * selector / $selector (Required): The jQuery style selector string to select the content to be scraped. You can use elements, ids or classes for this. Further details about selector syntax in [Selector Manual](http://wordpress.org/extend/plugins/wp-web-scrapper/other_notes/)
 * clear / $clear: Regex pattern to be cleared before the scraper flushes its output. For example `/[aeiou]/` will clear all single lowercase vowel from the output. This [Regex reference](http://gnosis.cx/publish/programming/regular_expressions.html) will be helpful.
+* replace / $replace: Regex pattern to be replaced with `replace_text` before the scraper flushes its output. For example `/[aeiou]/` will replace all single lowercase vowel from the output. This [Regex reference](http://gnosis.cx/publish/programming/regular_expressions.html) will be helpful.
+* replace_text / $replace_text: String which will replace the regex pattern specified in `replace_text`.
 * cache / $cache_timeout: Timeout interval of the cached data in minutes. If ignored, the default value specified in plugin settings will be used.
 * output / $output_format: Format of output rendered by the selector (text or html). Text format strips all html tags and returns only text content. Html format retirns the scrap as in with the html tags. If ignored, the default value 'text' will be used.
 * agent / $curl_agent: The USERAGENT header for cURL. This string acts as your footprint while scraping data. If ignored, the default value specified in plugin settings will be used.
@@ -131,9 +133,13 @@ Frankly, selectors are a standard way to query the DOM structure of the scraped 
 
 **Version 0.7**
 
-1. Enhancement: BSE is also supported by `wpws_market_data market`.
+1. Enhancement: BSE is also supported by `wpws_market_data`.
 1. Enhancement: Checked version campatibility with WP 2.8
 
 **Version 0.8**
 
 1. Bug fix: curl_setopt() errors are now silent. No warnings displayed if things go wrong.
+
+**Version 0.9**
+
+1. Enhancement: Added replace and replace_text parameters to the wpws shortcode and tag. Its a regex pattern to be replaced with string specified in replace_text before the scraper flushes its output.

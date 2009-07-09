@@ -102,7 +102,7 @@ function wpws_curl($url, $agent, $timeout, $return = true) {
 	return $curl;	
 }
 
-function wpws_get_content($url = '', $selector = '', $clear = '', $output_format = '', $cache_timeout = '', $curl_agent = '', $curl_timeout = '', $curl_error = '') {
+function wpws_get_content($url = '', $selector = '', $clear = '', $replace = '', $replace_text = '', $output_format = '', $cache_timeout = '', $curl_agent = '', $curl_timeout = '', $curl_error = '') {
 	
 	if($cache_timeout == '') $cache_timeout = get_option('wpws_cache_timeout');
 	if($output_format == '') $output_format = 'text';
@@ -124,18 +124,18 @@ function wpws_get_content($url = '', $selector = '', $clear = '', $output_format
 			$cache_status = (time() - $cache_file_ctime) < ($cache_timeout * 60);
 		} else {$cache_status = false;}
 		if($cache_status) {
-			return wpws_parse_byselector($wpws_timestamp[0], $selector, $clear, $output_format);		
+			return wpws_parse_byselector($wpws_timestamp[0], $selector, $clear, $replace, $replace_text, $output_format);		
 		} else {
 			$scrap = wpws_curl(html_entity_decode($url), $curl_agent, $curl_timeout);
 			if($scrap[0]) {
 				file_put_contents($cache_file, $scrap[1].$timestamp_id.time());
-				return wpws_parse_byselector($scrap[1], $selector, $clear, $output_format);
+				return wpws_parse_byselector($scrap[1], $selector, $clear, $replace, $replace_text, $output_format);
 			} else {
 				if($curl_error == '1') {return $scrap[1];}
 				elseif($curl_error == '0') {return false;} 
 				elseif($curl_error == 'cache' && $cache_file_status) {
 					$wpws_timestamp = explode($timestamp_id, file_get_contents($cache_file));
-					return wpws_parse_byselector($wpws_timestamp[0], $selector, $clear, $output_format);	
+					return wpws_parse_byselector($wpws_timestamp[0], $selector, $clear, $replace, $replace_text, $output_format);	
 				} 
 				else {return $curl_error;}
 			}
@@ -143,13 +143,14 @@ function wpws_get_content($url = '', $selector = '', $clear = '', $output_format
 	}
 }
 
-function wpws_parse_byselector($scrap, $selector, $clear, $output_format) {
+function wpws_parse_byselector($scrap, $selector, $clear, $replace, $replace_text, $output_format) {
 	require_once('phpQuery.php');
 	$doc = phpQuery::newDocumentHTML($scrap);
 	phpQuery::selectDocument($doc);	
 	if($output_format == 'text') {$output = pq($selector)->text();}
 	elseif($output_format == 'html') {$output = pq($selector)->html();}
 	if($clear != '') {$output = preg_replace($clear, '', $output);}
+	if($replace != '') {$output = preg_replace($replace, $replace_text, $output);}
 	return $output;	
 }
 
