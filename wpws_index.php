@@ -155,8 +155,8 @@ function wpws_parse_byselector($scrap, $selector, $clear, $replace, $replace_tex
 }
 
 function wpws_shortcode($atts) {
-	extract(shortcode_atts(array('url' => '', 'selector' => '', 'clear' => '', 'output' => 'text', 'cache' => get_option('wpws_cache_timeout'), 'agent' => get_option('wpws_curl_agent'), 'timeout' => get_option('wpws_curl_timeout'), 'error' => get_option('wpws_curl_error')), $atts));
-	return wpws_get_content($url, $selector, $clear, $output, $cache, $agent, $timeout, $error);
+	extract(shortcode_atts(array('url' => '', 'selector' => '', 'clear' => '', 'replace' => '', 'replace_text' => '', 'output' => 'text', 'cache' => get_option('wpws_cache_timeout'), 'agent' => get_option('wpws_curl_agent'), 'timeout' => get_option('wpws_curl_timeout'), 'error' => get_option('wpws_curl_error')), $atts));
+	return wpws_get_content($url, $selector, $clear, $replace, $replace_text, $output, $cache, $agent, $timeout, $error);
 }
 
 function wpws_settings_page(){
