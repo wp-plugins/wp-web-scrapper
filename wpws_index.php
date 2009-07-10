@@ -4,7 +4,7 @@ Plugin Name: WP Web Scrapper
 Plugin URI: http://webdlabs.com/projects/wp-web-scraper/
 Description: An easy to implement web scraper for WordPress. Display realtime data from any websites directly into your posts, pages or sidebar.
 Author: Akshay Raje
-Version: 0.9
+Version: 1.0
 Author URI: http://webdlabs.com
 
 */
@@ -102,7 +102,7 @@ function wpws_curl($url, $agent, $timeout, $return = true) {
 	return $curl;	
 }
 
-function wpws_get_content($url = '', $selector = '', $clear = '', $replace = '', $replace_text = '', $output_format = '', $cache_timeout = '', $curl_agent = '', $curl_timeout = '', $curl_error = '') {
+function wpws_get_content($url = '', $selector = '', $clear = '', $replace = '', $replace_text = '', $basehref = '', $output_format = '', $cache_timeout = '', $curl_agent = '', $curl_timeout = '', $curl_error = '') {
 	
 	if($cache_timeout == '') $cache_timeout = get_option('wpws_cache_timeout');
 	if($output_format == '') $output_format = 'text';
@@ -115,7 +115,7 @@ function wpws_get_content($url = '', $selector = '', $clear = '', $replace = '',
 		elseif($curl_error == '0') {return false;} 
 		else {return $curl_error;}		
 	} else {
-		$cache_file = dirname(__FILE__).'/cache/'.urlencode($url);
+		$cache_file = dirname(__FILE__).'/cache/'.urlencode(str_replace('http://','',$url));
 		$cache_file_status = file_exists($cache_file);
 		$timestamp_id = '<!--wpws_timestamp-->';
 		if($cache_file_status) {
@@ -124,18 +124,18 @@ function wpws_get_content($url = '', $selector = '', $clear = '', $replace = '',
 			$cache_status = (time() - $cache_file_ctime) < ($cache_timeout * 60);
 		} else {$cache_status = false;}
 		if($cache_status) {
-			return wpws_parse_byselector($wpws_timestamp[0], $selector, $clear, $replace, $replace_text, $output_format);		
+			return wpws_parse_byselector($wpws_timestamp[0], $selector, $clear, $replace, $replace_text, $basehref, $output_format);		
 		} else {
-			$scrap = wpws_curl(html_entity_decode($url), $curl_agent, $curl_timeout);
+			$scrap = wpws_curl(urldecode(str_replace('http://','',$url)), $curl_agent, $curl_timeout);
 			if($scrap[0]) {
 				file_put_contents($cache_file, $scrap[1].$timestamp_id.time());
-				return wpws_parse_byselector($scrap[1], $selector, $clear, $replace, $replace_text, $output_format);
+				return wpws_parse_byselector($scrap[1], $selector, $clear, $replace, $replace_text, $basehref, $output_format);
 			} else {
 				if($curl_error == '1') {return $scrap[1];}
 				elseif($curl_error == '0') {return false;} 
 				elseif($curl_error == 'cache' && $cache_file_status) {
 					$wpws_timestamp = explode($timestamp_id, file_get_contents($cache_file));
-					return wpws_parse_byselector($wpws_timestamp[0], $selector, $clear, $replace, $replace_text, $output_format);	
+					return wpws_parse_byselector($wpws_timestamp[0], $selector, $clear, $replace, $replace_text, $basehref, $output_format);	
 				} 
 				else {return $curl_error;}
 			}
@@ -143,7 +143,7 @@ function wpws_get_content($url = '', $selector = '', $clear = '', $replace = '',
 	}
 }
 
-function wpws_parse_byselector($scrap, $selector, $clear, $replace, $replace_text, $output_format) {
+function wpws_parse_byselector($scrap, $selector, $clear, $replace, $replace_text, $basehref, $output_format) {
 	require_once('phpQuery.php');
 	$doc = phpQuery::newDocumentHTML($scrap);
 	phpQuery::selectDocument($doc);	
@@ -151,16 +151,17 @@ function wpws_parse_byselector($scrap, $selector, $clear, $replace, $replace_tex
 	elseif($output_format == 'html') {$output = pq($selector)->html();}
 	if($clear != '') {$output = preg_replace($clear, '', $output);}
 	if($replace != '') {$output = preg_replace($replace, $replace_text, $output);}
+	if($basehref != '') {$output = str_replace(array('href="/','src="/'),array('href="'.$basehref.'/','src="'.$basehref.'/'),$output);}
 	return $output;	
 }
 
 function wpws_shortcode($atts) {
-	extract(shortcode_atts(array('url' => '', 'selector' => '', 'clear' => '', 'replace' => '', 'replace_text' => '', 'output' => 'text', 'cache' => get_option('wpws_cache_timeout'), 'agent' => get_option('wpws_curl_agent'), 'timeout' => get_option('wpws_curl_timeout'), 'error' => get_option('wpws_curl_error')), $atts));
-	return wpws_get_content($url, $selector, $clear, $replace, $replace_text, $output, $cache, $agent, $timeout, $error);
+	extract(shortcode_atts(array('url' => '', 'selector' => '', 'clear' => '', 'replace' => '', 'replace_text' => '', 'basehref' => '', 'output' => 'text', 'cache' => get_option('wpws_cache_timeout'), 'agent' => get_option('wpws_curl_agent'), 'timeout' => get_option('wpws_curl_timeout'), 'error' => get_option('wpws_curl_error')), $atts));
+	return wpws_get_content($url, $selector, $clear, $replace, $replace_text, $basehref, $output, $cache, $agent, $timeout, $error);
 }
 
 function wpws_settings_page(){
-	add_options_page('My Plugin Options', 'WP Web Scrapper', 8, __FILE__, 'wpws_settings_html');
+	add_options_page('WP Web Scraper Settings', 'WP Web Scraper', 8, __FILE__, 'wpws_settings_html');
 }
 
 function wpws_on_activation(){
@@ -176,7 +177,7 @@ function wpws_settings_html(){
 $cache_root = dirname(__FILE__).'/cache';
 $size_array = wpws_getDirectorySize($cache_root);
 ?>
-<script language="JavaScript">
+<script type="text/javascript">
 var popUpWin=0;
 function clear_cache(){
 	jQuery('#wpws_cache_status').load('../wp-content/plugins/wp-web-scrapper/wpws_cache_clear.php', {count: <?php echo $size_array['count'];?>}, function(){
@@ -187,13 +188,14 @@ function clear_cache(){
 <div class="wrap">
 
 	<?php if(function_exists(screen_icon)) {screen_icon();} ?>
-	<h2><?php _e('WP Web Scrapper Settings'); ?></h2>
-	
+	<h2><?php _e('WP Web Scraper Settings'); ?></h2>
+	<small>Powered by <a href="http://webdlabs.com" target="_blank">webdlabs.com</a>. Please <a href="http://webdlabs.com/projects/donate/" target="_blank">donate (by paypal)</a> if you found this useful.</small>
+
 	<form method="post" action="options.php" id="wpws_options">
 	<?php wp_nonce_field('update-options'); ?>
 		<table class="form-table">
 		<tr valign="top">
-			<th scope="row"><label><?php _e('WP Web Scrapper Shortcodes') ?></label></th>
+			<th scope="row"><label><?php _e('WP Web Scraper Shortcodes') ?></label></th>
 			<td><fieldset>
 			<label for="wpws_sc_posts">
 			<input name="wpws_sc_posts" type="checkbox" id="wpws_sc_posts" value="1" <?php checked('1', get_option('wpws_sc_posts')); ?> />

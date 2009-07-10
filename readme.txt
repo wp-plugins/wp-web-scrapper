@@ -4,7 +4,7 @@ Donate link: http://webdlabs.com/projects/donate/
 Tags: web scraping, curl, phpquery, realtime, post, sidebar, page, stock market
 Requires at least: 2.6
 Tested up to: 2.8
-Stable tag: 0.9
+Stable tag: 1.0
 
 An easy to implement web scraper for WordPress. Display realtime data from any websites directly into your posts, pages or sidebar.
 
@@ -46,13 +46,14 @@ For use within themes: `<?php echo wpws_get_content($url, $selector, $clear, $ca
 	
 For use directly in posts, pages or sidebar (text widget): `[wpws url="" selector="" clear="" cache="" output="" agent="" timeout="" error=""]`
 
-Arguments (for theme tag / shortcode) are:
+Arguments (for theme tag / shortcode) are as mentioned below. Only `url` and `selector` are required. All the rest are optional:
 
 * url / $url (Required): The complete URL which needs to be scraped.
 * selector / $selector (Required): The jQuery style selector string to select the content to be scraped. You can use elements, ids or classes for this. Further details about selector syntax in [Selector Manual](http://wordpress.org/extend/plugins/wp-web-scrapper/other_notes/)
 * clear / $clear: Regex pattern to be cleared before the scraper flushes its output. For example `/[aeiou]/` will clear all single lowercase vowel from the output. This [Regex reference](http://gnosis.cx/publish/programming/regular_expressions.html) will be helpful.
 * replace / $replace: Regex pattern to be replaced with `replace_text` before the scraper flushes its output. For example `/[aeiou]/` will replace all single lowercase vowel from the output. This [Regex reference](http://gnosis.cx/publish/programming/regular_expressions.html) will be helpful.
 * replace_text / $replace_text: String which will replace the regex pattern specified in `replace_text`.
+* basehref / $basehref: A parameter which can be used to convert relative links from the scrap to absolute links. For example, `basehref="http://yahoo.com"`, will convert all relative links to absolute by appending `http://yahoo.com` to all href and scr values. Note that basehref needs to be complete path (with http) and no trailing slash.
 * cache / $cache_timeout: Timeout interval of the cached data in minutes. If ignored, the default value specified in plugin settings will be used.
 * output / $output_format: Format of output rendered by the selector (text or html). Text format strips all html tags and returns only text content. Html format retirns the scrap as in with the html tags. If ignored, the default value 'text' will be used.
 * agent / $curl_agent: The USERAGENT header for cURL. This string acts as your footprint while scraping data. If ignored, the default value specified in plugin settings will be used.
@@ -124,8 +125,8 @@ Frankly, selectors are a standard way to query the DOM structure of the scraped 
 
 **Version 0.5**
 
-1. Enhancement: Introduced a module architecture to develop custom 'mods' or plugin extensions for common scraping tasks.
-1. Enhancement: Added the first mod 'wpws_market_data' with support for NSE and NASDAQ exchanges.
+1. Enhancement: Introduced a module architecture to develop custom mods or plugin extensions for common scraping tasks.
+1. Enhancement: Added the first mod `wpws_market_data` with support for NSE and NASDAQ exchanges.
 
 **Version 0.6**
 
@@ -138,8 +139,13 @@ Frankly, selectors are a standard way to query the DOM structure of the scraped 
 
 **Version 0.8**
 
-1. Bug fix: curl_setopt() errors are now silent. No warnings displayed if things go wrong.
+1. Bug fix: `curl_setopt()` errors are now silent. No warnings displayed if things go wrong.
 
 **Version 0.9**
 
-1. Enhancement: Added replace and replace_text parameters to the wpws shortcode and tag. Its a regex pattern to be replaced with string specified in replace_text before the scraper flushes its output.
+1. Enhancement: Added `replace` and `replace_text` parameters to the wpws shortcode and tag. Its a regex pattern to be replaced with string specified in `replace_text` before the scraper flushes its output.
+
+**Version 1.0**
+
+1. Enhancement: Added `basehref` parameter which can be used to convert relative links from the scrap to absolute links.
+1. Bug fix: Display of WP Web Scraper options page.
