@@ -126,7 +126,7 @@ function wpws_get_content($url = '', $selector = '', $clear = '', $replace = '',
 		if($cache_status) {
 			return wpws_parse_byselector($wpws_timestamp[0], $selector, $clear, $replace, $replace_text, $basehref, $output_format);		
 		} else {
-			$scrap = wpws_curl(urldecode(str_replace('http://','',$url)), $curl_agent, $curl_timeout);
+			$scrap = wpws_curl(html_entity_decode($url), $curl_agent, $curl_timeout);
 			if($scrap[0]) {
 				file_put_contents($cache_file, $scrap[1].$timestamp_id.time());
 				return wpws_parse_byselector($scrap[1], $selector, $clear, $replace, $replace_text, $basehref, $output_format);
