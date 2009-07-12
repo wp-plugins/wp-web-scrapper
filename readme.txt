@@ -4,7 +4,7 @@ Donate link: http://webdlabs.com/projects/donate/
 Tags: web scraping, curl, phpquery, realtime, post, sidebar, page, stock market
 Requires at least: 2.6
 Tested up to: 2.8
-Stable tag: 1.0
+Stable tag: 1.1
 
 An easy to implement web scraper for WordPress. Display realtime data from any websites directly into your posts, pages or sidebar.
 
@@ -12,6 +12,7 @@ An easy to implement web scraper for WordPress. Display realtime data from any w
 
 An easy to implement professional web scraper for WordPress. This can be used to display realtime data from any websites directly into your posts, pages or sidebar. Use this to include realtime stock quotes, cricket or soccer scores or any other generic content. The scraper is built using timetested libraries cURL for scraping and phpQuery for parsing HTML. Features include:
 
+1. Can be easily implemented using the button in the post / page editor.
 1. Configurable caching of scraped data. Cache timeout in minutes can be defined in minutes for every scrap.
 1. Custom Useragent header for your scraper can be set for every scrap.
 1. Scrap output can be displayed thru custom template tag, shortcode in page, post and sidebar (text widget).
@@ -39,6 +40,8 @@ Mode details on this on the [FAQs](http://wordpress.org/extend/plugins/wp-web-sc
 Web scraping (or Web harvesting, Web data extraction) is a computer software technique of extracting information from websites. Web scraping focuses more on the transformation of unstructured Web content, typically in HTML format, into structured data that can be formatted and displayed or stored and analyzed. Web scraping is also related to Web automation, which simulates human Web browsing using computer software. Exemplary uses of Web scraping include online price comparison, weather data monitoring, market data tracking, Web content mashup and Web data integration.
 
 = Sounds interesting, but how do I actually use it? =
+
+Use the 'Add new web scrap' button to add a web scrap to your post or page. You can also use the template tag or shortcode detailed below.
 
 WP Web Scraper plugin allows usage of a custom template tag (for template integration) or shortcode (for posts, pages or sidebar) for scraping and displaying web content. Here's the actual usage detail:
 
@@ -149,3 +152,7 @@ Frankly, selectors are a standard way to query the DOM structure of the scraped 
 
 1. Enhancement: Added `basehref` parameter which can be used to convert relative links from the scrap to absolute links.
 1. Bug fix: Display of WP Web Scraper options page.
+
+**Version 1.1**
+
+1. Enhancement: Web scraps can now be added using a button in the post / page editor. No more remembering shortcodes.
