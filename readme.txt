@@ -163,4 +163,4 @@ Frankly, selectors are a standard way to query the DOM structure of the scraped 
 
 **Version 1.3**
 
-1. Bug fix: Fixed a bud in the module wpws_market_data
+1. Bug fix: Fixed a bug in the module `wpws_market_data`
