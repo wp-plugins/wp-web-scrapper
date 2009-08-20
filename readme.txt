@@ -4,7 +4,7 @@ Donate link: http://webdlabs.com/projects/donate/
 Tags: web scraping, curl, phpquery, realtime, post, sidebar, page, stock market
 Requires at least: 2.6
 Tested up to: 2.8.4
-Stable tag: 1.2
+Stable tag: 1.3
 
 An easy to implement web scraper for WordPress. Display realtime data from any websites directly into your posts, pages or sidebar.
 
@@ -160,3 +160,7 @@ Frankly, selectors are a standard way to query the DOM structure of the scraped 
 **Version 1.2**
 
 1. Bug fix: Can also accept urls with special charecters such as `[` or `]`. Such charecters need to be replaced by the equivalent URL-encoded string like `%5B` for `[` or `%5D` for `[` etc.
+
+**Version 1.3**
+
+1. Bug fix: Fixed a bud in the module wpws_market_data

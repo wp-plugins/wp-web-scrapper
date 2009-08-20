@@ -14,7 +14,7 @@ function wpws_market_data_shortcode($atts) {
 		$selector = wpws_market_data_source($market, $symbol, $datatype, 'selector');
 		$clear = '/\$| \(Nasdaq\)|Rs/';
 		$output = 'text';
-		return wpws_get_content($url, $selector, $clear, $output, $cache, $agent, $timeout, $error);
+		return wpws_get_content($url, $selector, $clear, '', '', '', $output, $cache, $agent, $timeout, $error);
 	}
 }
 
