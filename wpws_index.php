@@ -4,7 +4,7 @@ Plugin Name: WP Web Scrapper
 Plugin URI: http://webdlabs.com/projects/wp-web-scraper/
 Description: An easy to implement web scraper for WordPress. Display realtime data from any websites directly into your posts, pages or sidebar.
 Author: Akshay Raje
-Version: 1.3
+Version: 1.4
 Author URI: http://webdlabs.com
 
 */
@@ -67,7 +67,7 @@ function wpws_sizeFormat($size) {
 	}
 }
 
-function wpws_curl($url, $agent, $timeout, $return = true) {
+function wpws_curl($url, $agent, $timeout, $return = true, $postargs = '') {
 	error_reporting(1);
 	$ch = curl_init();
 	if (!$ch) {
@@ -83,6 +83,10 @@ function wpws_curl($url, $agent, $timeout, $return = true) {
 			}
 		}
 	} else {
+		if ($postargs != '') {
+			curl_setopt($ch, CURLOPT_POST ,1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS,$postargs);
+		}
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_USERAGENT, $agent);
 		curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -106,7 +110,7 @@ function wpws_curl($url, $agent, $timeout, $return = true) {
 	return $curl;	
 }
 
-function wpws_get_content($url = '', $selector = '', $clear = '', $replace = '', $replace_text = '', $basehref = '', $output_format = '', $cache_timeout = '', $curl_agent = '', $curl_timeout = '', $curl_error = '') {
+function wpws_get_content($url = '', $postargs = '', $selector = '', $clear = '', $replace = '', $replace_text = '', $basehref = '', $output_format = '', $cache_timeout = '', $curl_agent = '', $curl_timeout = '', $curl_error = '') {
 	
 	if($cache_timeout == '') $cache_timeout = get_option('wpws_cache_timeout');
 	if($output_format == '') $output_format = 'text';
@@ -120,6 +124,9 @@ function wpws_get_content($url = '', $selector = '', $clear = '', $replace = '',
 		else {return $curl_error;}		
 	} else {
 		$cache_file = dirname(__FILE__).'/cache/'.urlencode(str_replace('http://','',$url));
+		if ($postargs != '') {
+			$cache_file = $cache_file.urlencode('?'.$postargs);
+		}		
 		$cache_file_status = file_exists($cache_file);
 		$timestamp_id = '<!--wpws_timestamp-->';
 		if($cache_file_status) {
@@ -130,7 +137,7 @@ function wpws_get_content($url = '', $selector = '', $clear = '', $replace = '',
 		if($cache_status) {
 			return wpws_parse_byselector($wpws_timestamp[0], $selector, $clear, $replace, $replace_text, $basehref, $output_format);		
 		} else {
-			$scrap = wpws_curl(html_entity_decode($url), $curl_agent, $curl_timeout);
+			$scrap = wpws_curl(html_entity_decode($url), $curl_agent, $curl_timeout, true, $postargs);
 			if($scrap[0]) {
 				file_put_contents($cache_file, $scrap[1].$timestamp_id.time());
 				return wpws_parse_byselector($scrap[1], $selector, $clear, $replace, $replace_text, $basehref, $output_format);
@@ -156,13 +163,20 @@ function wpws_parse_byselector($scrap, $selector, $clear, $replace, $replace_tex
 	if($clear != '') {$output = preg_replace($clear, '', $output);}
 	if($replace != '') {$output = preg_replace($replace, $replace_text, $output);}
 	if($basehref != '') {$output = str_replace(array('href="/','src="/'),array('href="'.$basehref.'/','src="'.$basehref.'/'),$output);}
-	return $output;	
+	return utf8_encode($output);	
 }
 
 function wpws_shortcode($atts) {
-	extract(shortcode_atts(array('url' => '', 'selector' => '', 'clear' => '', 'replace' => '', 'replace_text' => '', 'basehref' => '', 'output' => 'text', 'cache' => get_option('wpws_cache_timeout'), 'agent' => get_option('wpws_curl_agent'), 'timeout' => get_option('wpws_curl_timeout'), 'error' => get_option('wpws_curl_error')), $atts));
+	extract(shortcode_atts(array('url' => '', 'postargs' => '', 'selector' => '', 'clear' => '', 'replace' => '', 'replace_text' => '', 'basehref' => '', 'output' => 'text', 'cache' => get_option('wpws_cache_timeout'), 'agent' => get_option('wpws_curl_agent'), 'timeout' => get_option('wpws_curl_timeout'), 'error' => get_option('wpws_curl_error')), $atts));
 	$url = urldecode($url);
-	return wpws_get_content($url, $selector, $clear, $replace, $replace_text, $basehref, $output, $cache, $agent, $timeout, $error);
+	$postargs = str_replace('#038;','',urldecode($postargs));
+	if(preg_match('/___(.*)___/',$url,$url_matches)){
+		$url = preg_replace('/___(.*)___/',$_REQUEST[$url_matches[1]],$url);
+	}	
+	if(preg_match('/___(.*)___/',$postargs,$args_matches)){
+		$postargs = preg_replace('/___(.*)___/',$_REQUEST[$args_matches[1]],$postargs);
+	}		
+	return wpws_get_content($url, $postargs, $selector, $clear, $replace, $replace_text, $basehref, $output, $cache, $agent, $timeout, $error);
 }
 
 function wpws_settings_page(){

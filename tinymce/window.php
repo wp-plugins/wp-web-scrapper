@@ -40,6 +40,7 @@ if ( !is_user_logged_in() || !current_user_can('edit_posts') )
 		var tagtext;
 		var other_params = '';
 		var wpws_url = document.getElementById('wpws_url').value;
+		var wpws_postargs = document.getElementById('wpws_postargs').value;
 		var wpws_selector = document.getElementById('wpws_selector').value;
 		var wpws_clear = document.getElementById('wpws_clear').value;
 		var wpws_replace = document.getElementById('wpws_replace').value;
@@ -52,6 +53,7 @@ if ( !is_user_logged_in() || !current_user_can('edit_posts') )
 		var wpws_error = document.getElementById('wpws_error').value;
 			
 		if (wpws_url != '' || wpws_selector != '') {
+			if(wpws_postargs != '') other_params += " postargs=\""+wpws_postargs+"\"";
 			if(wpws_clear != '') other_params += " clear=\""+wpws_clear+"\"";
 			if(wpws_replace != '') other_params += " replace=\""+wpws_replace+"\" replace_text=\""+wpws_replace_text+"\"";
 			if(wpws_basehref != '') other_params += " basehref=\""+wpws_basehref+"\"";
@@ -78,6 +80,7 @@ if ( !is_user_logged_in() || !current_user_can('edit_posts') )
 	function show_help(element) {
 		var helptips = 
 		{	'wpws_url': 'The complete URL which needs to be scraped including the protocol (http://)',
+			'wpws_postargs': 'A string of post arguments to the page you are trying to scrap. For example id=197&cat=5',
 			'wpws_selector': 'The (jQuery style) CSS selector string to select the content to be scraped. You can use elements, ids or classes for this. Further details about selector syntax in <a href="http://wordpress.org/extend/plugins/wp-web-scrapper/other_notes/" target="_blank">Selector Manual</a>',
 			'wpws_clear': 'Regex pattern to be cleared before the scraper flushes its output. The pattern string needs to be enclosed within /, for example /<img.*?>/ will remove all image tags from the output or /[copyright|domain]/ will remove the words copyright and domain from the output. This <a href="http://gnosis.cx/publish/programming/regular_expressions.html" target="_blank">Regex reference</a> will be helpful.',
 			'wpws_replace': 'egex pattern to be replaced with some string before the scraper flushes its output. Similar to clear, this replaces the regex pattern with a string specified.',
@@ -114,6 +117,10 @@ if ( !is_user_logged_in() || !current_user_can('edit_posts') )
 				<td nowrap="nowrap"><label for="wpws_url"><?php _e("Source URL*"); ?></label></td>
 				<td><input type="text" id="wpws_url" name="wpws_url" style="width: 190px" onfocus="show_help(this.id)"/></td>
 			</tr>
+			<tr>
+				<td nowrap="nowrap"><label for="wpws_postargs"><?php _e("Post Args (optional)"); ?></label></td>
+				<td><input type="text" id="wpws_postargs" name="wpws_postargs" style="width: 190px" onfocus="show_help(this.id)"/></td>
+			</tr>			
 			<tr>
 				<td nowrap="nowrap"><label for="wpws_selector"><?php _e("CSS Selector*"); ?></label></td>
 				<td><input type="text" id="wpws_selector" name="wpws_selector" style="width: 190px" onfocus="show_help(this.id)"/></td>
