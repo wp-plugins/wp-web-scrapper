@@ -4,7 +4,7 @@ Plugin Name: WP Web Scrapper
 Plugin URI: http://webdlabs.com/projects/wp-web-scraper/
 Description: An easy to implement web scraper for WordPress. Display realtime data from any websites directly into your posts, pages or sidebar.
 Author: Akshay Raje
-Version: 1.4
+Version: 1.5
 Author URI: http://webdlabs.com
 
 */
@@ -163,7 +163,7 @@ function wpws_parse_byselector($scrap, $selector, $clear, $replace, $replace_tex
 	if($clear != '') {$output = preg_replace($clear, '', $output);}
 	if($replace != '') {$output = preg_replace($replace, $replace_text, $output);}
 	if($basehref != '') {$output = str_replace(array('href="/','src="/'),array('href="'.$basehref.'/','src="'.$basehref.'/'),$output);}
-	return utf8_encode($output);	
+	return $output;	
 }
 
 function wpws_shortcode($atts) {
