@@ -162,7 +162,7 @@ function wpws_parse_byselector($scrap, $selector, $clear, $replace, $replace_tex
 	elseif($output_format == 'html') {$output = pq($selector)->html();}
 	if($clear != '') {$output = preg_replace($clear, '', $output);}
 	if($replace != '') {$output = preg_replace($replace, $replace_text, $output);}
-	if($basehref != '') {$output = str_replace(array('href="/','src="/'),array('href="'.$basehref.'/','src="'.$basehref.'/'),$output);}
+	if($basehref != '') {$output = str_replace('"/','"'.$basehref.'/',$output);}
 	return $output;	
 }
 
