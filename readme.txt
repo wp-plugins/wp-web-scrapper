@@ -45,7 +45,7 @@ Use the 'Add new web scrap' button to add a web scrap to your post or page. You 
 
 WP Web Scraper plugin allows usage of a custom template tag (for template integration) or shortcode (for posts, pages or sidebar) for scraping and displaying web content. Here's the actual usage detail:
 
-For use within themes: `<?php echo wpws_get_content($url, $selector, $clear, $cache_timeout, $output_format, $curl_agent, $curl_timeout, $error);?>`
+For use within themes: `<?php echo wpws_get_content($url, $postargs, $selector, $clear, $replace, $replace_text, $basehref, $output, $cache, $agent, $timeout, $error)?>`
 	
 For use directly in posts, pages or sidebar (text widget): `[wpws url="" selector="" clear="" cache="" output="" agent="" timeout="" error=""]`
 
