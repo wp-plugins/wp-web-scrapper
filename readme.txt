@@ -3,8 +3,8 @@ Contributors: akshay_raje
 Donate link: http://webdlabs.com/projects/donate/
 Tags: web scraping, curl, phpquery, realtime, post, sidebar, page, stock market
 Requires at least: 2.6
-Tested up to: 2.8.4
-Stable tag: 1.5
+Tested up to: 2.8.5
+Stable tag: 1.6
 
 An easy to implement web scraper for WordPress. Display realtime data from any websites directly into your posts, pages or sidebar.
 
@@ -111,6 +111,10 @@ Frankly, selectors are a standard way to query the DOM structure of the scraped 
 * '#header div:eq(1)' will get you content within the second `<div>` inside the first element with id 'header'.
 
 == Change Log ==
+
+**Version 1.6**
+
+1. Enhancement: Handling charecterset and usage of html entity decode.
 
 **Version 1.5**
 

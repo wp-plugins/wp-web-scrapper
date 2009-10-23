@@ -4,7 +4,7 @@ Plugin Name: WP Web Scrapper
 Plugin URI: http://webdlabs.com/projects/wp-web-scraper/
 Description: An easy to implement web scraper for WordPress. Display realtime data from any websites directly into your posts, pages or sidebar.
 Author: Akshay Raje
-Version: 1.5
+Version: 1.6
 Author URI: http://webdlabs.com
 
 */
@@ -87,6 +87,15 @@ function wpws_curl($url, $agent, $timeout, $return = true, $postargs = '') {
 			curl_setopt($ch, CURLOPT_POST ,1);
 			curl_setopt($ch, CURLOPT_POSTFIELDS,$postargs);
 		}
+		$header	= array( 
+			"Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+			"Accept-Language: en-gb,en;q=0.5",
+			"Accept-Encoding: gzip,deflate",
+			"Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7",
+			"Keep-Alive: 300",
+			"Connection: keep-alive"
+		);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $header);	
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_USERAGENT, $agent);
 		curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -97,13 +106,19 @@ function wpws_curl($url, $agent, $timeout, $return = true, $postargs = '') {
 		curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
 		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
 		$html = curl_exec($ch);
+		$content_type = curl_getinfo( $ch, CURLINFO_CONTENT_TYPE );
+		preg_match( '@([\w/+]+)(;\s+charset=(\S+))?@i', $content_type, $matches );
+		if ( isset( $matches[1] ) )
+			$mime = $matches[1];
+		if ( isset( $matches[3] ) )
+			$charset = $matches[3];
 		if (empty($html)) {
 			$curl[0] = false;
 			$curl[1] = curl_error($ch);
 			curl_close($ch); 
 		} else {
 			$curl[0] = true;
-			if($return) $curl[1] = $html;		
+			if($return) $curl[1] = html_entity_decode( $html, ENT_QUOTES, 'utf-8' );
 			curl_close($ch);
 		}
 	}
@@ -163,7 +178,7 @@ function wpws_parse_byselector($scrap, $selector, $clear, $replace, $replace_tex
 	if($clear != '') {$output = preg_replace($clear, '', $output);}
 	if($replace != '') {$output = preg_replace($replace, $replace_text, $output);}
 	if($basehref != '') {$output = str_replace('"/','"'.$basehref.'/',$output);}
-	return $output;	
+	return "<!--Start of web scrap dump (created by wp-web-scraper)-->\n".$output."<!--End of web scrap dump (created by wp-web-scraper)-->\n";
 }
 
 function wpws_shortcode($atts) {
