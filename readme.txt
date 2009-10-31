@@ -4,7 +4,7 @@ Donate link: http://webdlabs.com/projects/donate/
 Tags: web scraping, curl, phpquery, realtime, post, sidebar, page, stock market
 Requires at least: 2.6
 Tested up to: 2.8.5
-Stable tag: 1.6
+Stable tag: 1.7
 
 An easy to implement web scraper for WordPress. Display realtime data from any websites directly into your posts, pages or sidebar.
 
@@ -52,7 +52,7 @@ For use directly in posts, pages or sidebar (text widget): `[wpws url="" selecto
 Arguments (for theme tag / shortcode) are as mentioned below. Only `url` and `selector` are required. All the rest are optional:
 
 * url / $url (Required): The complete URL which needs to be scraped.
-* postargs / $postargs (Optional): A string of post arguments to the page you are trying to scrap. For example `id=197&cat=5`
+* postargs / $postargs: A string of post arguments to the page you are trying to scrap. For example `id=197&cat=5`
 * selector / $selector (Required): The jQuery style selector string to select the content to be scraped. You can use elements, ids or classes for this. Further details about selector syntax in [Selector Manual](http://wordpress.org/extend/plugins/wp-web-scrapper/other_notes/)
 * clear / $clear: Regex pattern to be cleared before the scraper flushes its output. For example `/[aeiou]/` will clear all single lowercase vowel from the output. This [Regex reference](http://gnosis.cx/publish/programming/regular_expressions.html) will be helpful.
 * replace / $replace: Regex pattern to be replaced with `replace_text` before the scraper flushes its output. For example `/[aeiou]/` will replace all single lowercase vowel from the output. This [Regex reference](http://gnosis.cx/publish/programming/regular_expressions.html) will be helpful.
@@ -63,6 +63,8 @@ Arguments (for theme tag / shortcode) are as mentioned below. Only `url` and `se
 * agent / $curl_agent: The USERAGENT header for cURL. This string acts as your footprint while scraping data. If ignored, the default value specified in plugin settings will be used.
 * timeout / $curl_timeout: Timeout interver for cURL function in seconds. Higer the better for scraping slow servers, but this will also increase your page load time. Ideally should not exceed 2. If ignored, the default value specified in plugin settings will be used.
 * error / $error: Prints an error if cURL fails and if this param is set as 1. If it is set as 0, it silently fails. If set to 'cache' it will display data from expired cache (if any). Setting it to any other string will output the string itself. For instance `error="screwed!"` will output 'screwed!' if something goes wrong in the scrap. If ignored, the default value specified in plugin settings will be used.
+* htmldecode / $htmldecode: Specify a charset for `html_entity_decode` or set to 0 if you dont want to use `html_entity_decode`. If ignored, the default value 'utf-8' will be used.
+* urldecode (only availabe in shortcode): Set to 1 to use `urldecode` for URLs with special charecters. Set to 0 if you do not want to use it. Default value is 1. 
 
 = That sounds complex. Any simple shortcodes? =
 
@@ -111,6 +113,10 @@ Frankly, selectors are a standard way to query the DOM structure of the scraped 
 * '#header div:eq(1)' will get you content within the second `<div>` inside the first element with id 'header'.
 
 == Change Log ==
+
+**Version 1.7**
+
+1. Enhancement: Added `htmldecode` and `urldecode` to control htmlencoding and urlencoding in your scrap.
 
 **Version 1.6**
 
