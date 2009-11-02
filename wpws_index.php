@@ -4,7 +4,7 @@ Plugin Name: WP Web Scrapper
 Plugin URI: http://webdlabs.com/projects/wp-web-scraper/
 Description: An easy to implement web scraper for WordPress. Display realtime data from any websites directly into your posts, pages or sidebar.
 Author: Akshay Raje
-Version: 1.7
+Version: 1.8
 Author URI: http://webdlabs.com
 
 */
@@ -67,7 +67,7 @@ function wpws_sizeFormat($size) {
 	}
 }
 
-function wpws_curl($url, $agent, $timeout, $return = true, $postargs = '', $htmldecode = 'utf-8') {
+function wpws_curl($url, $agent, $timeout, $return = true, $postargs = '') {
 	error_reporting(1);
 	$ch = curl_init();
 	if (!$ch) {
@@ -103,24 +103,30 @@ function wpws_curl($url, $agent, $timeout, $return = true, $postargs = '', $html
 			curl_close($ch); 
 		} else {
 			$curl[0] = true;
-			if($return) {
-				if($htmldecode != '0') {$curl[1] = html_entity_decode($html, ENT_QUOTES, $htmldecode);} 
-				else {$curl[1] = $html;}
-			}
+			$curl[1] = $html;
 			curl_close($ch);
 		}
 	}
 	return $curl;	
 }
 
-function wpws_get_content($url = '', $postargs = '', $selector = '', $clear = '', $replace = '', $replace_text = '', $basehref = '', $output_format = '', $cache_timeout = '', $curl_agent = '', $curl_timeout = '', $curl_error = '', $htmldecode = '') {
+function strip_only($str, $tags) {
+    if(!is_array($tags)) {
+        $tags = (strpos($str, '>') !== false ? explode('>', str_replace('<', '', $tags)) : array($tags));
+        if(end($tags) == '') array_pop($tags);
+    }
+    foreach($tags as $tag) $str = preg_replace('#</?'.$tag.'[^>]*>#is', '', $str);
+    return $str;
+}
+
+function wpws_get_content($url = '', $postargs = '', $selector = '', $clear = '', $replace = '', $replace_text = '', $basehref = '', $output_format = '', $cache_timeout = '', $curl_agent = '', $curl_timeout = '', $curl_error = '', $htmldecode = '', $striptags = '') {
 	
 	if($cache_timeout == '') $cache_timeout = get_option('wpws_cache_timeout');
 	if($output_format == '') $output_format = 'text';
 	if($curl_agent == '') $curl_agent = get_option('wpws_curl_agent');
 	if($curl_timeout == '') $curl_timeout = get_option('wpws_curl_timeout');
 	if($curl_error == '') $curl_error = get_option('wpws_curl_error');	
-	if($htmldecode == '') $htmldecode = 'utf-8';
+	if($htmldecode == '') $htmldecode = '0';
 	
 	if($url == '' || $selector == '') {
 		if($curl_error == '1') {return 'Required params missing';}
@@ -139,18 +145,18 @@ function wpws_get_content($url = '', $postargs = '', $selector = '', $clear = ''
 			$cache_status = (time() - $cache_file_ctime) < ($cache_timeout * 60);
 		} else {$cache_status = false;}
 		if($cache_status) {
-			return wpws_parse_byselector($wpws_timestamp[0], $selector, $clear, $replace, $replace_text, $basehref, $output_format);		
+			return wpws_parse_byselector($wpws_timestamp[0], $selector, $clear, $replace, $replace_text, $basehref, $output_format, $htmldecode, $striptags);		
 		} else {
-			$scrap = wpws_curl(html_entity_decode($url), $curl_agent, $curl_timeout, true, $postargs, $htmldecode);
+			$scrap = wpws_curl(html_entity_decode($url), $curl_agent, $curl_timeout, true, $postargs);
 			if($scrap[0]) {
 				file_put_contents($cache_file, $scrap[1].$timestamp_id.time());
-				return wpws_parse_byselector($scrap[1], $selector, $clear, $replace, $replace_text, $basehref, $output_format);
+				return wpws_parse_byselector($scrap[1], $selector, $clear, $replace, $replace_text, $basehref, $output_format, $htmldecode, $striptags);
 			} else {
 				if($curl_error == '1') {return $scrap[1];}
 				elseif($curl_error == '0') {return false;} 
 				elseif($curl_error == 'cache' && $cache_file_status) {
 					$wpws_timestamp = explode($timestamp_id, file_get_contents($cache_file));
-					return wpws_parse_byselector($wpws_timestamp[0], $selector, $clear, $replace, $replace_text, $basehref, $output_format);	
+					return wpws_parse_byselector($wpws_timestamp[0], $selector, $clear, $replace, $replace_text, $basehref, $output_format, $htmldecode, $striptags);	
 				} 
 				else {return $curl_error;}
 			}
@@ -158,7 +164,9 @@ function wpws_get_content($url = '', $postargs = '', $selector = '', $clear = ''
 	}
 }
 
-function wpws_parse_byselector($scrap, $selector, $clear, $replace, $replace_text, $basehref, $output_format) {
+function wpws_parse_byselector($scrap, $selector, $clear, $replace, $replace_text, $basehref, $output_format, $htmldecode, $striptags) {
+	global $wpdb;
+	$currcharset = get_bloginfo('charset');
 	require_once('phpQuery.php');
 	$doc = phpQuery::newDocumentHTML($scrap);
 	phpQuery::selectDocument($doc);	
@@ -167,11 +175,13 @@ function wpws_parse_byselector($scrap, $selector, $clear, $replace, $replace_tex
 	if($clear != '') {$output = preg_replace($clear, '', $output);}
 	if($replace != '') {$output = preg_replace($replace, $replace_text, $output);}
 	if($basehref != '') {$output = str_replace('"/','"'.$basehref.'/',$output);}
+	if($htmldecode != '0') {$output = iconv($htmldecode, $currcharset, $output);} 
+	if($striptags != '') {$output = strip_only($output, $striptags);} 
 	return "<!--Start of web scrap dump (created by wp-web-scraper)-->\n".$output."<!--End of web scrap dump (created by wp-web-scraper)-->\n";
 }
 
 function wpws_shortcode($atts) {
-	extract(shortcode_atts(array('url' => '', 'postargs' => '', 'selector' => '', 'clear' => '', 'replace' => '', 'replace_text' => '', 'basehref' => '', 'output' => 'text', 'cache' => get_option('wpws_cache_timeout'), 'agent' => get_option('wpws_curl_agent'), 'timeout' => get_option('wpws_curl_timeout'), 'error' => get_option('wpws_curl_error'), 'htmldecode' => 'utf-8', 'urldecode' => '1'), $atts));
+	extract(shortcode_atts(array('url' => '', 'postargs' => '', 'selector' => '', 'clear' => '', 'replace' => '', 'replace_text' => '', 'basehref' => '', 'output' => 'text', 'cache' => get_option('wpws_cache_timeout'), 'agent' => get_option('wpws_curl_agent'), 'timeout' => get_option('wpws_curl_timeout'), 'error' => get_option('wpws_curl_error'), 'htmldecode' => '0', 'urldecode' => '1', 'striptags' => ''), $atts));
 	if($urldecode == '1') $url = urldecode($url);
 	$postargs = str_replace('#038;','',urldecode($postargs));
 	if(preg_match('/___(.*)___/',$url,$url_matches)){
@@ -180,7 +190,7 @@ function wpws_shortcode($atts) {
 	if(preg_match('/___(.*)___/',$postargs,$args_matches)){
 		$postargs = preg_replace('/___(.*)___/',$_REQUEST[$args_matches[1]],$postargs);
 	}		
-	return wpws_get_content($url, $postargs, $selector, $clear, $replace, $replace_text, $basehref, $output, $cache, $agent, $timeout, $error, $htmldecode);
+	return wpws_get_content($url, $postargs, $selector, $clear, $replace, $replace_text, $basehref, $output, $cache, $agent, $timeout, $error, $htmldecode, $striptags);
 }
 
 function wpws_settings_page(){

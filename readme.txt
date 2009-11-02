@@ -4,7 +4,7 @@ Donate link: http://webdlabs.com/projects/donate/
 Tags: web scraping, curl, phpquery, realtime, post, sidebar, page, stock market
 Requires at least: 2.6
 Tested up to: 2.8.5
-Stable tag: 1.7
+Stable tag: 1.8
 
 An easy to implement web scraper for WordPress. Display realtime data from any websites directly into your posts, pages or sidebar.
 
@@ -63,8 +63,9 @@ Arguments (for theme tag / shortcode) are as mentioned below. Only `url` and `se
 * agent / $curl_agent: The USERAGENT header for cURL. This string acts as your footprint while scraping data. If ignored, the default value specified in plugin settings will be used.
 * timeout / $curl_timeout: Timeout interver for cURL function in seconds. Higer the better for scraping slow servers, but this will also increase your page load time. Ideally should not exceed 2. If ignored, the default value specified in plugin settings will be used.
 * error / $error: Prints an error if cURL fails and if this param is set as 1. If it is set as 0, it silently fails. If set to 'cache' it will display data from expired cache (if any). Setting it to any other string will output the string itself. For instance `error="screwed!"` will output 'screwed!' if something goes wrong in the scrap. If ignored, the default value specified in plugin settings will be used.
-* htmldecode / $htmldecode: Specify a charset for `html_entity_decode` or set to 0 if you dont want to use `html_entity_decode`. If ignored, the default value 'utf-8' will be used.
-* urldecode (only availabe in shortcode): Set to 1 to use `urldecode` for URLs with special charecters. Set to 0 if you do not want to use it. Default value is 1. 
+* htmldecode / $htmldecode: Specify a charset for `iconv` charset conversion of scraped content. You should specify the charset of the source url you are scraping from. If ignored, the default encoding of your blog will be used.
+* striptags / $striptags: Specify one or more tags in the format `<a><p>` to be striped off. Only the text content within these tags will be displayed. This can be used to strip off all links etc. If ignored, no tags are striped.
+* urldecode (only availabe in shortcode): Set to 1 to use `urldecode` for URLs with special charecters. Set to 0 if you do not want to use it. Default value is 1.
 
 = That sounds complex. Any simple shortcodes? =
 
@@ -106,13 +107,18 @@ For scraping, the plugin primarily uses [cURL](http://php.net/curl). This is a v
 
 This page will specifically detail usage of selectors which is the heart of WP Web Scraper. For parsing html, the plugin uses [phpQuery](http://code.google.com/p/phpquery/) and hence an elaborate documentation on selectors can be found at [phpQuery - Selector Documentation](http://code.google.com/p/phpquery/wiki/Selectors).
 
-Frankly, selectors are a standard way to query the DOM structure of the scraped html document. phpQuery uses CSS selectors (like jQuery) and hence those familier with jQuery selectors will find themselves at home. To get you started, you can use elements, #ids, .classes to identify content. Here are a few examples:
+Frankly, selectors are a standard way to query the DOM structure of the scraped html document. phpQuery uses CSS selectors (like jQuery) and hence those familier with CSS selectors will find themselves at home. To get you started, you can use elements, #ids, .classes to identify content. Here are a few examples:
 
 * 'td .specialhead:eq(0)' will get you content within the first `<td>` on the page with a class 'specialhead'.
 * 'table:eq(3) td:eq(3)' will get you content within the fourth `<td>` of the fourth `<table>` within the page.
 * '#header div:eq(1)' will get you content within the second `<div>` inside the first element with id 'header'.
 
 == Change Log ==
+
+**Version 1.8**
+
+1. Bug fix: `htmldecode` now uses iconv to convert scrap to requested character encoding. No need to change the charset of your blog to render scrap properly.
+1. Enhancement: Added `striptags` to strip off non-required html tags from the scrap.
 
 **Version 1.7**
 
