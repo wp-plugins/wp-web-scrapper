@@ -168,7 +168,7 @@ function wpws_parse_byselector($scrap, $url, $selector, $wpwsopt) {
 	phpQuery::selectDocument($doc);	
 	if($wpwsopt['output'] == 'text') 
 		$output = pq($selector)->text();
-	elseif($wpwsopt['output'] == 'html') 
+	if($wpwsopt['output'] == 'html') 
 		$output = pq($selector)->html();
 	if(!empty($wpwsopt['clear_regex'])) 
 		$output = preg_replace($wpwsopt['clear_regex'], '', $output);
