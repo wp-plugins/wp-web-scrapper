@@ -1,10 +1,10 @@
 === WP Web Scraper ===
 Contributors: akshay_raje
 Donate link: http://webdlabs.com/projects/donate/
-Tags: web scraping, curl, phpquery, realtime, post, sidebar, page, stock market
+Tags: web scraping, curl, phpquery, realtime, post, sidebar, page, stock market, html, import
 Requires at least: 2.6
-Tested up to: 2.9
-Stable tag: 2.0
+Tested up to: 2.9.2
+Stable tag: 2.1
 
 An easy to implement web scraper for WordPress. Display realtime data from any websites directly into your posts, pages or sidebar.
 
@@ -110,6 +110,7 @@ Other supported arguments (for theme tag / shortcode) are as mentioned below. On
 * on_error: Error handling options for cURL or Fopen. Available options are wpws_error_show (to display the error), wpws_error_hide (to fail silently) or wpws_error_show_cache (to display data from expired cache if any). Setting it to any other string will output the string itself. For instance `on_error="screwed!"` will output 'screwed!' if something goes wrong in the scrap. If ignored, the default value specified in plugin settings will be used.
 * htmldecode: Specify a charset for `iconv` charset conversion of scraped content. You should specify the charset of the source url you are scraping from. If ignored, the default encoding of your blog will be used.
 * striptags: Specify one or more tags in the format `<a><p>` to be striped off. Only the text content within these tags will be displayed. This can be used to strip off all links etc. If ignored, no tags are striped.
+* debug: Set to 1 to turn on debug information in form of an html comment in scrap or set 0 to turn it off. Default value is 1.
 * urldecode (only availabe in shortcode): Set to 1 to use `urldecode` for URLs with special characters. Set to 0 if you do not want to use it. Default value is 1.
 
 == Selectors ==
@@ -153,6 +154,9 @@ For example,
 
 
 == Changelog ==
+
+= 2.1 =
+* Enhancement: Option to turn off the debug information displayed as html comment.
 
 = 2.0 =
 * Milestone release: Complete overhaul of code, architecture and documentation.
@@ -219,5 +223,5 @@ For example,
 
 == Upgrade Notice ==
 
-= 2.0 =
-Milestone release with complete overhaul of code, architecture, documentation and multiple bugfixes.
+= 2.1 =
+Minor enhancement: Option to turn off the debug information displayed as html comment.

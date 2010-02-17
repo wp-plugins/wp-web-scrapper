@@ -118,7 +118,7 @@ function wpws_options_page(){
 		<p>An easy to implement professional web scraper for WordPress. This can be used to display realtime data from any websites directly into your posts, pages or sidebar. Use this to include realtime stock quotes, cricket or soccer scores or any other generic content. The scraper is built using timetested libraries cURL for scraping and phpQuery for parsing HTML.</p>
 		<p>For a custom mod or assistance in creation of advanced shortcodes please write to me at akshay.raje@gmail.com</p>
 		<h4>Supported by donations from</h4>
-		Jets (info@internetwerkt.nl), Dino (dinor@equotedata.com), Dimitriy (vakhman@sbcglobal.net), Jeremy (crasymaker@yahoo.com), Andy (andy@uk-solutions.co.uk) and Daisuke (bluesful@yahoo.co.jp)
+		Jets (info@internetwerkt.nl), Dino (dinor@equotedata.com), Dimitriy (vakhman@sbcglobal.net), Jeremy (crasymaker@yahoo.com), Andy (andy@uk-solutions.co.uk), Daisuke (bluesful@yahoo.co.jp), Donny Cruce (dyanni@windstream.net), Erik Hansén (erik.hansen@live.se) and Daniel O'Prey (admin@pixelcityhome.com)
 		</div>			
 	</div>
 </div>
