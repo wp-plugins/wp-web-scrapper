@@ -137,8 +137,19 @@ function wpws_get_content($url = '', $selector = '', $wpwsopt = '') {
             return wpws_HEADER.'WPWS Error: No URL and/or selector specified'.wpws_FOOTER;
         }
     }
-    $url = preg_replace_callback('/___(.*?)___/', create_function('$matches','return $_REQUEST[$matches[1]];'), $url);
-    $postargs = preg_replace_callback('/___(.*?)___/', create_function('$matches','return $_REQUEST[$matches[1]];'), $postargs);
+    
+    if( strstr($url, '___QUERY_STRING___') ) {
+        $url = str_replace('___QUERY_STRING___', $_SERVER['QUERY_STRING'], $url);
+    } else {
+        $url = preg_replace_callback('/___(.*?)___/', create_function('$matches','return $_REQUEST[$matches[1]];'), $url);
+    }
+
+    if( strstr($postargs, '___QUERY_STRING___') ) {
+        $postargs = str_replace('___QUERY_STRING___', $_SERVER['QUERY_STRING'], $postargs);
+    } else {
+        $postargs = preg_replace_callback('/___(.*?)___/', create_function('$matches','return $_REQUEST[$matches[1]];'), $postargs);
+    }
+
     $cache_key = $url;
     if (!empty($wpwsopt['postargs']))
         $cache_key .= '_postargs:'.$wpwsopt['postargs'];
@@ -151,7 +162,7 @@ function wpws_get_content($url = '', $selector = '', $wpwsopt = '') {
     if ($cache_status) {
         return wpws_parse_byselector($cache_value['data'], $url, $selector, $wpwsopt);
     } else {
-        $scrap = wpws_url_get_content(html_entity_decode($url), $wpwsopt['postargs'], $wpwsopt['user_agent'], $wpwsopt['timeout']);
+        $scrap = @wpws_url_get_content(html_entity_decode($url), $wpwsopt['postargs'], $wpwsopt['user_agent'], $wpwsopt['timeout']);
         if ($scrap['key']) {
             wpws_update_meta($cache_key, serialize( array('timestamp' => time(), 'data' => $scrap['value']) ));
             return wpws_parse_byselector($scrap['value'], $url, $selector, $wpwsopt);
@@ -173,8 +184,8 @@ function wpws_get_content($url = '', $selector = '', $wpwsopt = '') {
 function wpws_parse_byselector($scrap, $url, $selector, $wpwsopt) {
     global $wpdb;
     $currcharset = get_bloginfo('charset');
-    require_once('includes/phpQuery.php');
-    $doc = phpQuery::newDocumentHTML($scrap);
+    require_once('includes/phpQuery-onefile.php');
+    $doc = phpQuery::newDocumentHTML($scrap, $currcharset);
     phpQuery::selectDocument($doc);
     if($wpwsopt['output'] == 'text')
         $output = pq($selector)->text();

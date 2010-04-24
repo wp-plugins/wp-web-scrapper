@@ -4,7 +4,7 @@ Donate link: http://webdlabs.com/projects/donate/
 Tags: web scraping, curl, phpquery, realtime, post, sidebar, page, stock market, html, import
 Requires at least: 2.6
 Tested up to: 2.9.2
-Stable tag: 2.1
+Stable tag: 2.2
 
 An easy to implement web scraper for WordPress. Display realtime data from any websites directly into your posts, pages or sidebar.
 
@@ -134,6 +134,8 @@ For example, if you want a page to scrap symbols on reuters.com/finance dynamica
 
 This will replace `___symbol___` in the url with `CSCO.O` in realtime. You can use multiple such replacement variables in your url or postargs. Such replacement variables should be wrapped between 3 underscores.
 
+You can also use the special variable `___QUERY_STRING___` to replace the complete query string post ?
+
 == Modules ==
 
 = Market Data =
@@ -154,6 +156,10 @@ For example,
 
 
 == Changelog ==
+
+= 2.2 =
+* Enhancement: Introduction of special variable `___QUERY_STRING___` for dynamic URLs.
+* Enhancement: Upgraded the underlying phpQuery library to single file version.
 
 = 2.1 =
 * Enhancement: Option to turn off the debug information displayed as html comment.
@@ -223,5 +229,5 @@ For example,
 
 == Upgrade Notice ==
 
-= 2.1 =
-Minor enhancement: Option to turn off the debug information displayed as html comment.
+= 2.2 =
+* Minor enhancement: Introduction of special variable `___QUERY_STRING___` for dynamic URLs and upgraded the underlying phpQuery library to single file version.
