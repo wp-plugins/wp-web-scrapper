@@ -132,7 +132,7 @@ For example, if you want a page to scrap symbols on reuters.com/finance dynamica
 * url should be `http://www.reuters.com/finance/stocks/overview?symbol=___symbol___`
 * get argument for page should be `http://yourdomain.com/page/?symbol=CSCO.O (to get Cisco details)
 
-This will replace `___symbol___` in the url with `CSCO.O` in realtime. You can use multiple such replacement variables in your url or postargs. Such replacement variables should be wrapped between 3 underscores.
+This will replace `___symbol___` in the url with `CSCO.O` in realtime. You can use multiple such replacement variables in your url or postargs. Such replacement variables should be wrapped between 3 underscores. Note that field names being passed this was are case-sensitive. Having 'FieldName' vs. 'fieldname' makes a difference.
 
 You can also use the special variable `___QUERY_STRING___` to replace the complete query string post ?
 
