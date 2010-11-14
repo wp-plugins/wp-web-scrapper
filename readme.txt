@@ -26,8 +26,6 @@ An easy to implement professional web scraper for WordPress. This can be used to
 
 For demos and support, visit the [WP Web Scraper project page](http://webdlabs.com/projects/wp-web-scraper/). Comments appreciated.
 
-**Looking for an easy to use API for free Stock Market feeds (RSS, JSON etc)?** Try out a prototype API which I am working on, visit [http://smdapi.co.cc](http://smdapi.co.cc) for further details.
-
 == Installation ==
 
 1. Upload folder `wp-web-scrapper` to the `/wp-content/plugins/` directory
