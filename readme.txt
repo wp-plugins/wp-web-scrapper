@@ -2,15 +2,15 @@
 Contributors: akshay_raje
 Donate link: http://webdlabs.com/projects/donate/
 Tags: web scraping, curl, phpquery, realtime, post, sidebar, page, stock market, html, import
-Requires at least: 2.6
-Tested up to: 2.9.2
-Stable tag: 2.2
+Requires at least: 2.8
+Tested up to: 3.1
+Stable tag: 2.3
 
 An easy to implement web scraper for WordPress. Display realtime data from any websites directly into your posts, pages or sidebar.
 
 == Description ==
 
-An easy to implement professional web scraper for WordPress. This can be used to display realtime data from any websites directly into your posts, pages or sidebar. Use this to include realtime stock quotes, cricket or soccer scores or any other generic content. The scraper is built using time tested libraries cURL for scraping and phpQuery for parsing HTML. Features include:
+An easy to implement professional web scraper for WordPress. This can be used to display realtime data from any websites directly into your posts, pages or sidebar. Use this to include realtime stock quotes, cricket or soccer scores or any other generic content. The scraper is an extension of WP_HTTP class for scraping and uses phpQuery or xpath for parsing HTML. Features include:
 
 1. Can be easily implemented using the button in the post / page editor.
 1. Configurable caching of scraped data. Cache timeout in minutes can be defined in minutes for every scrap.
@@ -48,13 +48,13 @@ Use the 'Add new web scrap' button to add a web scrap to your post or page. You 
 
 WP Web Scraper can be used through a template tag (for direct integration in your theme) or shortcode (for posts, pages or sidebar) for scraping and displaying web content. Here's the actual usage detail:
 
-For use within themes: `<?php echo wpws_get_content($url, $selector, $wpwsopt)?>`
+For use within themes: `<?php echo wpws_get_content($url, $selector, $xpath, $wpwsopt)?>`
 
-Example usage in theme:	`<?php echo wpws_get_content('http://google.com','title','user_agent=My Bot&on_error=wpws_error_show&')?>` (Display the title tag of google's home page, using My Bot as a user agent)
+Example usage in theme:	`<?php echo wpws_get_content('http://google.com','title','','user_agent=My Bot&on_error=error_show&')?>` (Display the title tag of google's home page, using My Bot as a user agent)
 	
 For use directly in posts, pages or sidebar (text widget): `[wpws url="" selector=""]`
 
-Example usage as a shortcode: `[wpws url="http://google.com" selector="title" user_agent="My Bot" on_error="wpws_error_show"]` (Display the title tag of google's home page, using My Bot as a user agent)
+Example usage as a shortcode: `[wpws url="http://google.com" selector="title" user_agent="My Bot" on_error="error_show"]` (Display the title tag of google's home page, using My Bot as a user agent)
 
 For usage of other advanced parameters refer the [Usage Manual](http://wordpress.org/extend/plugins/wp-web-scrapper/other_notes/) 
 
@@ -70,26 +70,26 @@ For usage of other advanced parameters refer to [Modules](http://wordpress.org/e
 
 = Wow! I can actually create a complete meshup using this! =
 
-Yes you can. However, you should consider the copyright of the content owner. Its best to at least attribute the content owner by a linkback or better take a written permission. Apart from rights, cURLing in general is a very resource intensive task. It will exhaust the bandwidth of your host as well as the host of of the content owner. Best is not to overdo it. Ideally find single pages with enough content to create your your meshup.
+Yes you can. However, you should consider the copyright of the content owner. Its best to at least attribute the content owner by a linkback or better take a written permission. Apart from rights, scraping in general is a very resource intensive task. It will exhaust the bandwidth of your host as well as the host of of the content owner. Best is not to overdo it. Ideally find single pages with enough content to create your your meshup.
 
 = Okie. Then whats the best way to optimize its usage? =
 
 Here are some tips to help you optimize the usage:
 
 1. Keep the timeout as low as possible (least is 1 second). Higher timeout might impact your page processing time if you are dealing with content on slow servers.
-1. If you plan use multiple scrapers in a single page, make sure you set the cache timeout to a larger period. Possibly as long as a day (i.e. 1440 minutes) or even more. This will cache content on your server and reduce cURLing.
+1. If you plan use multiple scrapers in a single page, make sure you set the cache timeout to a larger period. Possibly as long as a day (i.e. 1440 minutes) or even more. This will cache content on your server and reduce scraping.
 1. Use fast loading pages as your content source. Also prefer pages low in size to optimize performance.
 1. Keep a close watch on your scraper. If the website changes its page layout, your selector may fail to fetch the right content.
 1. If you are scraping a lot, keep a watch on your cache size too. Clear cache occasionaly.
 
 = What libraries are used? What are the minimum requirements apart from WordPress =
 
-For scraping, the plugin primarily uses [cURL](http://php.net/curl). This is a very robust library (libcurl) which comes embedded with PHPs pre compiled versions. Verify your php.ini or phpinfo() to check if your host supports this. For parsing html, the plugin uses [phpQuery](http://code.google.com/p/phpquery/). This is a server-side, chainable, CSS3 selector driven Document Object Model (DOM) API based on jQuery JavaScript Library.
+For scraping, the plugin primarily uses [WP_HTTP classes](http://codex.wordpress.org/HTTP_API). This is a very robust library which ships with WordPress. Verify your php.ini or phpinfo() to check if your host supports this. For parsing html, the plugin uses [phpQuery](http://code.google.com/p/phpquery/). This is a server-side, chainable, CSS3 selector driven Document Object Model (DOM) API based on jQuery JavaScript Library. You can also use xpath queries if you find it comfortable.
 
 == Usage Manual ==
 
-For use within themes: `<?php echo wpws_get_content($url, $selector, $wpwsopt)?>`
-Example usage in theme:	`<?php echo wpws_get_content('http://google.com','title','user_agent=My+Bot&on_error=wpws_error_show&')?>` (Display the title tag of google's home page, using My Bot as a user agent)
+For use within themes: `<?php echo wpws_get_content($url, $selector, $xpath, $wpwsopt)?>` (selector or xpath is optional - you may use either of these)
+Example usage in theme:	`<?php echo wpws_get_content('http://google.com','title','','user_agent=My+Bot&on_error=wpws_error_show&')?>` (Display the title tag of google's home page, using My Bot as a user agent)
 	
 For use directly in posts, pages or sidebar (text widget): `[wpws url="" selector=""]`
 Example usage as a shortcode: `[wpws url="http://google.com" selector="title" user_agent="My Bot" on_error="wpws_error_show"]` (Display the title tag of google's home page, using My Bot as a user agent)
@@ -98,6 +98,7 @@ Other supported arguments (for theme tag / shortcode) are as mentioned below. On
 
 * url (Required): The complete URL which needs to be scraped.
 * selector (Required): The jQuery style selector string to select the content to be scraped. You can use elements, ids or classes for this. Further details about selector syntax in 'Selectors' section below
+* xpath: Generic xpath query can be used as an alternate query method over selectors.
 * postargs: A string of post arguments to the page you are trying to scrap. For example `id=197&cat=5`
 * clear_regex: Regex pattern to be cleared before the scraper flushes its output. For example `/[aeiou]/` will clear all single lowercase vowel from the output. This [Regex reference](http://gnosis.cx/publish/programming/regular_expressions.html) will be helpful.
 * replace_regex: Regex pattern to be replaced with `replace_text` before the scraper flushes its output. For example `/[aeiou]/` will replace all single lowercase vowel from the output. This [Regex reference](http://gnosis.cx/publish/programming/regular_expressions.html) will be helpful.
@@ -106,8 +107,8 @@ Other supported arguments (for theme tag / shortcode) are as mentioned below. On
 * cache: Timeout interval of the cached data in minutes. If ignored, the default value specified in plugin settings will be used.
 * output: Format of output rendered by the selector (text or html). Text format strips all html tags and returns only text content. Html format retirns the scrap as in with the html tags. If ignored, the default value 'text' will be used.
 * user_agent: The USERAGENT header for cURL or Fopen. This string acts as your footprint while scraping data. If ignored, the default value specified in plugin settings will be used.
-* timeout: Timeout interver for cURL function in seconds. Higer the better for scraping slow servers, but this will also increase your page load time. Ideally should not exceed 2. If ignored, the default value specified in plugin settings will be used.
-* on_error: Error handling options for cURL or Fopen. Available options are wpws_error_show (to display the error), wpws_error_hide (to fail silently) or wpws_error_show_cache (to display data from expired cache if any). Setting it to any other string will output the string itself. For instance `on_error="screwed!"` will output 'screwed!' if something goes wrong in the scrap. If ignored, the default value specified in plugin settings will be used.
+* timeout: Timeout interver for cURL or Fopen function in seconds. Higer the better for scraping slow servers, but this will also increase your page load time. Ideally should not exceed 2. If ignored, the default value specified in plugin settings will be used.
+* on_error: Error handling options for cURL or Fopen. Available options are error_show (to display the error), error_hide (to fail silently) or error_show_cache (to display data from expired cache if any). Setting it to any other string will output the string itself. For instance `on_error="screwed!"` will output 'screwed!' if something goes wrong in the scrap. If ignored, the default value specified in plugin settings will be used.
 * htmldecode: Specify a charset for `iconv` charset conversion of scraped content. You should specify the charset of the source url you are scraping from. If ignored, the default encoding of your blog will be used.
 * striptags: Specify one or more tags in the format `<a><p>` to be striped off. Only the text content within these tags will be displayed. This can be used to strip off all links etc. If ignored, no tags are striped.
 * debug: Set to 1 to turn on debug information in form of an html comment in scrap or set 0 to turn it off. Default value is 1.
@@ -122,6 +123,8 @@ Frankly, selectors are a standard way to query the DOM structure of the scraped 
 * 'td .specialhead:eq(0)' will get you content within the first `<td>` on the page with a class 'specialhead'.
 * 'table:eq(3) td:eq(3)' will get you content within the fourth `<td>` of the fourth `<table>` within the page.
 * '#header div:eq(1)' will get you content within the second `<div>` inside the first element with id 'header'.
+
+Since version 2.3, you can also optionally use xpaths to query your content. Details on usage of xpath can be found in the [PHP documentation](http://php.net/manual/en/simplexmlelement.xpath.php). XPaths can be handy while trying to scrape non-standard html tags or while working with RSS / ATOM or generic XML feeds.
 
 == Dynamic URLs and postargs ==
 
@@ -156,6 +159,12 @@ For example,
 
 
 == Changelog ==
+
+= 2.3 =
+* Enhancement: Added support for xpaths.
+* Enhancement: Uses builtin WP_HTTP classes instead of raw cURL or Fopen.
+* Enhancement: Complete overhaul of code, architecture and documentation.
+* Enhancement: Reversed to filebased cache instead of MySQL tables.
 
 = 2.2 =
 * Enhancement: Introduction of special variable `___QUERY_STRING___` for dynamic URLs.
@@ -229,5 +238,5 @@ For example,
 
 == Upgrade Notice ==
 
-= 2.2 =
-* Minor enhancement: Introduction of special variable `___QUERY_STRING___` for dynamic URLs and upgraded the underlying phpQuery library to single file version.
+= 2.3 =
+* Major enhancement: Added xpath support, uses standard WP_HTTP class, overhaul of code and documentation and restored file based cache.
