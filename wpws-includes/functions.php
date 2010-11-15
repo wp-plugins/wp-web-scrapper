@@ -5,11 +5,18 @@ require_once 'wp-bootstrap.php';
 /**
  * Load all module files in '/wp-web-scrapper/wpws-content/modules/
  */
+global $wpdb;
+$wpws_options = get_option('wpws_options');
 foreach (glob(WP_PLUGIN_DIR.'/wp-web-scrapper/wpws-content/modules/*.php') as $mod) {
     require_once($mod);
-    if((get_option('wpws_sc_posts') == 1) && (function_exists("wpws_shortcode_$wpws_mod_name")))
+    if(($wpws_options['sc_posts'] == 1) && (function_exists("wpws_shortcode_$wpws_mod_name")))
         add_shortcode("wpws_$wpws_mod_name", "wpws_shortcode_$wpws_mod_name");
 }
+
+if($wpws_options['sc_posts'] == 1)
+    add_shortcode('wpws', 'wpws_shortcode');
+if($wpws_options['sc_sidebar'] == 1)
+    add_filter('widget_text', 'do_shortcode');
 
 /**
  * Adds admin menu page(s)
@@ -53,29 +60,31 @@ function wpws_register_activation_hook() {
  */
 function wpws_shortcode($atts) {
     global $wpdb;
+    $wpws_options = get_option('wpws_options');
     extract( shortcode_atts( array(
-            'url' => '',
-            'postargs' => '',
-            'selector' => '',
-            'cache' => get_option('wpws_cache'),
-            'user_agent' => get_option('wpws_user_agent'),
-            'timeout' => get_option('wpws_timeout'),
-            'on_error' => get_option('wpws_on_error'),
-            'output' => 'html',
-            'clear_regex' => '',
-            'replace_regex' => '',
-            'replace_with' => '',
-            'basehref' => '',
-            'striptags' => '',
-            'debug' => '1',
-            'htmldecode' => '',
-            'urldecode' => '1'
-            ), $atts));
+        'url' => '',
+        'postargs' => '',
+        'selector' => '',
+        'xpath' => '',
+        'cache' => $wpws_options['cache'],
+        'user_agent' => $wpws_options['useragent'],
+        'timeout' => $wpws_options['timeout'],
+        'on_error' => $wpws_options['on_error'],
+        'output' => 'html',
+        'clear_regex' => '',
+        'replace_regex' => '',
+        'replace_with' => '',
+        'basehref' => '',
+        'striptags' => '',
+        'debug' => '1',
+        'htmldecode' => '',
+        'urldecode' => '1'
+    ), $atts));
     if($urldecode == '1') {
         $url = urldecode($url);
         $postargs = urldecode($postargs);
     }
-    return wpws_get_content($url, $selector, 'postargs='.$postargs.'&cache='.$cache.'&user_agent='.$user_agent.'&timeout='.$timeout.'&on_error='.$on_error.'&output='.$output.'&clear_regex='.$clear_regex.'&replace_regex='.$replace_regex.'&replace_with='.$replace_with.'&basehref='.$basehref.'&striptags='.$striptags.'&debug='.$debug.'&htmldecode='.$htmldecode);
+    return wpws_get_content($url, $selector, $xpath, 'postargs='.$postargs.'&cache='.$cache.'&user_agent='.$user_agent.'&timeout='.$timeout.'&on_error='.$on_error.'&output='.$output.'&clear_regex='.$clear_regex.'&replace_regex='.$replace_regex.'&replace_with='.$replace_with.'&basehref='.$basehref.'&striptags='.$striptags.'&debug='.$debug.'&htmldecode='.$htmldecode);
 }
 
 /**
@@ -311,7 +320,7 @@ function wpws_strip_only($str, $tags) {
  * @return string
  */
 function wpws_debug() {
-    $url_content = wpws_get_content('http://www.wikipedia.org/','title','','on_error=error_show&cache=10&timeout=2');
+    $url_content = wpws_get_content('http://google.com/','title','','on_error=error_show&cache=10&timeout=2');
     if ( strpos($url_content,'Error ') !== false ) {
         return 'Fatel error: WP Web Scraper could not fetch content - may not function properly';
     } else {
