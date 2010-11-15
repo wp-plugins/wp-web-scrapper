@@ -21,7 +21,7 @@ function wpws_shortcode_market_data($atts) {
 	), $atts);
 	$url_selector = wpws_market_data_source($market_data_array['market'], $market_data_array['symbol'], $market_data_array['datatype']);
 	$wpwsopt = wp_parse_args( $wpwsopt, $url_selector );
-	return wpws_get_content($url_selector['url'], $url_selector['selector'], $wpwsopt);
+	return wpws_get_content($url_selector['url'], $url_selector['selector'], '', $wpwsopt);
 }
 
 
