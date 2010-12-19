@@ -1,10 +1,10 @@
 === WP Web Scraper ===
 Contributors: akshay_raje
 Donate link: http://webdlabs.com/projects/donate/
-Tags: web scraping, curl, phpquery, realtime, post, sidebar, page, stock market, html, import
+Tags: web scraping, curl, phpquery, xpath, realtime, post, sidebar, page, stock market, html, import
 Requires at least: 2.8
 Tested up to: 3.1
-Stable tag: 2.3
+Stable tag: 2.4
 
 An easy to implement web scraper for WordPress. Display realtime data from any websites directly into your posts, pages or sidebar.
 
@@ -87,10 +87,10 @@ For scraping, the plugin primarily uses [WP_HTTP classes](http://codex.wordpress
 == Usage Manual ==
 
 For use within themes: `<?php echo wpws_get_content($url, $selector, $xpath, $wpwsopt)?>` (selector or xpath is optional - you may use either of these)
-Example usage in theme:	`<?php echo wpws_get_content('http://google.com','title','','user_agent=My+Bot&on_error=wpws_error_show&')?>` (Display the title tag of google's home page, using My Bot as a user agent)
+Example usage in theme:	`<?php echo wpws_get_content('http://google.com','title','','user_agent=Bot+at+mysite.com&on_error=error_show&')?>` (Display the title tag of google's home page, using My Bot as a user agent)
 	
 For use directly in posts, pages or sidebar (text widget): `[wpws url="" selector=""]`
-Example usage as a shortcode: `[wpws url="http://google.com" selector="title" user_agent="My Bot" on_error="wpws_error_show"]` (Display the title tag of google's home page, using My Bot as a user agent)
+Example usage as a shortcode: `[wpws url="http://google.com" selector="title" user_agent="Bot at mysite.com" on_error="error_show"]` (Display the title tag of google's home page, using My Bot as a user agent)
 
 Other supported arguments (for theme tag / shortcode) are as mentioned below. Only `url` and `selector` are required. All the rest are optional:
 
@@ -111,6 +111,7 @@ Other supported arguments (for theme tag / shortcode) are as mentioned below. On
 * striptags: Specify one or more tags in the format `<a><p>` to be striped off. Only the text content within these tags will be displayed. This can be used to strip off all links etc. If ignored, no tags are striped.
 * debug: Set to 1 to turn on debug information in form of an html comment in scrap or set 0 to turn it off. Default value is 1.
 * urldecode (only availabe in shortcode): Set to 1 to use `urldecode` for URLs with special characters. Set to 0 if you do not want to use it. Default value is 1.
+* xpathdecode (only availabe in shortcode): Set to 1 to use urldecode for xpath queries with special characters. Set to 0 if you do not want to use it. Default value is 0.
 
 == Selectors ==
 
@@ -157,6 +158,9 @@ For example,
 
 
 == Changelog ==
+
+= 2.4 =
+* Bug fix: Added xpathdecode to handle complex xpath queries in shortcode.
 
 = 2.3 =
 * Enhancement: Added support for xpaths.

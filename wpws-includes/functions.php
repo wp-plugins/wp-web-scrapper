@@ -78,13 +78,16 @@ function wpws_shortcode($atts) {
         'striptags' => '',
         'debug' => '1',
         'htmldecode' => '',
-        'urldecode' => '1'
+        'urldecode' => '1',
+        'xpathdecode' => ''
     ), $atts));
     $url = str_replace('&#038;', '&', $url);
     if($urldecode == '1') {
         $url = urldecode($url);
         $postargs = urldecode($postargs);
     }
+    if($xpathdecode == '1')
+        $xpath = urldecode($xpath);
     return wpws_get_content($url, $selector, $xpath, 'postargs='.$postargs.'&cache='.$cache.'&user_agent='.$user_agent.'&timeout='.$timeout.'&on_error='.$on_error.'&output='.$output.'&clear_regex='.$clear_regex.'&replace_regex='.$replace_regex.'&replace_with='.$replace_with.'&basehref='.$basehref.'&striptags='.$striptags.'&debug='.$debug.'&htmldecode='.$htmldecode);
 }
 
