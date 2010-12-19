@@ -240,5 +240,5 @@ For example,
 
 == Upgrade Notice ==
 
-= 2.3 =
-* Major enhancement: Added xpath support, uses standard WP_HTTP class, overhaul of code and documentation and restored file based cache.
+= 2.4 =
+* Bug fix: Added xpathdecode to handle complex xpath queries in shortcode.
