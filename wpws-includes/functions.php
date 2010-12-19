@@ -80,6 +80,7 @@ function wpws_shortcode($atts) {
         'htmldecode' => '',
         'urldecode' => '1'
     ), $atts));
+    $url = str_replace('&#038;', '&', $url);
     if($urldecode == '1') {
         $url = urldecode($url);
         $postargs = urldecode($postargs);
