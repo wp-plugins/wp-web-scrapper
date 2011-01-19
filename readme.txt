@@ -49,12 +49,12 @@ WP Web Scraper can be used through a template tag (for direct integration in you
 For use within themes: `<?php echo wpws_get_content($url, $selector, $xpath, $wpwsopt)?>`
 
 Example usage in theme:	`<?php echo wpws_get_content('http://google.com','title','','user_agent=My Bot&on_error=error_show&')?>` (Display the title tag of google's home page, using My Bot as a user agent)
-
+	
 For use directly in posts, pages or sidebar (text widget): `[wpws url="" selector=""]`
 
 Example usage as a shortcode: `[wpws url="http://google.com" selector="title" user_agent="My Bot" on_error="error_show"]` (Display the title tag of google's home page, using My Bot as a user agent)
 
-For usage of other advanced parameters refer the [Usage Manual](http://wordpress.org/extend/plugins/wp-web-scrapper/other_notes/)
+For usage of other advanced parameters refer the [Usage Manual](http://wordpress.org/extend/plugins/wp-web-scrapper/other_notes/) 
 
 Further details about selector syntax in [Selectors](http://wordpress.org/extend/plugins/wp-web-scrapper/other_notes/)
 
@@ -64,7 +64,7 @@ Yes, WP Web Scraper also has a module architecture to extend its functionality t
 
 Here is a usage example of the stock market data shortcode: `[wpws_market_data market="" symbol="" datatype=""]`
 
-For usage of other advanced parameters refer to [Modules](http://wordpress.org/extend/plugins/wp-web-scrapper/other_notes/)
+For usage of other advanced parameters refer to [Modules](http://wordpress.org/extend/plugins/wp-web-scrapper/other_notes/) 
 
 = Wow! I can actually create a complete meshup using this! =
 
@@ -88,7 +88,7 @@ For scraping, the plugin primarily uses [WP_HTTP classes](http://codex.wordpress
 
 For use within themes: `<?php echo wpws_get_content($url, $selector, $xpath, $wpwsopt)?>` (selector or xpath is optional - you may use either of these)
 Example usage in theme:	`<?php echo wpws_get_content('http://google.com','title','','user_agent=Bot+at+mysite.com&on_error=error_show&')?>` (Display the title tag of google's home page, using My Bot as a user agent)
-
+	
 For use directly in posts, pages or sidebar (text widget): `[wpws url="" selector=""]`
 Example usage as a shortcode: `[wpws url="http://google.com" selector="title" user_agent="Bot at mysite.com" on_error="error_show"]` (Display the title tag of google's home page, using My Bot as a user agent)
 
@@ -111,7 +111,7 @@ Other supported arguments (for theme tag / shortcode) are as mentioned below. On
 * striptags: Specify one or more tags in the format `<a><p>` to be striped off. Only the text content within these tags will be displayed. This can be used to strip off all links etc. If ignored, no tags are striped.
 * debug: Set to 1 to turn on debug information in form of an html comment in scrap or set 0 to turn it off. Default value is 1.
 * urldecode (only availabe in shortcode): Set to 1 to use `urldecode` for URLs with special characters. Set to 0 if you do not want to use it. Default value is 1.
-* xpathdecode (only availabe in shortcode): Set to 1 to use urldecode for xpath queries with special characters. Set to 0 if you do not want to use it. Default value is 0.
+* xpathdecode (only availabe in shortcode): Set to 1 to use `xpathdecode` for xpath queries with special characters. Set to 0 if you do not want to use it. Default value is 0.
 
 == Selectors ==
 
