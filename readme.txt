@@ -4,7 +4,7 @@ Donate link: http://webdlabs.com/projects/donate/
 Tags: web scraping, curl, phpquery, xpath, realtime, post, sidebar, page, stock market, html, import
 Requires at least: 2.8
 Tested up to: 3.1
-Stable tag: 2.4
+Stable tag: 2.5
 
 An easy to implement web scraper for WordPress. Display realtime data from any websites directly into your posts, pages or sidebar.
 
@@ -159,6 +159,9 @@ For example,
 
 == Changelog ==
 
+= 2.5 =
+* Bug fix: Patched a major security issue related to useragent string settings.
+
 = 2.4 =
 * Bug fix: Added xpathdecode to handle complex xpath queries in shortcode.
 
@@ -240,5 +243,5 @@ For example,
 
 == Upgrade Notice ==
 
-= 2.4 =
-* Bug fix: Added xpathdecode to handle complex xpath queries in shortcode.
+= 2.5 =
+* Bug fix: Patched a major security issue related to useragent string settings.

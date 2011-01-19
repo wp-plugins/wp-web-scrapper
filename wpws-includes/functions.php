@@ -81,7 +81,7 @@ function wpws_shortcode($atts) {
         'urldecode' => '1',
         'xpathdecode' => ''
     ), $atts));
-    $url = str_replace('&#038;', '&', $url);
+    $url = str_replace(array('&#038;','&#38;','&amp'), '&', $url);
     if($urldecode == '1') {
         $url = urldecode($url);
         $postargs = urldecode($postargs);
@@ -153,7 +153,7 @@ function wpws_get_content($url, $selector = '', $xpath = '', $wpwsopt = '') {
 
     if ( !empty($wpwsopt['postargs']) )
         $http_args['headers'] = $wpwsopt['postargs'];
-    $http_args['useragent'] = $wpwsopt['user_agent'];
+    $http_args['user-agent'] = $wpwsopt['user_agent'];
     $http_args['timeout'] = $wpwsopt['timeout'];
 
     $response = wpws_remote_request($url, $cache_args, $http_args);

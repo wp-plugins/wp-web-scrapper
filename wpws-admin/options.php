@@ -108,17 +108,17 @@ function wpws_options_page(){
             </form>
         </div>
         <div id="tab2" class="tab_content">
-            <?php echo wpws_get_content('http://wordpress.org/extend/plugins/wp-web-scrapper/faq/?v20','div.block-content:eq(0)','','on_error=error_show_cache&timeout=3&cache=720000') ?>
+            <?php echo wpws_get_content('http://wordpress.org/extend/plugins/wp-web-scrapper/faq/?v25','div.block-content:eq(0)','','on_error=error_show_cache&timeout=3&cache=720000') ?>
         </div>
         <div id="tab3" class="tab_content">
-            <?php echo wpws_get_content('http://wordpress.org/extend/plugins/wp-web-scrapper/other_notes/?v20','div.block-content:eq(0)','','on_error=error_show_cache&timeout=3&cache=720000') ?>
+            <?php echo wpws_get_content('http://wordpress.org/extend/plugins/wp-web-scrapper/other_notes/?v25','div.block-content:eq(0)','','on_error=error_show_cache&timeout=3&cache=720000') ?>
         </div>
         <div id="tab4" class="tab_content">
             <h4>About WP Web Scraper</h4>
             <p>An easy to implement professional web scraper for WordPress. This can be used to display realtime data from any websites directly into your posts, pages or sidebar. Use this to include realtime stock quotes, cricket or soccer scores or any other generic content. The scraper is built using timetested libraries cURL for scraping and phpQuery for parsing HTML.</p>
             <p>For a custom mod or assistance in creation of advanced shortcodes please write to me at akshay.raje@gmail.com</p>
             <h4>Supported by donations from</h4>
-            Jets (info@internetwerkt.nl), Dino (dinor@equotedata.com), Dimitriy (vakhman@sbcglobal.net), Jeremy (crasymaker@yahoo.com), Andy (andy@uk-solutions.co.uk), Daisuke (bluesful@yahoo.co.jp), Donny Cruce (dyanni@windstream.net), Erik HansÃ©n (erik.hansen@live.se), Daniel O'Prey (admin@pixelcityhome.com), Gregory Reddin (greddin@yahoo.com) and Bob Hendren (bhendren@listingware.com)
+            Jets (info@internetwerkt.nl), Dino (dinor@equotedata.com), Dimitriy (vakhman@sbcglobal.net), Jeremy (crasymaker@yahoo.com), Andy (andy@uk-solutions.co.uk), Daisuke (bluesful@yahoo.co.jp), Donny Cruce (dyanni@windstream.net), Erik Hansén (erik.hansen@live.se), Daniel O'Prey (admin@pixelcityhome.com), Gregory Reddin (greddin@yahoo.com), Bob Hendren (bhendren@listingware.com) and Juri Totaro (juri.totaro@gmail.com)
         </div>
     </div>
 </div>
