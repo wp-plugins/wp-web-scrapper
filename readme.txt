@@ -111,7 +111,7 @@ Other supported arguments (for theme tag / shortcode) are as mentioned below. On
 * striptags: Specify one or more tags in the format `<a><p>` to be striped off. Only the text content within these tags will be displayed. This can be used to strip off all links etc. If ignored, no tags are striped.
 * debug: Set to 1 to turn on debug information in form of an html comment in scrap or set 0 to turn it off. Default value is 1.
 * urldecode (only availabe in shortcode): Set to 1 to use `urldecode` for URLs with special characters. Set to 0 if you do not want to use it. Default value is 1.
-* xpathdecode (only availabe in shortcode): Set to 1 to use urldecode for xpath queries with special characters. Set to 0 if you do not want to use it. Default value is 0.
+* xpathdecode (only availabe in shortcode): Set to 1 to use `xpathdecode` for xpath queries with special characters. Set to 0 if you do not want to use it. Default value is 0.
 
 == Selectors ==
 
