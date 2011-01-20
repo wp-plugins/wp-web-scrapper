@@ -81,7 +81,7 @@ function wpws_shortcode($atts) {
         'urldecode' => '1',
         'xpathdecode' => ''
     ), $atts));
-    $url = str_replace(array('&#038;','&#38;','&amp'), '&', $url);
+    $url = str_replace(array('&#038;','&#38;','&amp;'), '&', $url);
     if($urldecode == '1') {
         $url = urldecode($url);
         $postargs = urldecode($postargs);
