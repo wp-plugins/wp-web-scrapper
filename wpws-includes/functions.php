@@ -53,6 +53,16 @@ function wpws_register_activation_hook() {
     add_option('wpws_options', $default_wpws_options);
     add_shortcode('wpws', 'wpws_shortcode');
     add_filter('widget_text', 'do_shortcode');
+    // Define and create required directories
+    $required_dir = array(
+        'modules' => WP_PLUGIN_DIR.'/wp-web-scrapper/wpws-content/modules',
+        'http-cache' => WP_PLUGIN_DIR.'/wp-web-scrapper/wpws-content/http-cache'
+    );
+    foreach ($required_dir as $dir)
+        if( !is_dir($dir) ) mkdir($dir, 0777);
+    if( !file_exists($required_dir.'/wpws-market-data.php') )
+        rename(WP_PLUGIN_DIR.'/wp-web-scrapper/wpws-includes/wpws-market-data.php', $required_dir['modules'].'/wpws-market-data.php');
+
 }
 
 /**
@@ -76,6 +86,7 @@ function wpws_shortcode($atts) {
         'replace_with' => '',
         'basehref' => '',
         'striptags' => '',
+        'removetags' => '',
         'debug' => '1',
         'htmldecode' => '',
         'urldecode' => '1',
@@ -88,7 +99,7 @@ function wpws_shortcode($atts) {
     }
     if($xpathdecode == '1')
         $xpath = urldecode($xpath);
-    return wpws_get_content($url, $selector, $xpath, 'postargs='.$postargs.'&cache='.$cache.'&user_agent='.$user_agent.'&timeout='.$timeout.'&on_error='.$on_error.'&output='.$output.'&clear_regex='.$clear_regex.'&replace_regex='.$replace_regex.'&replace_with='.$replace_with.'&basehref='.$basehref.'&striptags='.$striptags.'&debug='.$debug.'&htmldecode='.$htmldecode);
+    return wpws_get_content($url, $selector, $xpath, 'postargs='.$postargs.'&cache='.$cache.'&user_agent='.$user_agent.'&timeout='.$timeout.'&on_error='.$on_error.'&output='.$output.'&clear_regex='.$clear_regex.'&replace_regex='.$replace_regex.'&replace_with='.$replace_with.'&basehref='.$basehref.'&striptags='.$striptags.'&removetags='.$removetags.'&debug='.$debug.'&htmldecode='.$htmldecode);
 }
 
 /**
@@ -114,11 +125,12 @@ function wpws_get_content($url, $selector = '', $xpath = '', $wpwsopt = '') {
             'replace_with' => '',
             'basehref' => '',
             'striptags' => '',
+            'removetags' => '',
             'debug' => '1',
             'htmldecode' => ''
     );
     $wpwsopt = wp_parse_args( $wpwsopt, $default_wpwsopt );
-    
+
     if($wpwsopt['debug'] == '1') {
         $header = "\n<!--\n Start of web scrap dump (created by wp-web-scraper)\n Source URL: $url \n CSS Selector: $selector \n-->\n";
         $footer = "\n<!--End of web scrap dump-->\n";
@@ -189,7 +201,7 @@ function wpws_get_content($url, $selector = '', $xpath = '', $wpwsopt = '') {
         if ($wpwsopt['on_error'] == 'error_show')
             return $header."Error fetching $url - ".$response->get_error_message().$footer;
     }
-    
+
 }
 
 /**
@@ -299,6 +311,8 @@ function wpws_parse_filtered_html($filtered_html, $wpwsopt) {
         $filtered_html = preg_replace('#(href|src)="([^:"]*)("|(?:(?:%20|\s|\+)[^"]*"))#','$1="'.$wpwsopt['basehref'].'$2$3',$filtered_html);
     if(!empty($wpwsopt['striptags']))
         $filtered_html = wpws_strip_only($filtered_html, $wpwsopt['striptags']);
+    if(!empty($wpwsopt['removetags']))
+        $filtered_html = wpws_strip_only($filtered_html, $wpwsopt['removetags'], true);
     if(!empty($wpwsopt['htmldecode']))
         $filtered_html = iconv($wpwsopt['htmldecode'], $currcharset, $filtered_html);
     return $filtered_html;
@@ -308,14 +322,20 @@ function wpws_parse_filtered_html($filtered_html, $wpwsopt) {
  * Strip specified tags
  * @param string $str
  * @param string/array $tags
+ * @param bool $strip_content
  * @return string
  */
-function wpws_strip_only($str, $tags) {
+function wpws_strip_only($str, $tags, $strip_content = false) {
+    $content = '';
     if(!is_array($tags)) {
         $tags = (strpos($str, '>') !== false ? explode('>', str_replace('<', '', $tags)) : array($tags));
         if(end($tags) == '') array_pop($tags);
     }
-    foreach($tags as $tag) $str = preg_replace('#</?'.$tag.'[^>]*>#is', '', $str);
+    foreach($tags as $tag) {
+        if ($strip_content)
+             $content = '(.+</'.$tag.'(>|\s[^>]*>)|)';
+         $str = preg_replace('#</?'.$tag.'(>|\s[^>]*>)'.$content.'#is', '', $str);
+    }
     return $str;
 }
 

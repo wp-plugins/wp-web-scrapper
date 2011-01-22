@@ -4,7 +4,7 @@ Donate link: http://webdlabs.com/projects/donate/
 Tags: web scraping, curl, phpquery, xpath, realtime, post, sidebar, page, stock market, html, import
 Requires at least: 2.8
 Tested up to: 3.1
-Stable tag: 2.5
+Stable tag: 2.6
 
 An easy to implement web scraper for WordPress. Display realtime data from any websites directly into your posts, pages or sidebar.
 
@@ -49,12 +49,12 @@ WP Web Scraper can be used through a template tag (for direct integration in you
 For use within themes: `<?php echo wpws_get_content($url, $selector, $xpath, $wpwsopt)?>`
 
 Example usage in theme:	`<?php echo wpws_get_content('http://google.com','title','','user_agent=My Bot&on_error=error_show&')?>` (Display the title tag of google's home page, using My Bot as a user agent)
-	
+
 For use directly in posts, pages or sidebar (text widget): `[wpws url="" selector=""]`
 
 Example usage as a shortcode: `[wpws url="http://google.com" selector="title" user_agent="My Bot" on_error="error_show"]` (Display the title tag of google's home page, using My Bot as a user agent)
 
-For usage of other advanced parameters refer the [Usage Manual](http://wordpress.org/extend/plugins/wp-web-scrapper/other_notes/) 
+For usage of other advanced parameters refer the [Usage Manual](http://wordpress.org/extend/plugins/wp-web-scrapper/other_notes/)
 
 Further details about selector syntax in [Selectors](http://wordpress.org/extend/plugins/wp-web-scrapper/other_notes/)
 
@@ -64,7 +64,7 @@ Yes, WP Web Scraper also has a module architecture to extend its functionality t
 
 Here is a usage example of the stock market data shortcode: `[wpws_market_data market="" symbol="" datatype=""]`
 
-For usage of other advanced parameters refer to [Modules](http://wordpress.org/extend/plugins/wp-web-scrapper/other_notes/) 
+For usage of other advanced parameters refer to [Modules](http://wordpress.org/extend/plugins/wp-web-scrapper/other_notes/)
 
 = Wow! I can actually create a complete meshup using this! =
 
@@ -88,7 +88,7 @@ For scraping, the plugin primarily uses [WP_HTTP classes](http://codex.wordpress
 
 For use within themes: `<?php echo wpws_get_content($url, $selector, $xpath, $wpwsopt)?>` (selector or xpath is optional - you may use either of these)
 Example usage in theme:	`<?php echo wpws_get_content('http://google.com','title','','user_agent=Bot+at+mysite.com&on_error=error_show&')?>` (Display the title tag of google's home page, using My Bot as a user agent)
-	
+
 For use directly in posts, pages or sidebar (text widget): `[wpws url="" selector=""]`
 Example usage as a shortcode: `[wpws url="http://google.com" selector="title" user_agent="Bot at mysite.com" on_error="error_show"]` (Display the title tag of google's home page, using My Bot as a user agent)
 
@@ -109,6 +109,7 @@ Other supported arguments (for theme tag / shortcode) are as mentioned below. On
 * on_error: Error handling options for cURL or Fopen. Available options are error_show (to display the error), error_hide (to fail silently) or error_show_cache (to display data from expired cache if any). Setting it to any other string will output the string itself. For instance `on_error="screwed!"` will output 'screwed!' if something goes wrong in the scrap. If ignored, the default value specified in plugin settings will be used.
 * htmldecode: Specify a charset for `iconv` charset conversion of scraped content. You should specify the charset of the source url you are scraping from. If ignored, the default encoding of your blog will be used.
 * striptags: Specify one or more tags in the format `<a><p>` to be striped off. Only the text content within these tags will be displayed. This can be used to strip off all links etc. If ignored, no tags are striped.
+* removetags: Specify one or more tags in the format `<a><p>` to be removed. These tags and content within them will be removed. If ignored, no tags are removed.
 * debug: Set to 1 to turn on debug information in form of an html comment in scrap or set 0 to turn it off. Default value is 1.
 * urldecode (only availabe in shortcode): Set to 1 to use `urldecode` for URLs with special characters. Set to 0 if you do not want to use it. Default value is 1.
 * xpathdecode (only availabe in shortcode): Set to 1 to use `xpathdecode` for xpath queries with special characters. Set to 0 if you do not want to use it. Default value is 0.
@@ -158,6 +159,10 @@ For example,
 
 
 == Changelog ==
+
+= 2.6 =
+* Enhancement: Added `removetags` to remove certain tags and content from scrap.
+* Bug fix: Retains http-cache and modules on upgrade.
 
 = 2.5 =
 * Bug fix: Patched a major security issue related to useragent string settings.
@@ -243,5 +248,5 @@ For example,
 
 == Upgrade Notice ==
 
-= 2.5 =
-* Bug fix: Patched a major security issue related to useragent string settings.
+= 2.6 =
+* Enhancement: Added `removetags` to remove certain tags and content from scrap
