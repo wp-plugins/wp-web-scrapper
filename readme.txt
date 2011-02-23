@@ -4,7 +4,7 @@ Donate link: http://webdlabs.com/projects/donate/
 Tags: web scraping, curl, phpquery, xpath, realtime, post, sidebar, page, stock market, html, import
 Requires at least: 2.8
 Tested up to: 3.1
-Stable tag: 2.6
+Stable tag: 2.7
 
 An easy to implement web scraper for WordPress. Display realtime data from any websites directly into your posts, pages or sidebar.
 
@@ -22,7 +22,7 @@ An easy to implement professional web scraper for WordPress. This can be used to
 1. Option to pass post arguments to a URL to be scraped.
 1. Dynamic conversion of scrap to specified character encoding (using incov) to scrap data from a site using different charset.
 1. Create scrap pages on the fly using dynamic generation of URLs to scrap or post arguments based on your page's get or post arguments.
-1. Built-in module for stock market data (NSE, BSE and NASDAQ supported currently), other markets to follow.
+1. Callback function to parse the scraped data.
 
 For demos and support, visit the [WP Web Scraper project page](http://webdlabs.com/projects/wp-web-scraper/). Comments appreciated.
 
@@ -30,7 +30,7 @@ For demos and support, visit the [WP Web Scraper project page](http://webdlabs.c
 
 1. Upload folder `wp-web-scrapper` to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Use the template tag `<?php echo wpws_get_content($url, $selector, $wpwsopt)?>` in your template or the shortcode `[wpws url="" selector=""]` in your posts, pages and sidebar.
+1. Use the template tag `<?php echo wpws_get_content($url, $selector, $xpath, $wpwsopt)?>` in your template or the shortcode `[wpws url="" selector=""]` in your posts, pages and sidebar.
 
 Mode details on this on the [FAQs](http://wordpress.org/extend/plugins/wp-web-scrapper/faq/) page
 
@@ -110,6 +110,7 @@ Other supported arguments (for theme tag / shortcode) are as mentioned below. On
 * htmldecode: Specify a charset for `iconv` charset conversion of scraped content. You should specify the charset of the source url you are scraping from. If ignored, the default encoding of your blog will be used.
 * striptags: Specify one or more tags in the format `<a><p>` to be striped off. Only the text content within these tags will be displayed. This can be used to strip off all links etc. If ignored, no tags are striped.
 * removetags: Specify one or more tags in the format `<a><p>` to be removed. These tags and content within them will be removed. If ignored, no tags are removed.
+* callback: Specify a function name which will parse the scrap as desired. Raw scrap should be an argument to the callback function and this function should return the desired processed output. Function can reside in functions.php of your theme too.
 * debug: Set to 1 to turn on debug information in form of an html comment in scrap or set 0 to turn it off. Default value is 1.
 * urldecode (only availabe in shortcode): Set to 1 to use `urldecode` for URLs with special characters. Set to 0 if you do not want to use it. Default value is 1.
 * xpathdecode (only availabe in shortcode): Set to 1 to use `xpathdecode` for xpath queries with special characters. Set to 0 if you do not want to use it. Default value is 0.
@@ -159,6 +160,10 @@ For example,
 
 
 == Changelog ==
+
+= 2.7 =
+* Enhancement: Added `callback` for flexible as well as advanced parsing.
+* Bug fix: Fixed the issue of usage within widget.
 
 = 2.6 =
 * Enhancement: Added `removetags` to remove certain tags and content from scrap.
@@ -248,5 +253,5 @@ For example,
 
 == Upgrade Notice ==
 
-= 2.6 =
-* Enhancement: Added `removetags` to remove certain tags and content from scrap
+= 2.7 =
+Enhancement: Added `callback` for flexible as well as advanced parsing. Bug fix: Fixed the issue of usage within widget.

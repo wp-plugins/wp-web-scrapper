@@ -15,7 +15,7 @@ foreach (glob(WP_PLUGIN_DIR.'/wp-web-scrapper/wpws-content/modules/*.php') as $m
 
 if($wpws_options['sc_posts'] == 1)
     add_shortcode('wpws', 'wpws_shortcode');
-if($wpws_options['sc_sidebar'] == 1)
+if($wpws_options['sc_widgets'] == 1)
     add_filter('widget_text', 'do_shortcode');
 
 /**
@@ -62,7 +62,7 @@ function wpws_register_activation_hook() {
         if( !is_dir($dir) ) mkdir($dir, 0777);
     if( !file_exists($required_dir.'/wpws-market-data.php') )
         rename(WP_PLUGIN_DIR.'/wp-web-scrapper/wpws-includes/wpws-market-data.php', $required_dir['modules'].'/wpws-market-data.php');
-
+        
 }
 
 /**
@@ -87,6 +87,7 @@ function wpws_shortcode($atts) {
         'basehref' => '',
         'striptags' => '',
         'removetags' => '',
+        'callback' => '',
         'debug' => '1',
         'htmldecode' => '',
         'urldecode' => '1',
@@ -99,7 +100,7 @@ function wpws_shortcode($atts) {
     }
     if($xpathdecode == '1')
         $xpath = urldecode($xpath);
-    return wpws_get_content($url, $selector, $xpath, 'postargs='.$postargs.'&cache='.$cache.'&user_agent='.$user_agent.'&timeout='.$timeout.'&on_error='.$on_error.'&output='.$output.'&clear_regex='.$clear_regex.'&replace_regex='.$replace_regex.'&replace_with='.$replace_with.'&basehref='.$basehref.'&striptags='.$striptags.'&removetags='.$removetags.'&debug='.$debug.'&htmldecode='.$htmldecode);
+    return wpws_get_content($url, $selector, $xpath, 'postargs='.$postargs.'&cache='.$cache.'&user_agent='.$user_agent.'&timeout='.$timeout.'&on_error='.$on_error.'&output='.$output.'&clear_regex='.$clear_regex.'&replace_regex='.$replace_regex.'&replace_with='.$replace_with.'&basehref='.$basehref.'&striptags='.$striptags.'&removetags='.$removetags.'&callback='.$callback.'&debug='.$debug.'&htmldecode='.$htmldecode);
 }
 
 /**
@@ -126,6 +127,7 @@ function wpws_get_content($url, $selector = '', $xpath = '', $wpwsopt = '') {
             'basehref' => '',
             'striptags' => '',
             'removetags' => '',
+            'callback' => '',
             'debug' => '1',
             'htmldecode' => ''
     );
@@ -315,6 +317,8 @@ function wpws_parse_filtered_html($filtered_html, $wpwsopt) {
         $filtered_html = wpws_strip_only($filtered_html, $wpwsopt['removetags'], true);
     if(!empty($wpwsopt['htmldecode']))
         $filtered_html = iconv($wpwsopt['htmldecode'], $currcharset, $filtered_html);
+    if(!empty($wpwsopt['callback']) && function_exists($wpwsopt['callback']))
+        $filtered_html = call_user_func($wpwsopt['callback'], $filtered_html);
     return $filtered_html;
 }
 
