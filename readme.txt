@@ -3,8 +3,8 @@ Contributors: akshay_raje
 Donate link: http://webdlabs.com/projects/donate/
 Tags: web scraping, curl, phpquery, xpath, realtime, post, sidebar, page, stock market, html, import
 Requires at least: 2.8
-Tested up to: 3.1
-Stable tag: 2.7
+Tested up to: 3.1.2
+Stable tag: 2.8
 
 An easy to implement web scraper for WordPress. Display realtime data from any websites directly into your posts, pages or sidebar.
 
@@ -58,14 +58,6 @@ For usage of other advanced parameters refer the [Usage Manual](http://wordpress
 
 Further details about selector syntax in [Selectors](http://wordpress.org/extend/plugins/wp-web-scrapper/other_notes/)
 
-= That sounds complex. Any simple shortcodes? =
-
-Yes, WP Web Scraper also has a module architecture to extend its functionality through simple short codes for standard scraping tasks. Currently it only supports stock market data shortcode, however I am planning to also bring in stuff like weather, sports etc too.
-
-Here is a usage example of the stock market data shortcode: `[wpws_market_data market="" symbol="" datatype=""]`
-
-For usage of other advanced parameters refer to [Modules](http://wordpress.org/extend/plugins/wp-web-scrapper/other_notes/)
-
 = Wow! I can actually create a complete meshup using this! =
 
 Yes you can. However, you should consider the copyright of the content owner. Its best to at least attribute the content owner by a linkback or better take a written permission. Apart from rights, scraping in general is a very resource intensive task. It will exhaust the bandwidth of your host as well as the host of of the content owner. Best is not to overdo it. Ideally find single pages with enough content to create your your meshup.
@@ -82,7 +74,7 @@ Here are some tips to help you optimize the usage:
 
 = What libraries are used? What are the minimum requirements apart from WordPress =
 
-For scraping, the plugin primarily uses [WP_HTTP classes](http://codex.wordpress.org/HTTP_API). This is a very robust library which ships with WordPress. Verify your php.ini or phpinfo() to check if your host supports this. For parsing html, the plugin uses [phpQuery](http://code.google.com/p/phpquery/). This is a server-side, chainable, CSS3 selector driven Document Object Model (DOM) API based on jQuery JavaScript Library. You can also use xpath queries if you find it comfortable.
+For scraping, the plugin primarily uses [WP_HTTP classes](http://codex.wordpress.org/HTTP_API). For caching it uses the [Transients API](http://codex.wordpress.org/Transients_API). For parsing htm using CSS style selectors the plugin uses [phpQuery](http://code.google.com/p/phpquery/) - a server-side, chainable, CSS3 selector driven Document Object Model (DOM) API based on jQuery JavaScript Library and for xpath parsing it uses [JS_Extractor](http://jacksleight.com/old/code).
 
 == Usage Manual ==
 
@@ -99,8 +91,11 @@ Other supported arguments (for theme tag / shortcode) are as mentioned below. On
 * xpath: Generic xpath query can be used as an alternate query method over selectors.
 * postargs: A string of post arguments to the page you are trying to scrap. For example `id=197&cat=5`
 * clear_regex: Regex pattern to be cleared before the scraper flushes its output. For example `/[aeiou]/` will clear all single lowercase vowel from the output. This [Regex reference](http://gnosis.cx/publish/programming/regular_expressions.html) will be helpful.
+* clear_selector: Similar to `clear_regex` but you can specify a CSS selector instead of regex.
 * replace_regex: Regex pattern to be replaced with `replace_text` before the scraper flushes its output. For example `/[aeiou]/` will replace all single lowercase vowel from the output. This [Regex reference](http://gnosis.cx/publish/programming/regular_expressions.html) will be helpful.
+* replace_selector: Similar to `replace_regex` but you can specify a CSS selector instead of regex.
 * replace_with: String which will replace the regex pattern specified in `replace_text`.
+* replace_selector_with: String which will replace the selector specified in `replace_selector`.
 * basehref: A parameter which can be used to convert relative links from the scrap to absolute links. For example, `basehref="http://yahoo.com"`, will convert all relative links to absolute by appending `http://yahoo.com` to all href and scr values. Note that basehref needs to be complete path (with http) and no trailing slash.
 * cache: Timeout interval of the cached data in minutes. If ignored, the default value specified in plugin settings will be used.
 * output: Format of output rendered by the selector (text or html). Text format strips all html tags and returns only text content. Html format retirns the scrap as in with the html tags. If ignored, the default value 'text' will be used.
@@ -140,26 +135,18 @@ This will replace `___symbol___` in the url with `CSCO.O` in realtime. You can u
 
 You can also use the special variable `___QUERY_STRING___` to replace the complete query string post ?
 
-== Modules ==
+== Callback ==
 
-= Market Data =
-
-The shortcode for market data module is: `[wpws_market_data market="" symbol="" datatype=""]`
-
-Arguments accepted are:
-
-* market (Required): Stock market name. Currently supports only NSE, BSE and NASDAQ. (More coming soon)
-* symbol (Required): Symbol for which the data is to be scraped. Make sure you specify the right sumbol code related to the market.
-* datatype: What specific datatype you intend to scrap. Options available are: `name`, `52_week_high`, `52_week_low`, `open`, `high`, `low`, `last`, `previous_close`, `change_amount`, `change_percent`, `volume` and `chart`. If ignored, `last` outputted.
-* You may also configuration arguments of the shortcode `[wpws]` like cache, user_agent, timeout and on_error to fine tune / optimize your scrap.
-
-For example,
-
-* `[wpws_market_data market="NSE" symbol="ACC" datatype="last"]` will output the latest price of ACC on NSE.
-* `[wpws_market_data market="NASDAQ" symbol="CSCO" datatype="high"]` will output the intraday high of Cisco on NASDAQ.
-
+Using the callback function, you can extend the plugin to do some advanced parsing. Simply put, its a function which will parse and return your data. Your callback function can reside in functions.php of your theme. The function should take a single string parameter, parse it and return a string as output.
 
 == Changelog ==
+
+= 2.8 =
+* Enhancement: Migrated caching to the Transients API.
+* Enhancement: Clear and find / replace now supports selectors.
+* Enhancement: Cleaner code - faster processing.
+* Enhancement: More debugging data including processing time.
+* Deprecation: Modules are deprecated in support of callback functions.
 
 = 2.7 =
 * Enhancement: Added `callback` for flexible as well as advanced parsing.
@@ -253,5 +240,5 @@ For example,
 
 == Upgrade Notice ==
 
-= 2.7 =
-Enhancement: Added `callback` for flexible as well as advanced parsing. Bug fix: Fixed the issue of usage within widget.
+= 2.8 =
+* Enhancements: Migrated caching to the Transients API; Clear and find / replace now supports selectors; Cleaner code - faster processing; More debugging data including processing time and Modules are deprecated in support of callback functions.

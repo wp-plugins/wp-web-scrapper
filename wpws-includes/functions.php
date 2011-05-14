@@ -1,22 +1,12 @@
 <?php
 
-require_once 'wp-bootstrap.php';
-
-/**
- * Load all module files in '/wp-web-scrapper/wpws-content/modules/
- */
-global $wpdb;
-$wpws_options = get_option('wpws_options');
-foreach (glob(WP_PLUGIN_DIR.'/wp-web-scrapper/wpws-content/modules/*.php') as $mod) {
-    require_once($mod);
-    if(($wpws_options['sc_posts'] == 1) && (function_exists("wpws_shortcode_$wpws_mod_name")))
-        add_shortcode("wpws_$wpws_mod_name", "wpws_shortcode_$wpws_mod_name");
+function wpws_init(){
+    $wpws_options = get_option('wpws_options');
+    if($wpws_options['sc_posts'] == 1)
+        add_shortcode('wpws', 'wpws_shortcode');
+    if($wpws_options['sc_widgets'] == 1)
+        add_filter('widget_text', 'do_shortcode');
 }
-
-if($wpws_options['sc_posts'] == 1)
-    add_shortcode('wpws', 'wpws_shortcode');
-if($wpws_options['sc_widgets'] == 1)
-    add_filter('widget_text', 'do_shortcode');
 
 /**
  * Adds admin menu page(s)
@@ -41,13 +31,13 @@ function wpws_admin_init(){
  * @return null
  */
 function wpws_register_activation_hook() {
-    global $wpdb;
     $default_wpws_options = array(
         'sc_posts' => 1,
         'sc_widgets' => 1,
         'on_error' => 'error_hide',
+        'custom_error' => 'Unable to fetch data',
         'useragent' => "WPWS bot (".get_bloginfo('url').")",
-        'timeout' => 1,
+        'timeout' => 2,
         'cache' => 60
     );
     add_option('wpws_options', $default_wpws_options);
@@ -69,38 +59,22 @@ function wpws_register_activation_hook() {
  * Shortcode wrapper
  */
 function wpws_shortcode($atts) {
-    global $wpdb;
     $wpws_options = get_option('wpws_options');
-    extract( shortcode_atts( array(
+    $default_wpwsopt = array(
         'url' => '',
-        'postargs' => '',
-        'selector' => '',
-        'xpath' => '',
-        'cache' => $wpws_options['cache'],
-        'user_agent' => $wpws_options['useragent'],
-        'timeout' => $wpws_options['timeout'],
-        'on_error' => $wpws_options['on_error'],
-        'output' => 'html',
-        'clear_regex' => '',
-        'replace_regex' => '',
-        'replace_with' => '',
-        'basehref' => '',
-        'striptags' => '',
-        'removetags' => '',
-        'callback' => '',
-        'debug' => '1',
-        'htmldecode' => '',
         'urldecode' => '1',
-        'xpathdecode' => ''
-    ), $atts));
-    $url = str_replace(array('&#038;','&#38;','&amp;'), '&', $url);
-    if($urldecode == '1') {
-        $url = urldecode($url);
-        $postargs = urldecode($postargs);
+        'xpathdecode' => '',
+        'request_mt' => microtime(true)
+    );
+    $atts['url'] = str_replace(array('&#038;','&#38;','&amp;'), '&', $atts['url']);
+    if($atts['urldecode'] == '1') {
+        $atts['url'] = urldecode($atts['url']);
+        $atts['postargs'] = urldecode($atts['postargs']);
     }
-    if($xpathdecode == '1')
-        $xpath = urldecode($xpath);
-    return wpws_get_content($url, $selector, $xpath, 'postargs='.$postargs.'&cache='.$cache.'&user_agent='.$user_agent.'&timeout='.$timeout.'&on_error='.$on_error.'&output='.$output.'&clear_regex='.$clear_regex.'&replace_regex='.$replace_regex.'&replace_with='.$replace_with.'&basehref='.$basehref.'&striptags='.$striptags.'&removetags='.$removetags.'&callback='.$callback.'&debug='.$debug.'&htmldecode='.$htmldecode);
+    if($atts['xpathdecode'] == '1')
+        $atts['xpath'] = urldecode($atts['xpath']);
+    $wpwsopt = wp_parse_args( $atts, $default_wpwsopt );
+    return wpws_get_content($atts['url'], $atts['selector'], $atts['xpath'], $wpwsopt);
 }
 
 /**
@@ -112,7 +86,6 @@ function wpws_shortcode($atts) {
  * @return string
  */
 function wpws_get_content($url, $selector = '', $xpath = '', $wpwsopt = '') {
-    global $wpdb;
     $wpws_options = get_option('wpws_options');
     $default_wpwsopt = array(
             'postargs' => '',
@@ -122,8 +95,11 @@ function wpws_get_content($url, $selector = '', $xpath = '', $wpwsopt = '') {
             'on_error' => $wpws_options['on_error'],
             'output' => 'html',
             'clear_regex' => '',
+            'clear_selector' => '',
             'replace_regex' => '',
+            'replace_selector' => '',
             'replace_with' => '',
+            'replace_selector_with' => '',
             'basehref' => '',
             'striptags' => '',
             'removetags' => '',
@@ -132,20 +108,24 @@ function wpws_get_content($url, $selector = '', $xpath = '', $wpwsopt = '') {
             'htmldecode' => ''
     );
     $wpwsopt = wp_parse_args( $wpwsopt, $default_wpwsopt );
+    unset($wpwsopt['url']);
+    unset($wpwsopt['selector']);
+    unset($wpwsopt['xpath']);
 
     if($wpwsopt['debug'] == '1') {
-        $header = "\n<!--\n Start of web scrap dump (created by wp-web-scraper)\n Source URL: $url \n CSS Selector: $selector \n-->\n";
-        $footer = "\n<!--End of web scrap dump-->\n";
+        $header = "\n<!--\n Start of web scrap (created by wp-web-scraper)\n Source URL: $url \n Selector: $selector\n Xpath: $xpath";
+        $footer = "\n<!--\n End of web scrap";
     } elseif ($wpwsopt['debug'] == '0') {
         $header = '';
         $footer = '';
     }
 
     if(empty($url)) {
+        $header .= "\n Other options: ".print_r($wpwsopt, true)."-->\n";
         if($wpwsopt['on_error'] == 'error_hide') {
             return $header.$footer;
         } else {
-            return "$header WPWS Error: No URL and/or selector specified.$footer";
+            return "$header WPWS Error: No URL and/or selector specified $footer";
         }
     }
 
@@ -162,11 +142,11 @@ function wpws_get_content($url, $selector = '', $xpath = '', $wpwsopt = '') {
     }
 
     $cache_args['cache'] = $wpwsopt['cache'];
-    if ( $wpwsopt['on_error'] == 'error_show_cache' )
-        $cache_args['on-error'] = 'cache';
 
-    if ( !empty($wpwsopt['postargs']) )
+    if ( !empty($wpwsopt['postargs']) ) {
         $http_args['headers'] = $wpwsopt['postargs'];
+        $cache_args['headers'] = $wpwsopt['postargs'];
+    }
     $http_args['user-agent'] = $wpwsopt['user_agent'];
     $http_args['timeout'] = $wpwsopt['timeout'];
 
@@ -191,17 +171,33 @@ function wpws_get_content($url, $selector = '', $xpath = '', $wpwsopt = '') {
             $filtered_html = $raw_html;
         }
         if( !empty($err_str) ) {
+            if($wpwsopt['debug'] == '1') {
+                $header .= "\n Other options: ".print_r($wpwsopt, true)."-->\n";
+                $footer .= "\n Computing time: ".round(microtime(true) - $wpwsopt['request_mt'], 4)." seconds \n-->\n";
+            }
             if ($wpwsopt['on_error'] == 'error_hide')
                 return $header.$footer;
             if ($wpwsopt['on_error'] == 'error_show')
                 return $header.$err_str.$footer;
+            if ( !empty($wpwsopt['on_error']) )
+                return $header.$wpwsopt['on_error'].$footer;
+        }
+        if($wpwsopt['debug'] == '1') {
+            $header .= "\n Delivered thru: ".$response['headers']['source']."\n Other options: ".print_r($wpwsopt, true)."-->\n";
+            $footer .= "\n Computing time: ".round(microtime(true) - $wpwsopt['request_mt'], 4)." seconds \n-->\n";
         }
         return $header.wpws_parse_filtered_html($filtered_html, $wpwsopt).$footer;
     } else {
+        if($wpwsopt['debug'] == '1') {
+            $header .= "\n Other options: ".print_r($wpwsopt, true)."-->\n";
+            $footer .= "\n Computing time: ".round(microtime(true) - $wpwsopt['request_mt'], 4)." seconds \n-->\n";
+        }
         if ($wpwsopt['on_error'] == 'error_hide')
             return $header.$footer;
         if ($wpwsopt['on_error'] == 'error_show')
             return $header."Error fetching $url - ".$response->get_error_message().$footer;
+        if ( !empty($wpwsopt['on_error']) )
+            return $header.$wpwsopt['on_error'].$footer;
     }
 
 }
@@ -225,32 +221,24 @@ function wpws_remote_request($url, $cache_args = array(), $http_args = array()) 
     $cache_args = wp_parse_args( $cache_args, $default_cache_args );
     $http_args = wp_parse_args( $http_args, $default_http_args );
     if($cache_args['headers']) {
-        $cache_file = WP_PLUGIN_DIR.'/wp-web-scrapper/wpws-content/http-cache/'.md5($url.serialize($cache_args['headers']));
+        $transient = md5($url.serialize($cache_args['headers']));
     } else {
-        $cache_file = WP_PLUGIN_DIR.'/wp-web-scrapper/wpws-content/http-cache/'.md5($url);
+        $transient = md5($url);
     }
 
-    if( file_exists($cache_file) ) {
-        $cache = unserialize( file_get_contents($cache_file) );
-        $cache['headers']['source'] = 'Cache';
-        $cache_status = ( time() - strtotime($cache['headers']['date']) ) < ($cache_args['cache'] * 60);
-    } else {
-        $cache_status = false;
-    }
-
-    if ($cache_status) {
-        return $cache;
-    } else {
-        $response = wp_remote_request($url, $http_args);
+    $cache = get_transient($transient);
+    if ( $cache === false ) {
+         $response = wp_remote_request($url, $http_args);
         if( !is_wp_error( $response ) ) {
+            set_transient($transient, $response, $cache_args['cache'] * 60 );
             $response['headers']['source'] = 'WP_Http';
-            file_put_contents($cache_file, serialize( str_replace(array("\r","\n"), '', $response) ) );
             return $response;
         } else {
-            if($cache_args['on-error'] == 'cache' && $cache)
-                return $cache;
             return new WP_Error('wpws_remote_request_failed', $response->get_error_message());
         }
+    } else {
+        $cache['headers']['source'] = 'Cache';
+        return $cache;
     }
 }
 
@@ -283,7 +271,6 @@ function wpws_get_html_by_xpath($raw_html, $xpath, $output = 'html'){
  */
 function wpws_get_html_by_selector($raw_html, $selector, $output = 'html'){
     // Parsing request using phpQuery
-    global $wpdb;
     $currcharset = get_bloginfo('charset');
     require_once 'phpQuery-onefile.php';
     $phpquery = phpQuery::newDocumentHTML($raw_html, $currcharset);
@@ -303,12 +290,15 @@ function wpws_get_html_by_selector($raw_html, $selector, $output = 'html'){
  * @return string
  */
 function wpws_parse_filtered_html($filtered_html, $wpwsopt) {
-    global $wpdb;
     $currcharset = get_bloginfo('charset');
     if(!empty($wpwsopt['clear_regex']))
         $filtered_html = preg_replace($wpwsopt['clear_regex'], '', $filtered_html);
+    if(!empty($wpwsopt['clear_selector']))
+        $filtered_html = str_replace(wpws_get_html_by_selector($filtered_html, $wpwsopt['clear_selector']), '', $filtered_html);
     if(!empty($wpwsopt['replace_regex']))
         $filtered_html = preg_replace($wpwsopt['replace_regex'], $wpwsopt['replace_with'], $filtered_html);
+    if(!empty($wpwsopt['replace_selector']))
+        $filtered_html = str_replace(wpws_get_html_by_selector($filtered_html, $wpwsopt['replace_selector']), $wpwsopt['replace_selector_with'], $filtered_html);
     if(!empty($wpwsopt['basehref']))
         $filtered_html = preg_replace('#(href|src)="([^:"]*)("|(?:(?:%20|\s|\+)[^"]*"))#','$1="'.$wpwsopt['basehref'].'$2$3',$filtered_html);
     if(!empty($wpwsopt['striptags']))
