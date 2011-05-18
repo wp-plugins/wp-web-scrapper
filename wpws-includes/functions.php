@@ -226,8 +226,7 @@ function wpws_remote_request($url, $cache_args = array(), $http_args = array()) 
         $transient = md5($url);
     }
 
-    $cache = get_transient($transient);
-    if ( $cache === false ) {
+    if ( false === ( $cache = get_transient($transient) ) ) {
          $response = wp_remote_request($url, $http_args);
         if( !is_wp_error( $response ) ) {
             set_transient($transient, $response, $cache_args['cache'] * 60 );
@@ -237,6 +236,7 @@ function wpws_remote_request($url, $cache_args = array(), $http_args = array()) 
             return new WP_Error('wpws_remote_request_failed', $response->get_error_message());
         }
     } else {
+        $cache = get_transient($transient);
         $cache['headers']['source'] = 'Cache';
         return $cache;
     }
