@@ -49,10 +49,7 @@ function wpws_register_activation_hook() {
         'http-cache' => WP_PLUGIN_DIR.'/wp-web-scrapper/wpws-content/http-cache'
     );
     foreach ($required_dir as $dir)
-        if( !is_dir($dir) ) mkdir($dir, 0777);
-    if( !file_exists($required_dir.'/wpws-market-data.php') )
-        rename(WP_PLUGIN_DIR.'/wp-web-scrapper/wpws-includes/wpws-market-data.php', $required_dir['modules'].'/wpws-market-data.php');
-        
+        if( !is_dir($dir) ) @mkdir($dir, 0777);
 }
 
 /**
