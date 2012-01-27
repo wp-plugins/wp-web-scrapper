@@ -180,8 +180,8 @@ function wpws_get_content($url, $selector = '', $xpath = '', $wpwsopt = '') {
                 return $header.$wpwsopt['on_error'].$footer;
         }
         if($wpwsopt['debug'] == '1') {
-            //$header .= "\n Delivered thru: ".$response['headers']['source']."\n Other options: ".print_r($wpwsopt, true)."-->\n";
-			$header .= "\n WPWS options: ".print_r($wpwsopt, true)."-->\n";
+            $header .= "\n Delivered thru: ".$response['headers']['source']."\n WPWS options: ".print_r($wpwsopt, true)."-->\n";
+            //$header .= "\n WPWS options: ".print_r($wpwsopt, true)."-->\n";
             $footer .= "\n Computing time: ".round(microtime(true) - $wpwsopt['request_mt'], 4)." seconds \n-->\n";
         }
         return $header.wpws_parse_filtered_html($filtered_html, $wpwsopt).$footer;
@@ -224,18 +224,19 @@ function wpws_remote_request($url, $cache_args = array(), $http_args = array()) 
         $transient = md5($url);
     }
 
-    if ( false === ( $cache = get_transient($transient) ) ) {
+    if ( false === ( $cache = get_transient($transient) ) || $cache_args['cache'] == 0 ) {
          $response = wp_remote_request($url, $http_args);
         if( !is_wp_error( $response ) ) {
-            set_transient($transient, $response, $cache_args['cache'] * 60 );
-            //$response['headers']['source'] = 'WP_Http';
+            if($cache_args['cache'] != 0)
+                set_transient($transient, $response, $cache_args['cache'] * 60 );
+            @$response['headers']['source'] = 'WP_Http';
             return $response;
         } else {
             return new WP_Error('wpws_remote_request_failed', $response->get_error_message());
         }
     } else {
         $cache = get_transient($transient);
-        //$cache['headers']['source'] = 'Cache';
+        @$cache['headers']['source'] = 'Cache';
         return $cache;
     }
 }
