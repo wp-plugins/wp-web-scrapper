@@ -1,10 +1,10 @@
 === WP Web Scraper ===
-Contributors: akshay_raje
+Contributors: akshay_raje, WisdmLabs
 Donate link: http://webdlabs.com/projects/donate/
 Tags: web scraping, curl, phpquery, xpath, realtime, post, sidebar, page, stock market, html, import
 Requires at least: 2.8
 Tested up to: 3.1.2
-Stable tag: 2.8
+Stable tag: trunk
 
 An easy to implement web scraper for WordPress. Display realtime data from any websites directly into your posts, pages or sidebar.
 
@@ -42,17 +42,15 @@ Web scraping (or Web harvesting, Web data extraction) is a computer software tec
 
 = Sounds interesting, but how do I actually use it? =
 
-Use the 'Add new web scrap' button to add a web scrap to your post or page. You can also use the template tag or shortcode detailed below.
-
-WP Web Scraper can be used through a template tag (for direct integration in your theme) or shortcode (for posts, pages or sidebar) for scraping and displaying web content. Here's the actual usage detail:
-
-For use within themes: `<?php echo wpws_get_content($url, $selector, $xpath, $wpwsopt)?>`
-
-Example usage in theme:	`<?php echo wpws_get_content('http://google.com','title','','user_agent=My Bot&on_error=error_show&')?>` (Display the title tag of google's home page, using My Bot as a user agent)
+WP Web Scraper can be used through a shortcode (for posts, pages or sidebar) or template tag (for direct integration in your theme) for scraping and displaying web content. Here's the actual usage detail:
 
 For use directly in posts, pages or sidebar (text widget): `[wpws url="" selector=""]`
 
 Example usage as a shortcode: `[wpws url="http://google.com" selector="title" user_agent="My Bot" on_error="error_show"]` (Display the title tag of google's home page, using My Bot as a user agent)
+
+For use within themes: `<?php echo wpws_get_content($url, $selector, $xpath, $wpwsopt)?>`
+
+Example usage in theme:	`<?php echo wpws_get_content('http://google.com','title','','user_agent=My Bot&on_error=error_show&')?>` (Display the title tag of google's home page, using My Bot as a user agent)
 
 For usage of other advanced parameters refer the [Usage Manual](http://wordpress.org/extend/plugins/wp-web-scrapper/other_notes/)
 
