@@ -1,5 +1,6 @@
 === WP Web Scraper ===
 Contributors: akshay_raje, WisdmLabs
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=akshay.raje@gmail.com&item_name=Donation+for+WP+Web+Scraper
 Tags: web scraping, curl, css selector, xpath, regex, realtime, post, sidebar, page, stock market, html, import
 Requires at least: 2.8
 Tested up to: 4.0
