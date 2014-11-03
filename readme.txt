@@ -34,23 +34,17 @@ Mode details on this on the [FAQs](http://wordpress.org/extend/plugins/wp-web-sc
 
 == Frequently Asked Questions ==
 
-= [What is web scraping? Why do I need it in WordPress?](http://wpws.in/faqs/what-is-web-scraping-needed-in-wordpress/) =
-
-= [How to use WP Web Scraper?](http://wpws.in/faqs/how-to-use-wp-web-scraper/) =
-
-= [How to optimize performance?](http://wpws.in/faqs/how-to-optimize-performance/) =
-
-= [Minimum requirements & dependencies](http://wpws.in/faqs/minimum-requirements-dependencies/) =
+* [What is web scraping? Why do I need it in WordPress?](http://wpws.in/faqs/what-is-web-scraping-needed-in-wordpress/)
+* [How to use WP Web Scraper?](http://wpws.in/faqs/how-to-use-wp-web-scraper/)
+* [How to optimize performance?](http://wpws.in/faqs/how-to-optimize-performance/)
+* [Minimum requirements & dependencies](http://wpws.in/faqs/minimum-requirements-dependencies/)
 
 == Documentation ==
 
-= [Arguments API](http://wpws.in/docs/arguments-api/) =
-
-= [Query - CSS Selectors, XPath and Regex](http://wpws.in/docs/query/) =
-
-= [Dynamic URL and headers](http://wpws.in/docs/dynamic-url-headers/) =
-
-= [Callback Functions](http://wpws.in/docs/callback-functions/) =
+* [Arguments API](http://wpws.in/docs/arguments-api/)
+* [Query - CSS Selectors, XPath and Regex](http://wpws.in/docs/query/)
+* [Dynamic URL and headers](http://wpws.in/docs/dynamic-url-headers/)
+* [Callback Functions](http://wpws.in/docs/callback-functions/)
 
 == Examples ==
 
