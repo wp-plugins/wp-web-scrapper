@@ -59,13 +59,13 @@ class WP_Web_Scraper {
 			'querydecode' => 0
 		);
         // For backward compatibility:
-        if( isset($args['selector']) ){
-            $args['query'] = $args['selector'];
-            $args['query_type'] = 'cssselector';
+        if( isset($atts['selector']) ){
+            $atts['query'] = $atts['selector'];
+            $atts['query_type'] = 'cssselector';
         }
-        if( isset($args['xpath']) ){
-            $args['query'] = $args['xpath'];
-            $args['query_type'] = 'xpath';
+        if( isset($atts['xpath']) ){
+            $atts['query'] = $atts['xpath'];
+            $atts['query_type'] = 'xpath';
         }  
         $args = wp_parse_args( $atts, $default_args );
 		$args['url'] = str_replace(array('&#038;','&#38;','&amp;'), '&', $args['url']);
