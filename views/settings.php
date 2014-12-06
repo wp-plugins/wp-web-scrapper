@@ -23,8 +23,8 @@
 		<table class="form-table">
 			<tbody>
 				<tr><th scope="row"><?php _e( 'Source URL' , 'wp-web-scraper' )?></th><td><fieldset><input name="url" type="text" id="url" class="large-text" value="<?php echo $_POST['url']?>"></fieldset></td></tr>
-				<tr><th scope="row"><?php _e( 'Query' , 'wp-web-scraper' )?></th><td><fieldset><input name="query" type="text" id="query" class="large-text" value="<?php echo $_POST['query']?>"><p class="description"><?php _e( '<a href="http://wpws.in/docs/query/" target="_blank">CSS selector, XPath or Regex query</a> to fetch data.' , 'wp-web-scraper' )?></p></fieldset></td></tr>
-				<tr><th scope="row"><?php _e( 'Other Arguments' , 'wp-web-scraper' )?></th><td><fieldset><input name="args" type="text" id="args" class="large-text" value="<?php echo $_POST['args']?>" autocomplete="off"><p class="description"><?php _e( '<a href="http://wpws.in/docs/arguments-api/" target="_blank">Arguments</a> in http query string format.' , 'wp-web-scraper' )?> <a data-args="<?php http_build_query($default_args)?>" id="load_default_args"><?php _e( 'Load defaults.' , 'wp-web-scraper' )?></a></p></fieldset></td></tr>
+				<tr><th scope="row"><?php _e( 'Query' , 'wp-web-scraper' )?></th><td><fieldset><input name="query" type="text" id="query" class="large-text" value="<?php echo $_POST['query']?>"><p class="description"><?php _e( '<a href="http://wp-ws.net/docs/query/" target="_blank">CSS selector, XPath or Regex query</a> to fetch data.' , 'wp-web-scraper' )?></p></fieldset></td></tr>
+				<tr><th scope="row"><?php _e( 'Other Arguments' , 'wp-web-scraper' )?></th><td><fieldset><input name="args" type="text" id="args" class="large-text" value="<?php echo $_POST['args']?>" autocomplete="off"><p class="description"><?php _e( '<a href="http://wp-ws.net/docs/arguments-api/" target="_blank">Arguments</a> in http query string format.' , 'wp-web-scraper' )?> <a data-args="<?php http_build_query($default_args)?>" id="load_default_args"><?php _e( 'Load defaults.' , 'wp-web-scraper' )?></a></p></fieldset></td></tr>
 			</tbody>
 		</table>
 		<?php @submit_button( __( 'Test Scrap', 'wp-web-scraper' ) ); ?>
@@ -93,12 +93,12 @@
     
 <?php if($_GET['tab'] === 'help'): ?>	
     <p><?php _e( 'WP Web Scraper is an easy to implement web scraper for WordPress that lets you display realtime data from any websites directly into your posts, pages or sidebar. Using a shortcode or a template tag, it lets you specify a URL and a query to display your desired content.', 'wp-web-scraper' )?></p>
-    <p><?php _e( 'You may start with reading more about \'<a href="http://wpws.in/faqs/what-is-web-scraping-needed-in-wordpress/" target="_blank">Why is web scraping needed in WordPress?</a>\' and \'<a href="http://wpws.in/faqs/how-to-use-wp-web-scraper/" target="_blank">How to use WP Web Scraper?</a>\'', 'wp-web-scraper' )?></p>
-    <p><?php _e( 'Visit <a href="http://wpws.in/" target="_blank">wpws.in</a> for elaborate <a href="http://wpws.in/docs/" target="_blank">documentation</a> on <a href="http://wpws.in/docs/query/" target="_blank">Query</a>, <a href="http://wpws.in/docs/arguments-api/" target="_blank">arguments</a>, and core features like <a href="http://wpws.in/docs/dynamic-url-headers/" target="_blank">Dynamic URLs</a> and <a href="http://wpws.in/docs/callback-functions/" target="_blank">Callbacks</a>.' , 'wp-web-scraper' )?>
-    <p><?php _e( 'You will also find a bunch of <a href="http://wpws.in/examples/" target="_blank">examples</a> and answers to <a href="http://wpws.in/faqs/" target="_blank">FAQs</a> there to help you get started.' , 'wp-web-scraper' )?></p>
+    <p><?php _e( 'You may start with reading more about \'<a href="http://wp-ws.net/faqs/what-is-web-scraping-needed-in-wordpress/" target="_blank">Why is web scraping needed in WordPress?</a>\' and \'<a href="http://wp-ws.net/faqs/how-to-use-wp-web-scraper/" target="_blank">How to use WP Web Scraper?</a>\'', 'wp-web-scraper' )?></p>
+    <p><?php _e( 'Visit <a href="http://wp-ws.net/" target="_blank">wp-ws.net</a> for elaborate <a href="http://wp-ws.net/docs/" target="_blank">documentation</a> on <a href="http://wp-ws.net/docs/query/" target="_blank">Query</a>, <a href="http://wp-ws.net/docs/arguments-api/" target="_blank">arguments</a>, and core features like <a href="http://wp-ws.net/docs/dynamic-url-headers/" target="_blank">Dynamic URLs</a> and <a href="http://wp-ws.net/docs/callback-functions/" target="_blank">Callbacks</a>.' , 'wp-web-scraper' )?>
+    <p><?php _e( 'You will also find a bunch of <a href="http://wp-ws.net/examples/" target="_blank">examples</a> and answers to <a href="http://wp-ws.net/faqs/" target="_blank">FAQs</a> there to help you get started.' , 'wp-web-scraper' )?></p>
     <p><?php _e( 'For generic support, reporting issues, bugs etc, you may use <a href="https://wordpress.org/support/plugin/wp-web-scrapper" target="_blank">WP Web Scraper Support on wordpress.org</a>.' , 'wp-web-scraper' )?></p>
     <div id="setting-error-settings_updated" class="updated settings-error"> 
-        <p><strong><?php _e( 'Use this <a href="http://wpws.in/support/" target="_blank">form for paid support on building a query or a callback function</a>' , 'wp-web-scraper' )?></strong></p>
+        <p><strong><?php _e( 'Use this <a href="http://wp-ws.net/support/" target="_blank">form for paid support on building a query or a callback function</a>' , 'wp-web-scraper' )?></strong></p>
     </div>         
 <?php endif; ?>	    
 </div>
