@@ -2,9 +2,9 @@
 
 /*
 Plugin Name: WP Web Scraper
-Plugin URI: http://wpws.in/
+Plugin URI: http://wp-ws.net/
 Description: An easy to implement web scraper for WordPress. Display realtime data from any website directly into your posts, pages or sidebar.
-Version: 3.1
+Version: 3.2
 Author: Akshay Raje
 Author URI: http://webdlabs.com/
 */
@@ -15,7 +15,7 @@ if (!function_exists('add_action'))
 
 define('WPWS__PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('WPWS__PLUGIN_FILE', plugin_basename(__FILE__));
-define('WPWS__VERSION', '3.1');
+define('WPWS__VERSION', '3.2');
 
 require_once( WPWS__PLUGIN_DIR . 'class.wpws.php' );
 

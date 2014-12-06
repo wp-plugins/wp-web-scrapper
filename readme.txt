@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=akshay.r
 Tags: web scraping, curl, css selector, xpath, regex, realtime, post, sidebar, page, stock market, html, import
 Requires at least: 2.8
 Tested up to: 4.0
-Stable tag: 3.1
+Stable tag: 3.2
 
 An easy to implement web scraper for WordPress. Display realtime data from any websites directly into your posts, pages or sidebar.
 
@@ -52,6 +52,9 @@ Mode details on this on the [FAQs](http://wordpress.org/extend/plugins/wp-web-sc
 [Example code](http://wp-ws.net/examples/) for some common use cases of the plugin
 
 == Changelog ==
+
+= 3.2 =
+* Documentation website change
 
 = 3.1 =
 * Bug fix: Minor bug fixes.
