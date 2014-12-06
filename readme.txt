@@ -16,40 +16,40 @@ An easy to implement web scraper for WordPress. This can be used to display real
 1. Configurable caching of scraped data. Cache timeout in minutes can be defined in minutes for every scrap.
 1. Configurable Useragent for your scraper can be set for every scrap.
 1. Configurable default settings like enabling, useragent, timeout, caching, error handling.
-1. [Multiple ways to query content](http://wpws.in/docs/query/) - CSS Selector, XPath or Regex.
-1. A wide range of [arguments for parsing](http://wpws.in/docs/arguments-api/) content.
+1. [Multiple ways to query content](http://wp-ws.net/docs/query/) - CSS Selector, XPath or Regex.
+1. A wide range of [arguments for parsing](http://wp-ws.net/docs/arguments-api/) content.
 1. Option to pass post arguments to a URL to be scraped.
 1. Dynamic conversion of scrap to specified character encoding to scrap data from a site using different charset.
-1. Create scrap pages on the fly using [dynamic generation of URLs](http://wpws.in/docs/dynamic-url-headers/) to scrap or post arguments based on your page's get or post arguments.
-1. [Callback function](http://wpws.in/docs/callback-functions/) for advanced parsing of scraped data.
+1. Create scrap pages on the fly using [dynamic generation of URLs](http://wp-ws.net/docs/dynamic-url-headers/) to scrap or post arguments based on your page's get or post arguments.
+1. [Callback function](http://wp-ws.net/docs/callback-functions/) for advanced parsing of scraped data.
 
-Check the [documentation](http://wpws.in/docs/), browse through [examples](http://wpws.in/examples/), or try [paid support](http://wpws.in/support/) for crafting a perfectly optimized web scrape.
+Check the [documentation](http://wp-ws.net/docs/), browse through [examples](http://wp-ws.net/examples/), or try [paid support](http://wp-ws.net/support/) for crafting a perfectly optimized web scrape.
 
 == Installation ==
 
 1. Upload folder `wp-web-scrapper` to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
-1. [Usage instructions for WP Web Scraper](http://wpws.in/faqs/how-to-use-wp-web-scraper/)
+1. [Usage instructions for WP Web Scraper](http://wp-ws.net/faqs/how-to-use-wp-web-scraper/)
 
 Mode details on this on the [FAQs](http://wordpress.org/extend/plugins/wp-web-scrapper/faq/) page
 
 == Frequently Asked Questions ==
 
-* [What is web scraping? Why do I need it in WordPress?](http://wpws.in/faqs/what-is-web-scraping-needed-in-wordpress/)
-* [How to use WP Web Scraper?](http://wpws.in/faqs/how-to-use-wp-web-scraper/)
-* [How to optimize performance?](http://wpws.in/faqs/how-to-optimize-performance/)
-* [Minimum requirements & dependencies](http://wpws.in/faqs/minimum-requirements-dependencies/)
+* [What is web scraping? Why do I need it in WordPress?](http://wp-ws.net/faqs/what-is-web-scraping-needed-in-wordpress/)
+* [How to use WP Web Scraper?](http://wp-ws.net/faqs/how-to-use-wp-web-scraper/)
+* [How to optimize performance?](http://wp-ws.net/faqs/how-to-optimize-performance/)
+* [Minimum requirements & dependencies](http://wp-ws.net/faqs/minimum-requirements-dependencies/)
 
 == Documentation ==
 
-* [Arguments API](http://wpws.in/docs/arguments-api/)
-* [Query - CSS Selectors, XPath and Regex](http://wpws.in/docs/query/)
-* [Dynamic URL and headers](http://wpws.in/docs/dynamic-url-headers/)
-* [Callback Functions](http://wpws.in/docs/callback-functions/)
+* [Arguments API](http://wp-ws.net/docs/arguments-api/)
+* [Query - CSS Selectors, XPath and Regex](http://wp-ws.net/docs/query/)
+* [Dynamic URL and headers](http://wp-ws.net/docs/dynamic-url-headers/)
+* [Callback Functions](http://wp-ws.net/docs/callback-functions/)
 
 == Examples ==
 
-[Example code](http://wpws.in/examples/) for some common use cases of the plugin
+[Example code](http://wp-ws.net/examples/) for some common use cases of the plugin
 
 == Changelog ==
 
