@@ -31,7 +31,7 @@ Check the [documentation](http://wp-ws.net/docs/), browse through [examples](htt
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. [Usage instructions for WP Web Scraper](http://wp-ws.net/faqs/how-to-use-wp-web-scraper/)
 
-Mode details on this on the [FAQs](http://wordpress.org/extend/plugins/wp-web-scrapper/faq/) page
+Mode details on this on the [FAQs](http://wp-ws.net/faqs/) page
 
 == Frequently Asked Questions ==
 
@@ -39,6 +39,7 @@ Mode details on this on the [FAQs](http://wordpress.org/extend/plugins/wp-web-sc
 * [How to use WP Web Scraper?](http://wp-ws.net/faqs/how-to-use-wp-web-scraper/)
 * [How to optimize performance?](http://wp-ws.net/faqs/how-to-optimize-performance/)
 * [Minimum requirements & dependencies](http://wp-ws.net/faqs/minimum-requirements-dependencies/)
+* [Posting external content as Posts or Pages](http://wp-ws.net/faqs/posting-external-content-as-posts-or-pages/)
 
 == Documentation ==
 
