@@ -141,14 +141,17 @@ class WP_Web_Scraper_Parser {
     
     public function basehref($base){
         
+        require 'vendor/phpuri/phpuri.php';
         $doc = new DOMDocument();
         @$doc->loadHTML('<?xml encoding="'.$this->charset.'" ?>'.$this->html);   
         
         foreach ($doc->getElementsByTagName('*') as $item){
             if($item->getAttribute('href') != '')
-                $item->setAttribute('href', $this->rel2abs($item->getAttribute('href'), $base));
+                $item->setAttribute('href', phpUri::parse($base)->join($item->getAttribute('href')));
+                //$item->setAttribute('href', $this->rel2abs($item->getAttribute('href'), $base));
             if($item->getAttribute('src') != '')
-                $item->setAttribute('src', $this->rel2abs($item->getAttribute('src'), $base));            
+                $item->setAttribute('src', phpUri::parse($base)->join($item->getAttribute('src')));
+                //$item->setAttribute('src', $this->rel2abs($item->getAttribute('src'), $base));            
         }
         
         return str_replace(array('<body>','</body>'), '', trim($doc->saveHTML($doc->getElementsByTagName('body')->item(0))));     
