@@ -141,7 +141,7 @@ class WP_Web_Scraper_Parser {
     
     public function basehref($base){
         
-        require 'vendor/phpuri/phpuri.php';
+        require_once 'vendor/phpuri/phpuri.php';
         $doc = new DOMDocument();
         @$doc->loadHTML('<?xml encoding="'.$this->charset.'" ?>'.$this->html);   
         
