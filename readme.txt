@@ -23,7 +23,7 @@ An easy to implement web scraper for WordPress. This can be used to display real
 1. Create scrap pages on the fly using [dynamic generation of URLs](http://wp-ws.net/docs/dynamic-url-headers/) to scrap or post arguments based on your page's get or post arguments.
 1. [Callback function](http://wp-ws.net/docs/callback-functions/) for advanced parsing of scraped data.
 
-Check the [documentation](http://wp-ws.net/docs/), browse through [examples](http://wp-ws.net/examples/), or try [paid support](http://wp-ws.net/support/) for crafting a perfectly optimized web scrape.
+Check the the official website [wp-ws.net](http://wp-ws.net/) for [documentation](http://wp-ws.net/docs/), browse through [examples](http://wp-ws.net/examples/), or try [paid support](http://wp-ws.net/support/) for crafting a perfectly optimized web scrape.
 
 == Installation ==
 
