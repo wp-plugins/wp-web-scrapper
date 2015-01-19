@@ -254,8 +254,15 @@ class WP_Web_Scraper {
         
         // Replace
         if( $response_args['replace_query'] !== '' ){
-            if( $response_args['replace_query_type'] === 'regex' )
-                $content = preg_replace( $response_args['replace_query'], $response_args['replace_with'], $content);
+            if( $response_args['replace_query_type'] === 'regex' ){
+                $replace_query = $response_args['replace_query'];
+                $replace_with = $response_args['replace_with'];
+                if(is_array( unserialize( urldecode($replace_query) ) ) )
+                    $replace_query = unserialize( urldecode($replace_query) );
+                if(is_array( unserialize( urldecode($replace_with) ) ) )
+                    $replace_with = unserialize( urldecode($replace_with) );            
+                $content = preg_replace( $replace_query, $replace_with, $content);
+            }
             if( $response_args['replace_query_type'] === 'cssselector' )
                 $content = $wpws_parser->replace_selector( $response_args['replace_query'], $response_args['replace_with'] );
             if( $response_args['replace_query_type'] === 'xpath' )
