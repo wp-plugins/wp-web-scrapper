@@ -69,6 +69,7 @@ class WP_Web_Scraper {
         }  
         $args = wp_parse_args( $atts, $default_args );
 		$args['url'] = str_replace(array('&#038;','&#38;','&amp;'), '&', $args['url']);
+		$args['headers'] = str_replace(array('&#038;','&#38;','&amp;'), '&', $args['headers']);
 		if($args['urldecode'] == 1) {
 			$args['url'] = urldecode($args['url']);
             if( isset($args['headers']) )
