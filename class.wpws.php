@@ -211,15 +211,20 @@ class WP_Web_Scraper {
                     $i[] = round( $response_args['eq'] );
             }
 
-            // Get $i based on gt
-            if( $response_args['gt'] !== '' && is_numeric( $response_args['gt'] ) )
+            // Get $i based on gt & lt both
+            if( ($response_args['gt'] !== '' && is_numeric( $response_args['gt'] )) && ($response_args['lt'] !== '' && is_numeric( $response_args['lt'] )) && (round( $response_args['gt'] ) < round( $response_args['lt'] )) )
+                for ($j = round( $response_args['gt'] ) + 1; $j <= round( $response_args['lt'] ) - 1; $j++)
+                    $i[] = $j;            
+
+            // Get $i based on gt only
+            if( ($response_args['gt'] !== '' && is_numeric( $response_args['gt'] )) && ($response_args['lt'] == '' || !is_numeric( $response_args['lt'] )) )
                 for ($j = round( $response_args['gt'] ) + 1; $j <= count($content); $j++)
                     $i[] = $j;
 
-            // Get $i based on lt
-            if( $response_args['lt'] !== '' && is_numeric( $response_args['lt'] ) )
+            // Get $i based on lt only
+            if( ($response_args['lt'] !== '' && is_numeric( $response_args['lt'] )) && ($response_args['gt'] == '' || !is_numeric( $response_args['gt'] )) )
                 for ($j = min( round( $response_args['lt'] ) - 1, count($content) ); $j >= 0; $j--)
-                    $i[] = $j;
+                    $i[] = $j;                
 
             // Filter based on eq, gt or lt
             if(!empty($i)){
@@ -309,8 +314,11 @@ class WP_Web_Scraper {
 	 */	
 	public static function remote_request($url, $request_args = array()) {
         
-		if($request_args['headers']) {
+		if( $request_args['headers'] && !empty($request_args['headers']) ) {
 			$transient = md5($url.serialize($request_args['headers']));
+			parse_str($request_args['headers'], $body);
+			$request_args['method'] = 'POST';
+			$request_args['body'] = $body;
 		} else {
 			$transient = md5($url);
 		}

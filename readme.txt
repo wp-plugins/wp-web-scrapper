@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=akshay.r
 Tags: web scraping, curl, css selector, xpath, regex, realtime, post, sidebar, page, stock market, html, import
 Requires at least: 2.8
 Tested up to: 4.1
-Stable tag: 3.4
+Stable tag: 3.5
 
 An easy to implement web scraper for WordPress. Display realtime data from any websites directly into your posts, pages or sidebar.
 
@@ -53,6 +53,10 @@ Mode details on this on the [FAQs](http://wp-ws.net/faqs/) page
 [Example code](http://wp-ws.net/examples/) for some common use cases of the plugin
 
 == Changelog ==
+
+= 3.5 =
+* Bug fix: Post request
+* Bug fix: gt, lt arguments
 
 = 3.4 =
 * Added scrap importer
@@ -111,66 +115,8 @@ Mode details on this on the [FAQs](http://wp-ws.net/faqs/) page
 * Milestone release: Complete overhaul of code, architecture and documentation.
 * Bug fix: Multiple bug fixes addressed.
 
-= 1.8 =
-* Bug fix: `htmldecode` now uses iconv to convert scrap to requested character encoding. No need to change the charset of your blog to render scrap properly.
-* Enhancement: Added `striptags` to strip off non-required html tags from the scrap.
-
-= 1.7 =
-* Enhancement: Added `htmldecode` and `urldecode` to control htmlencoding and urlencoding in your scrap.
-
-= 1.6 =
-* Enhancement: Handling charecterset and usage of html entity decode.
-
-= 1.5 =
-* Bug fix: Charecter encoding bug fix
-
-= 1.4 =
-* Enhancement: Can now accept post arguments thru the shortcode `postargs`
-* Enhancement: `url` and `postargs` can take one get or post variables each in shortcode. These variables should be written in the format `___varname___`
-
-= 1.3 =
-* Bug fix: Fixed a bug in the module `wpws_market_data`
-
-= 1.2 =
-* Bug fix: Can also accept urls with special charecters such as `[` or `]`. Such charecters need to be replaced by the equivalent URL-encoded string like `%5B` for `[` or `%5D` for `[` etc.
-
-= 1.1 =
-* Enhancement: Web scraps can now be added using a button in the post / page editor. No more remembering shortcodes.
-
-= 1.0 =
-* Enhancement: Added `basehref` parameter which can be used to convert relative links from the scrap to absolute links.
-* Bug fix: Display of WP Web Scraper options page.
-
-= 0.9 =
-* Enhancement: Added `replace` and `replace_text` parameters to the wpws shortcode and tag. Its a regex pattern to be replaced with string specified in `replace_text` before the scraper flushes its output.
-
-= 0.8 =
-* Bug fix: `curl_setopt()` errors are now silent. No warnings displayed if things go wrong.
-
-= 0.7 =
-* Enhancement: BSE is also supported by `wpws_market_data`.
-* Enhancement: Checked version compatibility with WP 2.8
-
-= 0.6 =
-* Bug fix: `wpws_market_data market` returned a debug text. Now fixed.
-
-= 0.5 =
-* Enhancement: Introduced a module architecture to develop custom mods or plugin extensions for common scraping tasks.
-* Enhancement: Added the first mod `wpws_market_data` with support for NSE and NASDAQ exchanges.
-
-= 0.4 =
-* Bug fix: Multiple scraps from a single page now are cached as a single file. No multiple scraping for this.
-* Enhancement: Added an option to display expired cache if scrap fails. Will display stale data instead of no data.
-
-= 0.3 =
-* Enhancement: Added clear parameter to the wpws shortcode and tag. Its a regex pattern to be cleared before the scraper flushes its output.
-* Enhancement: Better error handling. Errors can now display actual error, fail silently or display your custom error.
-
-= 0.2 =
-* Bug fix: Display of WP Web Scraper options page.
-* Bug fix: Calculation of files and size of cache.
-
 == Upgrade Notice ==
 
-= 3.4 =
-* Added scrap importer and implemented arrays in replace_query and replace_with
+= 3.5 =
+* Bug fix: Post request
+* Bug fix: gt, lt arguments
