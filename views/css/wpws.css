@@ -1,0 +1,48 @@
+ul.sandbox-tabs{
+  margin-top: 12px;
+  margin: 8px 0 5px;
+  line-height: 1.4em;
+  font-size: 13px;
+}
+
+ul.sandbox-tabs li.tabs{
+  padding: 3px 5px 5px;
+  position: relative;
+  display: inline;
+}
+
+ul.sandbox-tabs li.tabs a{
+  text-decoration: none;
+  outline: 0;
+}
+
+ul.sandbox-tabs li.ui-state-active{
+  background-color: #fdfdfd;  
+  border: 1px solid #dfdfdf;  
+  border-bottom-color: #fdfdfd;  
+}
+
+ul.sandbox-tabs li.ui-state-active a{
+  color: #333;
+}
+
+table.args{
+  width: 100%;
+}
+
+table.args td.key{
+  width: 20%;
+}
+
+table.args td.value{
+  width: 80%;
+}
+
+div.tabs-panel{
+  min-height: 42px;
+  max-height: 200px;
+  overflow: auto;
+  padding: .9em !important;
+  border: 1px solid #dfdfdf;
+  background-color: #fdfdfd;
+}
